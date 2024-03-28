@@ -21,7 +21,10 @@ import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
 import favicon from '../public/favicon.svg';
 import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
-import {Layout} from '~/components/Layout';
+import tailwindStyles from './styles/tailwind.css';
+import fonts from './styles/fonts.css';
+import {Layout} from '~/components/lovevibe/Layout';
+import {ConfigProvider} from './components/ConfigProvider';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -48,6 +51,21 @@ export function links() {
   return [
     {rel: 'stylesheet', href: resetStyles},
     {rel: 'stylesheet', href: appStyles},
+    {rel: 'stylesheet', href: tailwindStyles},
+    {rel: 'stylesheet', href: fonts},
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.googleapis.com/css',
+    },
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.gstatic.com',
+      crossOrigin: 'anonymous',
+    },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap',
+    },
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -122,9 +140,11 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Layout {...data}>
-          <Outlet />
-        </Layout>
+        <ConfigProvider>
+          <Layout {...data}>
+            <Outlet />
+          </Layout>
+        </ConfigProvider>
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />

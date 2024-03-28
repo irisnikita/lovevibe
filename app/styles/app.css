@@ -6,6 +6,27 @@
   --header-height: 64px;
   --color-dark: #000;
   --color-light: #fff;
+
+  --primary-color: #ef466f;
+  --secondary-color: #f4c73c;
+  --success-color: #45b26b;
+  --danger-color: #ea3223;
+  --error-color: #ef4646;
+  --neutrals-1-color: #141416;
+  --neutrals-2-color: #23262f;
+  --neutrals-3-color: #353945;
+  --neutrals-4-color: #777e90;
+  --neutrals-5-color: #b1b5c3;
+  --neutrals-6-color: #dfe2e7;
+  --neutrals-8-color: #fcfcfd;
+  --neutrals-9-color: #211b0a;
+  --font-heading-size: 40px;
+  --font-heading-2-size: 32px;
+  --font-body-size: 1.125rem;
+  --font-emoji: apple color emoji, segoe ui emoji, noto color emoji,
+    android emoji, emojisymbols, emojione mozilla, twemoji mozilla,
+    segoe ui symbol, Noto Color Emoji Compat, emoji, sans-serif;
+  --padding: 1.5rem;
 }
 
 img {
@@ -470,4 +491,39 @@ aside li {
 
 .account-logout {
   display: inline-block;
+}
+
+/*
+* --------------------------------------------------
+* components/common/antd
+* --------------------------------------------------
+*/
+.ant-select-selection-placeholder,
+input::placeholder {
+  font-weight: 400;
+}
+
+.ant-form-item-required {
+  flex-direction: row-reverse;
+}
+
+.ant-form-item-required::before {
+  margin-left: 0.25rem;
+}
+
+.ant-form-item-required::after {
+  display: none;
+}
+
+.ant-form-item-explain-error {
+  margin: 0px 16px;
+  font-size: 12px !important;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.ant-input-number-input:focus {
+  box-shadow: none !important;
+  border-color: var(--primary-color) !important;
 }

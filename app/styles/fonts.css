@@ -1,0 +1,23 @@
+/* latin-ext */
+@font-face {
+  font-family: 'Grill Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../../public/fonts/GillSansLightC.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Grill Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(../../public/fonts/GillSansC-Bold.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'TGL';
+  font-style: normal;
+  font-display: swap;
+  src: url(../../public/fonts/TGL12096.01.woff2) format('woff2');
+}
