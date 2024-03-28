@@ -359,227 +359,223 @@ export default function PokemonCard() {
 
 type DesignSettingFormType = PokemonSettings;
 
-// function DesignSetting(props: DesignSettingProps) {
-//   const {values, onChange, onFinishSubmit} = props;
-
-//   const [form] = Form.useForm<DesignSettingFormType>();
-
-//   // Form Values
-//   const validateMessages = {
-//     required: 'Required field',
-//     max: 'Maximum ${max} characters',
-//   };
-
-//   // Watches
-//   const formValues = Form.useWatch([], form);
-//   const {characters} = formValues || {};
-
-//   useDeepCompareEffect(() => {
-//     const {characters, pokemons, style} = values;
-
-//     form.setFieldsValue({
-//       characters,
-//       pokemons,
-//       style,
-//     });
-//   }, [form, values]);
-
-//   useEffect(() => {
-//     onChange && onChange(formValues);
-//   }, [formValues]);
-
-//   return (
-//     <FormWrapper>
-//       <Form<DesignSettingFormType>
-//         name="design"
-//         form={form}
-//         layout="vertical"
-//         initialValues={values}
-//         validateMessages={validateMessages}
-//         onFinish={(values) => {
-//           onFinishSubmit(values);
-//         }}
-//       >
-//         <Form.Item<DesignSettingFormType> label="Style" name="style">
-//           <CustomRadio
-//             items={POKEMON_STYLES.map(({key, label, background}) => ({
-//               key,
-//               label,
-//               image: background,
-//             }))}
-//             value={form.getFieldValue('style')}
-//             onChange={(value) => {
-//               form.setFieldsValue({style: value});
-//             }}
-//           />
-//         </Form.Item>
-
-//         <CustomDivider />
-
-//         <Form.List name="characters">
-//           {(fields, {add}) => {
-//             return (
-//               <div>
-//                 {fields.map((field, index) => {
-//                   const {key, name} = field;
-//                   const prefixLabel = index === 0 ? 'Left' : 'Right';
-//                   const gender = characters?.[index]?.gender;
-
-//                   const characterHairs = CHARACTER_HAIRS.filter(
-//                     (hair) => hair.gender === gender,
-//                   );
-//                   const characterSkins = CHARACTER_SKINS.filter(
-//                     (hair) => hair.gender === gender,
-//                   );
-
-//                   return (
-//                     <React.Fragment key={key}>
-//                       <div className="grid grid-cols-2 gap-x-10 gap-y-6">
-//                         <Form.Item
-//                           name={[name, 'gender']}
-//                           label={`${prefixLabel} Character’s Gender`}
-//                         >
-//                           <CustomRadio
-//                             items={CHARACTER_GENDERS}
-//                             value={gender}
-//                             onChange={(value) => {
-//                               characters[index].gender = value as TGender;
-//                               characters[index].hair =
-//                                 CHARACTER_HAIRS.filter(
-//                                   (hair) => hair.gender === value,
-//                                 )[0]?.key || '';
-//                               characters[index].skin =
-//                                 CHARACTER_SKINS.filter(
-//                                   (skin) => skin.gender === value,
-//                                 )[0]?.key || '';
-//                               form.setFieldsValue({characters});
-//                             }}
-//                           />
-//                         </Form.Item>
-//                         <div>
-//                           <Form.Item
-//                             name={[name, 'name']}
-//                             label={`${prefixLabel} Character’s Name`}
-//                             rules={[
-//                               {required: true},
-//                               {
-//                                 max: 20,
-//                                 message: 'Maximum ${max} characters',
-//                               },
-//                             ]}
-//                           >
-//                             <Input placeholder="Enter Your Name" allowClear />
-//                           </Form.Item>
-//                         </div>
-//                         <Form.Item
-//                           name={[name, 'hair']}
-//                           label={`${prefixLabel} Character’s Hair`}
-//                         >
-//                           <CustomRadio
-//                             items={characterHairs.map(
-//                               ({key, label, image}) => ({
-//                                 key,
-//                                 label,
-//                                 image,
-//                               }),
-//                             )}
-//                             value={characters?.[index]?.hair}
-//                             onChange={(value) => {
-//                               characters[index].hair = value;
-//                               form.setFieldsValue({characters});
-//                             }}
-//                           />
-//                         </Form.Item>
-//                         <Form.Item
-//                           name={[name, 'skin']}
-//                           label={`${prefixLabel} Character’s Skin Color`}
-//                         >
-//                           <CustomRadio
-//                             items={characterSkins.map(
-//                               ({key, label, image}) => ({
-//                                 key,
-//                                 label,
-//                                 image,
-//                               }),
-//                             )}
-//                             value={characters?.[index]?.skin}
-//                             onChange={(value) => {
-//                               characters[index].skin = value;
-//                               form.setFieldsValue({characters});
-//                             }}
-//                           />
-//                         </Form.Item>
-//                       </div>
-
-//                       {index !== fields.length - 1 && <CustomDivider />}
-//                     </React.Fragment>
-//                   );
-//                 })}
-//               </div>
-//             );
-//           }}
-//         </Form.List>
-
-//         <div className="grid grid-cols-2 gap-10">
-//           <Form.List name="pokemons">
-//             {(fields) => {
-//               return fields.map((field, index) => {
-//                 const {key, name} = field;
-//                 const prefixLabel = index === 0 ? 'Left' : 'Right';
-
-//                 return (
-//                   <Form.Item
-//                     key={key}
-//                     name={name}
-//                     rules={[{required: true}]}
-//                     label={`${prefixLabel} Pokemon`}
-//                   >
-//                     <Select
-//                       placeholder="Choose Your Pokemon"
-//                       options={POKEMONS.map(({image, key, label}, index) => ({
-//                         value: key,
-//                         label: (
-//                           <Flex align="center" gap={12}>
-//                             <Image
-//                               height={40}
-//                               width={40}
-//                               src={image || ''}
-//                               className="object-contain object-center"
-//                             />
-//                             <Typography.Text ellipsis={{tooltip: true}}>{`${
-//                               index + 1
-//                             }. ${label}`}</Typography.Text>
-//                           </Flex>
-//                         ),
-//                       }))}
-//                     />
-//                   </Form.Item>
-//                 );
-//               });
-//             }}
-//           </Form.List>
-//         </div>
-
-//         <div className="grid grid-cols-2 gap-10 pt-5">
-//           <Button
-//             type="primary"
-//             block
-//             className="!flex items-center justify-center gap-2"
-//             onClick={() => {
-//               form.submit();
-//             }}
-//           >
-//             Continue
-//             <ArrowRight />
-//           </Button>
-//         </div>
-//       </Form>
-//     </FormWrapper>
-//   );
-// }
-
 function DesignSetting(props: DesignSettingProps) {
-  return <div>ddd</div>;
+  const {values, onChange, onFinishSubmit} = props;
+
+  const [form] = Form.useForm<DesignSettingFormType>();
+
+  // Form Values
+  const validateMessages = {
+    required: 'Required field',
+    max: 'Maximum ${max} characters',
+  };
+
+  // Watches
+  const formValues = Form.useWatch([], form);
+  const {characters} = formValues || {};
+
+  useDeepCompareEffect(() => {
+    const {characters, pokemons, style} = values;
+
+    form.setFieldsValue({
+      characters,
+      pokemons,
+      style,
+    });
+  }, [form, values]);
+
+  useEffect(() => {
+    onChange && onChange(formValues);
+  }, [formValues]);
+
+  return (
+    <FormWrapper>
+      <Form<DesignSettingFormType>
+        name="design"
+        form={form}
+        layout="vertical"
+        initialValues={values}
+        validateMessages={validateMessages}
+        onFinish={(values) => {
+          onFinishSubmit(values);
+        }}
+      >
+        <Form.Item<DesignSettingFormType> label="Style" name="style">
+          <CustomRadio
+            items={POKEMON_STYLES.map(({key, label, background}) => ({
+              key,
+              label,
+              image: background,
+            }))}
+            value={form.getFieldValue('style')}
+            onChange={(value) => {
+              form.setFieldsValue({style: value});
+            }}
+          />
+        </Form.Item>
+
+        <CustomDivider />
+
+        <Form.List name="characters">
+          {(fields, {add}) => {
+            return (
+              <div>
+                {fields.map((field, index) => {
+                  const {key, name} = field;
+                  const prefixLabel = index === 0 ? 'Left' : 'Right';
+                  const gender = characters?.[index]?.gender;
+
+                  const characterHairs = CHARACTER_HAIRS.filter(
+                    (hair) => hair.gender === gender,
+                  );
+                  const characterSkins = CHARACTER_SKINS.filter(
+                    (hair) => hair.gender === gender,
+                  );
+
+                  return (
+                    <React.Fragment key={key}>
+                      <div className="grid grid-cols-2 gap-x-10 gap-y-6">
+                        <Form.Item
+                          name={[name, 'gender']}
+                          label={`${prefixLabel} Character’s Gender`}
+                        >
+                          <CustomRadio
+                            items={CHARACTER_GENDERS}
+                            value={gender}
+                            onChange={(value) => {
+                              characters[index].gender = value as TGender;
+                              characters[index].hair =
+                                CHARACTER_HAIRS.filter(
+                                  (hair) => hair.gender === value,
+                                )[0]?.key || '';
+                              characters[index].skin =
+                                CHARACTER_SKINS.filter(
+                                  (skin) => skin.gender === value,
+                                )[0]?.key || '';
+                              form.setFieldsValue({characters});
+                            }}
+                          />
+                        </Form.Item>
+                        <div>
+                          <Form.Item
+                            name={[name, 'name']}
+                            label={`${prefixLabel} Character’s Name`}
+                            rules={[
+                              {required: true},
+                              {
+                                max: 20,
+                                message: 'Maximum ${max} characters',
+                              },
+                            ]}
+                          >
+                            <Input placeholder="Enter Your Name" allowClear />
+                          </Form.Item>
+                        </div>
+                        <Form.Item
+                          name={[name, 'hair']}
+                          label={`${prefixLabel} Character’s Hair`}
+                        >
+                          <CustomRadio
+                            items={characterHairs.map(
+                              ({key, label, image}) => ({
+                                key,
+                                label,
+                                image,
+                              }),
+                            )}
+                            value={characters?.[index]?.hair}
+                            onChange={(value) => {
+                              characters[index].hair = value;
+                              form.setFieldsValue({characters});
+                            }}
+                          />
+                        </Form.Item>
+                        <Form.Item
+                          name={[name, 'skin']}
+                          label={`${prefixLabel} Character’s Skin Color`}
+                        >
+                          <CustomRadio
+                            items={characterSkins.map(
+                              ({key, label, image}) => ({
+                                key,
+                                label,
+                                image,
+                              }),
+                            )}
+                            value={characters?.[index]?.skin}
+                            onChange={(value) => {
+                              characters[index].skin = value;
+                              form.setFieldsValue({characters});
+                            }}
+                          />
+                        </Form.Item>
+                      </div>
+
+                      {index !== fields.length - 1 && <CustomDivider />}
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+            );
+          }}
+        </Form.List>
+
+        <div className="grid grid-cols-2 gap-10">
+          <Form.List name="pokemons">
+            {(fields) => {
+              return fields.map((field, index) => {
+                const {key, name} = field;
+                const prefixLabel = index === 0 ? 'Left' : 'Right';
+
+                return (
+                  <Form.Item
+                    key={key}
+                    name={name}
+                    rules={[{required: true}]}
+                    label={`${prefixLabel} Pokemon`}
+                  >
+                    <Select
+                      placeholder="Choose Your Pokemon"
+                      options={POKEMONS.map(({image, key, label}, index) => ({
+                        value: key,
+                        label: (
+                          <Flex align="center" gap={12}>
+                            <Image
+                              height={40}
+                              width={40}
+                              src={image || ''}
+                              className="object-contain object-center"
+                            />
+                            <Typography.Text ellipsis={{tooltip: true}}>{`${
+                              index + 1
+                            }. ${label}`}</Typography.Text>
+                          </Flex>
+                        ),
+                      }))}
+                    />
+                  </Form.Item>
+                );
+              });
+            }}
+          </Form.List>
+        </div>
+
+        <div className="grid grid-cols-2 gap-10 pt-5">
+          <Button
+            type="primary"
+            block
+            className="!flex items-center justify-center gap-2"
+            onClick={() => {
+              form.submit();
+            }}
+          >
+            Continue
+            <ArrowRight />
+          </Button>
+        </div>
+      </Form>
+    </FormWrapper>
+  );
 }
 
 function MessageSetting(props: MessageSettingProps) {
