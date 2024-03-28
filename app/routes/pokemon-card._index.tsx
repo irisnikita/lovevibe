@@ -5,8 +5,12 @@ import {isEqual} from 'lodash';
 import React, {memo, useEffect, useMemo, useReducer, useState} from 'react';
 import styled from '@emotion/styled';
 import html2canvas from 'html2canvas';
+import {jsPDF} from 'jspdf';
 
 import {type MetaFunction} from '@shopify/remix-oxygen';
+
+// Images
+import BacksideCard from 'public/images/pokemon/backside-card.png';
 
 // Components
 import {
@@ -68,6 +72,7 @@ type TState = {
   settings: PokemonSettings;
   activeTab: string;
   selectedMockup: number;
+  isLoadingExport: boolean;
 };
 interface DesignSettingProps {
   values: PokemonSettings;
@@ -75,13 +80,43 @@ interface DesignSettingProps {
   onFinishSubmit: (values: Partial<PokemonSettings>) => void;
 }
 
-interface MessageSettingProps extends DesignSettingProps {}
+interface MessageSettingProps extends DesignSettingProps {
+  isLoadingExport?: boolean;
+}
 
 interface CustomRadioProps {
   items: {key: string; label: string; image?: string}[];
   value: string;
   onChange: (value: string) => void;
 }
+
+const INITIAL_STATE: TState = {
+  settings: {
+    style: 'anniversary',
+    characters: [
+      {
+        gender: MALE,
+        hair: CHARACTER_HAIRS.filter(({gender}) => gender == MALE)?.[0].key,
+        name: '',
+        skin: CHARACTER_SKINS.filter(({gender}) => gender == MALE)?.[0].key,
+      },
+      {
+        gender: FEMALE,
+        hair: CHARACTER_HAIRS.filter(({gender}) => gender == FEMALE)?.[0].key,
+        name: '',
+        skin: CHARACTER_SKINS.filter(({gender}) => gender == FEMALE)?.[0].key,
+      },
+    ],
+    pokemons: [POKEMONS[0]?.key, POKEMONS[1]?.key],
+    cardTitle: '',
+    cardYear: '',
+    quote: undefined,
+    quoteTitle: undefined,
+  },
+  activeTab: POKEMON_SETTING_TAB_KEYS.DESIGN,
+  selectedMockup: -1,
+  isLoadingExport: false,
+};
 
 // Components
 const CustomRadio: React.FC<CustomRadioProps> = memo((props) => {
@@ -112,82 +147,95 @@ const CustomRadio: React.FC<CustomRadioProps> = memo((props) => {
 
 export default function PokemonCard() {
   // State
-  const [state, setState] = useState<TState>({
-    settings: {
-      style: 'anniversary',
-      characters: [
-        {
-          gender: MALE,
-          hair: CHARACTER_HAIRS.filter(({gender}) => gender == MALE)?.[0].key,
-          name: '',
-          skin: CHARACTER_SKINS.filter(({gender}) => gender == MALE)?.[0].key,
-        },
-        {
-          gender: FEMALE,
-          hair: CHARACTER_HAIRS.filter(({gender}) => gender == FEMALE)?.[0].key,
-          name: '',
-          skin: CHARACTER_SKINS.filter(({gender}) => gender == FEMALE)?.[0].key,
-        },
-      ],
-      pokemons: [POKEMONS[0]?.key, POKEMONS[1]?.key],
-      cardTitle: '',
-      cardYear: '',
-      quote: undefined,
-      quoteTitle: undefined,
-    },
-    activeTab: POKEMON_SETTING_TAB_KEYS.DESIGN,
-    selectedMockup: -1,
-  });
+  const [state, setState] = useState<TState>(INITIAL_STATE);
   const {style, characters, cardTitle, cardYear, quote, quoteTitle, pokemons} =
     state.settings;
-  const {selectedMockup} = state;
+  const {selectedMockup, isLoadingExport} = state;
   const selectedMockupImage = MOCKUP_IMAGES.find(
     (mockup) => mockup.key === selectedMockup,
   )?.image;
   const styleInfo = POKEMON_STYLES.find((s) => s.key === style);
 
   // Effects
-  useDeepCompareEffect(() => {
-    setTimeout(() => {
-      (async () => {
-        const canvas = await html2canvas(
-          document.querySelector('#pokemon-card') as HTMLElement,
-          {
-            allowTaint: true,
-            useCORS: true,
-            scrollX: 0,
-            scrollY: 0,
-          },
-        );
-        const canvasWrapperEl = document.querySelector(
-          '#preview-card',
-        ) as HTMLElement;
+  // useDeepCompareEffect(() => {
+  //   setTimeout(() => {
+  //     (async () => {
+  //       const canvas = await html2canvas(
+  //         document.querySelector('#pokemon-card') as HTMLElement,
+  //         {
+  //           allowTaint: true,
+  //           useCORS: true,
+  //           scrollX: 0,
+  //           scrollY: 0,
+  //         },
+  //       );
+  //       const canvasWrapperEl = document.querySelector(
+  //         '#preview-card',
+  //       ) as HTMLElement;
 
-        canvasWrapperEl.style.backgroundImage = `url(${canvas.toDataURL()})`;
-      })();
-    }, 500);
-  }, [state.settings]);
+  //       canvasWrapperEl.style.backgroundImage = `url(${canvas.toDataURL()})`;
+  //     })();
+  //   }, 500);
+  // }, [state.settings]);
 
   const handleUpdateSettings = (values: Partial<PokemonSettings>) => {
     setState((prev) => ({
       ...prev,
       settings: {...prev.settings, ...values},
     }));
+
+    setState((prev) => ({...prev, selectedMockup: -1}));
   };
 
   // Handlers
-  const handleExportPokemonCard = () => {
-    html2canvas(document.querySelector('#pokemon-card') as HTMLElement, {
+  const handleExportPokemonCard = async () => {
+    const pokemonCardEl = document.querySelector(
+      '#pokemon-card',
+    ) as HTMLElement;
+
+    setState((prev) => ({...prev, isLoadingExport: true}));
+
+    const canvas = await html2canvas(pokemonCardEl, {
       allowTaint: true,
       useCORS: true,
       scrollX: 0,
       scrollY: 0,
-    }).then((canvas) => {
-      const link = document.createElement('a');
-      link.download = 'pokemon-card.png';
-      link.href = canvas.toDataURL();
-      link.click();
     });
+
+    const pdf = new jsPDF({
+      orientation: 'p',
+      unit: 'px',
+      // format: [canvas.width * 0.25, canvas.height * 0.25],
+      format: [canvas.width * 0.3, canvas.height * 0.3],
+      putOnlyUsedFonts: true,
+    });
+    const imageData = canvas.toDataURL('image/png', 100);
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const imageWidth = canvas.width;
+    const imageHeight = canvas.height;
+    const ratio = pageWidth / imageWidth;
+
+    pdf.addImage(
+      imageData,
+      'PNG',
+      0,
+      0,
+      imageWidth * ratio,
+      imageHeight * ratio,
+    );
+    pdf.addPage();
+    pdf.addImage(
+      BacksideCard,
+      'PNG',
+      0,
+      0,
+      imageWidth * ratio,
+      imageHeight * ratio,
+    );
+
+    pdf.save('pokemon-card.pdf');
+
+    setState((prev) => ({...prev, isLoadingExport: false}));
   };
 
   // Variables
@@ -210,6 +258,7 @@ export default function PokemonCard() {
     [POKEMON_SETTING_TAB_KEYS.MESSAGE]: (
       <MessageSetting
         values={settings}
+        isLoadingExport={isLoadingExport}
         onChange={(values) => handleUpdateSettings(values)}
         onFinishSubmit={(e) => {
           handleExportPokemonCard();
@@ -290,7 +339,10 @@ export default function PokemonCard() {
 
               <div className="quote-wrapper">
                 <div className="quote-title">{quoteTitle}</div>
-                <div className="quote">{quote}</div>
+                <div
+                  className="quote"
+                  dangerouslySetInnerHTML={{__html: `${quote || ''}`}}
+                />
               </div>
             </StyledPokemonCard>
           </div>
@@ -370,23 +422,13 @@ function DesignSetting(props: DesignSettingProps) {
     max: 'Maximum ${max} characters',
   };
 
+  useDeepCompareEffect(() => {
+    form.setFieldsValue(values);
+  }, [values]);
+
   // Watches
   const formValues = Form.useWatch([], form);
   const {characters} = formValues || {};
-
-  useDeepCompareEffect(() => {
-    const {characters, pokemons, style} = values;
-
-    form.setFieldsValue({
-      characters,
-      pokemons,
-      style,
-    });
-  }, [form, values]);
-
-  useDeepCompareEffect(() => {
-    onChange && onChange(formValues);
-  }, [formValues]);
 
   return (
     <FormWrapper>
@@ -394,10 +436,13 @@ function DesignSetting(props: DesignSettingProps) {
         name="design"
         form={form}
         layout="vertical"
-        initialValues={values}
+        initialValues={INITIAL_STATE.settings}
         validateMessages={validateMessages}
         onFinish={(values) => {
           onFinishSubmit(values);
+        }}
+        onValuesChange={(_, values) => {
+          onChange?.(values);
         }}
       >
         <Form.Item<DesignSettingFormType> label="Style" name="style">
@@ -452,6 +497,8 @@ function DesignSetting(props: DesignSettingProps) {
                                 CHARACTER_SKINS.filter(
                                   (skin) => skin.gender === value,
                                 )[0]?.key || '';
+
+                              onChange?.({...formValues, characters});
                               form.setFieldsValue({characters});
                             }}
                           />
@@ -579,7 +626,7 @@ function DesignSetting(props: DesignSettingProps) {
 }
 
 function MessageSetting(props: MessageSettingProps) {
-  const {values, onChange, onFinishSubmit} = props;
+  const {values, isLoadingExport, onChange, onFinishSubmit} = props;
   const {style} = values;
 
   const [form] = Form.useForm<DesignSettingFormType>();
@@ -703,6 +750,7 @@ function MessageSetting(props: MessageSettingProps) {
             onClick={() => {
               form.submit();
             }}
+            loading={isLoadingExport}
           >
             Download Preview Image
             <ArrowRight style={{transform: 'rotate(90deg)'}} />
