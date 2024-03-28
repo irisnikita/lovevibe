@@ -1,9 +1,9 @@
 // Cards
-import AnniversaryCard from 'public/images/pokemon/cards/anniversary-card.png';
-import BirthdayCard from 'public/images/pokemon/cards/birthday-card.png';
-import HolidayCard from 'public/images/pokemon/cards/holiday-card.png';
-import ValentineCard from 'public/images/pokemon/cards/valentine-card.png';
-import WeddingCard from 'public/images/pokemon/cards/wedding-card.png';
+import AnniversaryCard from 'public/images/pokemon/cards/anniversary-card.webp';
+import BirthdayCard from 'public/images/pokemon/cards/birthday-card.webp';
+import HolidayCard from 'public/images/pokemon/cards/holiday-card.webp';
+import ValentineCard from 'public/images/pokemon/cards/valentine-card.webp';
+import WeddingCard from 'public/images/pokemon/cards/wedding-card.webp';
 
 // Backgrounds
 import AnniversaryBackground from 'public/images/pokemon/background-cards/1.png';
