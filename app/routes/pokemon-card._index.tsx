@@ -384,7 +384,7 @@ function DesignSetting(props: DesignSettingProps) {
     });
   }, [form, values]);
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     onChange && onChange(formValues);
   }, [formValues]);
 
