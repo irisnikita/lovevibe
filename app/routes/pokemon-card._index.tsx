@@ -579,7 +579,7 @@ type DesignSettingFormType = PokemonSettings;
 // }
 
 function DesignSetting(props: DesignSettingProps) {
-  return <div>djfoidsjfoids</div>;
+  return <div>ddd</div>;
 }
 
 function MessageSetting(props: MessageSettingProps) {
