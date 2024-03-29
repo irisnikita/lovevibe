@@ -346,17 +346,17 @@ export default function PokemonCard() {
                 const pokemonInfo = POKEMONS.find(({key}) => key === pokemon);
 
                 return (
-                  <Image
+                  <div
                     key={`${pokemon}-${idx}`}
                     className={`pokemon ${position} object-contain object-center`}
                     style={{
                       objectFit: 'contain',
                       objectPosition: 'center',
+                      backgroundImage: `url(${pokemonInfo?.image})`,
                     }}
-                    crop={undefined}
-                    width={70}
-                    height={70}
-                    src={pokemonInfo?.image || ''}
+                    // width={70}
+                    // height={70}
+                    // src={pokemonInfo?.image || ''}
                   />
                 );
               })}
