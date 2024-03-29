@@ -341,7 +341,6 @@ export default function PokemonCard() {
                     key={`${pokemon}-${idx}`}
                     className={`pokemon ${position} object-contain object-center`}
                     width={70}
-                    height={70}
                     src={pokemonInfo?.image || ''}
                   />
                 );
