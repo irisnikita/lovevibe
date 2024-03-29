@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import html2canvas from 'html2canvas';
 import {jsPDF} from 'jspdf';
 import {convert} from 'html-to-text';
-
+import {Layer, Stage, Text} from 'react-konva';
 import {type MetaFunction} from '@shopify/remix-oxygen';
 
 // Images
@@ -34,8 +34,6 @@ import {
   CHARACTER_SKINS,
   POKEMONS,
   MOCKUP_IMAGES,
-  MY_OWN_QUOTE_TITLE,
-  MY_OWN_QUOTE,
 } from '~/constants';
 
 // Styled
@@ -99,6 +97,8 @@ interface CustomRadioProps {
   value: string;
   onChange: (value: string) => void;
 }
+interface PokemonCanvasProps {}
+
 type SettingFormType = PokemonSettings;
 
 const INITIAL_STATE: TState = {
@@ -176,28 +176,6 @@ export default function PokemonCard() {
     (mockup) => mockup.key === selectedMockup,
   )?.image;
   const styleInfo = POKEMON_STYLES.find((s) => s.key === style);
-
-  // Effects
-  // useDeepCompareEffect(() => {
-  //   setTimeout(() => {
-  //     (async () => {
-  //       const canvas = await html2canvas(
-  //         document.querySelector('#pokemon-card') as HTMLElement,
-  //         {
-  //           allowTaint: true,
-  //           useCORS: true,
-  //           scrollX: 0,
-  //           scrollY: 0,
-  //         },
-  //       );
-  //       const canvasWrapperEl = document.querySelector(
-  //         '#preview-card',
-  //       ) as HTMLElement;
-
-  //       canvasWrapperEl.style.backgroundImage = `url(${canvas.toDataURL()})`;
-  //     })();
-  //   }, 500);
-  // }, [state.settings]);
 
   const handleUpdateSettings = (values: Partial<PokemonSettings>) => {
     setState((prev) => ({
@@ -375,6 +353,12 @@ export default function PokemonCard() {
                 />
               </div>
             </StyledPokemonCard>
+
+            {/* <Stage width={420} height={586}>
+              <Layer>
+                <Text text="Try to drag a star" />
+              </Layer>
+            </Stage> */}
           </PokemonCardWrapper>
         ) : (
           <Image
@@ -1065,7 +1049,8 @@ const StyledPokemonCard = styled.div<{$background?: string}>`
     font-weight: 600;
     max-width: 200px;
     overflow: hidden;
-    word-break: keep-all;
+    word-break: keep-all !important;
+    white-space: nowrap !important;
   }
 
   .card-year {
