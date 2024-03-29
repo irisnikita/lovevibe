@@ -340,7 +340,12 @@ export default function PokemonCard() {
                   <Image
                     key={`${pokemon}-${idx}`}
                     className={`pokemon ${position} object-contain object-center`}
+                    style={{
+                      objectFit: 'contain',
+                      objectPosition: 'center',
+                    }}
                     width={70}
+                    height={'auto'}
                     src={pokemonInfo?.image || ''}
                   />
                 );
