@@ -1,8 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
 // Libraries
 import {Flex, Form} from 'antd';
-import {isEqual} from 'lodash';
-import React, {memo, useEffect, useMemo, useReducer, useState} from 'react';
+import React, {memo, useEffect, useMemo, useState} from 'react';
 import styled from '@emotion/styled';
 import html2canvas from 'html2canvas';
 import {jsPDF} from 'jspdf';
@@ -46,6 +45,8 @@ import {Image} from '@shopify/hydrogen';
 
 // Preview
 import PreviewCard from 'public/images/pokemon/preview.png';
+
+// Hooks
 import {useDeepCompareEffect} from '~/hooks';
 
 const {FEMALE, MALE} = CHARACTER_GENDER_KEYS;
@@ -54,7 +55,7 @@ export const meta: MetaFunction = () => {
   return [{title: 'Pokemon Card | LoveVibe'}];
 };
 
-// Types
+/* Types */
 type TGender = 'male' | 'female';
 type TCharacter = {
   gender: TGender;
@@ -81,17 +82,15 @@ type TState = {
 };
 interface DesignSettingProps {
   values: PokemonSettings;
-  onChange?: (values: PokemonSettings) => void;
+  onChange?: (values: Partial<PokemonSettings>) => void;
   onFinishSubmit: (values: Partial<PokemonSettings>) => void;
 }
-
 interface MessageSettingProps extends DesignSettingProps {
   isLoadingExport?: boolean;
   isCustomQuote?: boolean;
   isCustomQuoteTitle?: boolean;
   setPokemonState?: React.Dispatch<React.SetStateAction<TState>>;
 }
-
 interface CustomRadioProps {
   items: {key: string; label: string; image?: string}[];
   style?: React.CSSProperties;
@@ -100,6 +99,7 @@ interface CustomRadioProps {
   value: string;
   onChange: (value: string) => void;
 }
+type SettingFormType = PokemonSettings;
 
 const INITIAL_STATE: TState = {
   settings: {
@@ -131,7 +131,7 @@ const INITIAL_STATE: TState = {
   isCustomQuoteTitle: false,
 };
 
-// Components
+/* Components */
 const CustomRadio: React.FC<CustomRadioProps> = memo((props) => {
   const {items, value, style, itemStyle, showBottomLabel, onChange} = props;
 
@@ -226,7 +226,6 @@ export default function PokemonCard() {
     const pdf = new jsPDF({
       orientation: 'p',
       unit: 'px',
-      // format: [canvas.width * 0.25, canvas.height * 0.25],
       format: [canvas.width * 0.3, canvas.height * 0.3],
       putOnlyUsedFonts: true,
     });
@@ -354,8 +353,9 @@ export default function PokemonCard() {
                       objectFit: 'contain',
                       objectPosition: 'center',
                     }}
+                    crop={undefined}
                     width={70}
-                    height={'auto'}
+                    height={70}
                     src={pokemonInfo?.image || ''}
                   />
                 );
@@ -379,7 +379,6 @@ export default function PokemonCard() {
         ) : (
           <Image
             src={selectedMockupImage || ''}
-            crop={false}
             className="object-contain object-center xl:w-[420px] xl:h-[586px] w-[256px] h-[351px]"
             alt="mockup"
             width={420}
@@ -457,13 +456,10 @@ export default function PokemonCard() {
     </div>
   );
 }
-
-type DesignSettingFormType = PokemonSettings;
-
 function DesignSetting(props: DesignSettingProps) {
   const {values, onChange, onFinishSubmit} = props;
 
-  const [form] = Form.useForm<DesignSettingFormType>();
+  const [form] = Form.useForm<SettingFormType>();
 
   // Form Values
   const validateMessages = {
@@ -481,7 +477,7 @@ function DesignSetting(props: DesignSettingProps) {
 
   return (
     <FormWrapper>
-      <Form<DesignSettingFormType>
+      <Form<SettingFormType>
         name="design"
         form={form}
         layout="vertical"
@@ -494,7 +490,7 @@ function DesignSetting(props: DesignSettingProps) {
           onChange?.(values);
         }}
       >
-        <Form.Item<DesignSettingFormType> label="Style" name="style">
+        <Form.Item<SettingFormType> label="Style" name="style">
           <CustomRadio
             items={POKEMON_STYLES.map(({key, label, background}) => ({
               key,
@@ -508,6 +504,7 @@ function DesignSetting(props: DesignSettingProps) {
             }}
             value={form.getFieldValue('style')}
             onChange={(value) => {
+              onChange?.({quote: undefined, quoteTitle: undefined});
               form.setFieldsValue({style: value});
             }}
           />
@@ -533,7 +530,7 @@ function DesignSetting(props: DesignSettingProps) {
 
                   return (
                     <React.Fragment key={key}>
-                      <div className="grid xl:xl:grid-cols-2 grid-cols-1 grid-cols-1 gap-x-10 gap-y-6">
+                      <div className="grid xl:xl:grid-cols-2 grid-cols-1 gap-x-10 gap-y-6">
                         <Form.Item
                           name={[name, 'gender']}
                           label={`${prefixLabel} Character’s Gender`}
@@ -633,7 +630,6 @@ function DesignSetting(props: DesignSettingProps) {
             {(fields) => {
               return fields.map((field, index) => {
                 const {key, name} = field;
-                console.log('🚀 ~ returnfields.map ~ key, name:', key, name);
                 const prefixLabel = index === 0 ? 'Left' : 'Right';
 
                 return (
@@ -685,7 +681,6 @@ function DesignSetting(props: DesignSettingProps) {
     </FormWrapper>
   );
 }
-
 function MessageSetting(props: MessageSettingProps) {
   const {
     values,
@@ -697,7 +692,7 @@ function MessageSetting(props: MessageSettingProps) {
     onFinishSubmit,
   } = props;
   const {style} = values;
-  const [form] = Form.useForm<DesignSettingFormType>();
+  const [form] = Form.useForm<SettingFormType>();
   const quote = Form.useWatch('quote', form);
   const quoteTitle = Form.useWatch('quoteTitle', form);
 
@@ -728,7 +723,7 @@ function MessageSetting(props: MessageSettingProps) {
 
   return (
     <FormWrapper>
-      <Form<DesignSettingFormType>
+      <Form<SettingFormType>
         name="design"
         form={form}
         layout="vertical"
@@ -742,13 +737,13 @@ function MessageSetting(props: MessageSettingProps) {
         }}
       >
         <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10">
-          <Form.Item<DesignSettingFormType>
+          <Form.Item<SettingFormType>
             name={'cardTitle'}
             label={`Card Title`}
             rules={[
               {required: true},
               {
-                max: 16,
+                max: 17,
                 message: 'Maximum ${max} characters',
               },
             ]}
@@ -762,7 +757,7 @@ function MessageSetting(props: MessageSettingProps) {
               }}
             />
           </Form.Item>
-          <Form.Item<DesignSettingFormType>
+          <Form.Item<SettingFormType>
             name={'cardYear'}
             label={`Year`}
             rules={[{required: true}]}
@@ -779,207 +774,122 @@ function MessageSetting(props: MessageSettingProps) {
 
         <CustomDivider />
         <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10">
-          <div>
-            {isCustomQuoteTitle ? (
-              <Form.Item<DesignSettingFormType>
-                name={'quoteTitle'}
-                label={`Quote Title`}
-                rules={[
-                  {required: true},
+          <Form.Item
+            name={'quoteTitle'}
+            label={`Quote Title`}
+            rules={[
+              {required: true},
+              {
+                max: 20,
+                message: 'Maximum ${max} characters',
+              },
+            ]}
+          >
+            <Flex vertical gap={8}>
+              <Select
+                labelRender={(props) =>
+                  isCustomQuoteTitle ? 'Type my own quote title' : props.value
+                }
+                placeholder="Choose Your Quote Title"
+                value={quoteTitle}
+                options={[
+                  ...quoteTitles.map((title) => ({
+                    value: title,
+                    label: title,
+                  })),
                   {
-                    max: 20,
-                    message: 'Maximum ${max} characters',
+                    value: '',
+                    label: 'Type my own quote title',
                   },
                 ]}
-              >
-                <Flex gap={8} vertical>
-                  <Form.Item noStyle>
-                    <Select
-                      className="mb-2"
-                      labelRender={() => 'Type my own quote title'}
-                      placeholder="Choose Your Quote Title"
-                      options={[
-                        ...quoteTitles.map((title) => ({
-                          value: title,
-                          label: title,
-                        })),
-                        {
-                          value: MY_OWN_QUOTE_TITLE,
-                          label: 'Type my own quote title',
-                        },
-                      ]}
-                      onChange={(value) => {
-                        setPokemonState &&
-                          setPokemonState((prev) => ({
-                            ...prev,
-                            isCustomQuoteTitle: value === MY_OWN_QUOTE_TITLE,
-                          }));
-                        onChange?.({...values, quoteTitle: value});
-                        form.setFieldValue('quoteTitle', value);
-                      }}
-                    />
-                  </Form.Item>
-                  <Input
-                    value={quoteTitle}
-                    placeholder="Enter Your Quote Title"
-                    count={{
-                      show: true,
-                      max: 20,
-                    }}
-                    onChange={(e) => {
-                      onChange?.({...values, quoteTitle: e.target.value});
-                      form.setFieldValue('quoteTitle', e.target.value);
-                      form.validateFields(['quoteTitle']);
-                    }}
-                  />
-                </Flex>
-              </Form.Item>
-            ) : (
-              <Form.Item<DesignSettingFormType>
-                name={'quoteTitle'}
-                label={`Quote Title`}
-                rules={[
-                  {required: true},
-                  {
-                    max: 20,
-                    message: 'Maximum ${max} characters',
-                  },
-                ]}
-              >
-                <Select
-                  placeholder="Choose Your Quote Title"
-                  options={[
-                    ...quoteTitles.map((title) => ({
-                      value: title,
-                      label: title,
-                    })),
-                    {
-                      value: MY_OWN_QUOTE_TITLE,
-                      label: 'Type my own quote title',
-                    },
-                  ]}
-                  onChange={(value) => {
-                    setPokemonState &&
-                      setPokemonState((prev) => ({
-                        ...prev,
-                        isCustomQuoteTitle: value === MY_OWN_QUOTE_TITLE,
-                      }));
+                onChange={(value) => {
+                  setPokemonState?.((prev) => ({
+                    ...prev,
+                    isCustomQuoteTitle: !value,
+                  }));
+                  onChange?.({...values, quoteTitle: value});
+                  form.setFieldValue('quoteTitle', value);
+                }}
+              />
+              {isCustomQuoteTitle && (
+                <Input
+                  placeholder="Enter Your Title"
+                  allowClear
+                  count={{
+                    show: true,
+                    max: 16,
+                  }}
+                  onChange={({target: {value}}) => {
                     onChange?.({...values, quoteTitle: value});
                     form.setFieldValue('quoteTitle', value);
+                    form.validateFields(['quoteTitle']);
                   }}
                 />
-              </Form.Item>
-            )}
-          </div>
-          <div>
-            {isCustomQuote ? (
-              <Form.Item
-                name={'quote'}
-                label={`Quote`}
-                rules={[
-                  {required: true},
+              )}
+            </Flex>
+          </Form.Item>
+
+          <Form.Item
+            name={'quote'}
+            label={`Quote`}
+            rules={[
+              {required: true},
+              {
+                max: 115,
+                message: 'Maximum ${max} characters',
+              },
+            ]}
+          >
+            <Flex gap={8} vertical>
+              <Select
+                labelRender={(props) =>
+                  isCustomQuote ? 'Type my own quote' : props.value
+                }
+                placeholder="Choose Your Quote"
+                value={quote}
+                options={[
+                  ...quoteOptions.map((title) => {
+                    return {
+                      value: title,
+                      label: (
+                        <Typography.Text ellipsis={{tooltip: true}}>
+                          {convert(title)}
+                        </Typography.Text>
+                      ),
+                    };
+                  }),
                   {
-                    max: 115,
-                    message: 'Maximum ${max} characters',
+                    value: '',
+                    label: 'Type my own quote',
                   },
                 ]}
-              >
-                <Flex gap={8} vertical>
-                  <Form.Item noStyle>
-                    <Select
-                      className="mb-2"
-                      labelRender={() => 'Type my own quote'}
-                      placeholder="Choose Your Quote"
-                      value={quote}
-                      options={[
-                        ...quoteOptions.map((title) => {
-                          return {
-                            value: title,
-                            label: (
-                              <Typography.Text ellipsis={{tooltip: true}}>
-                                {convert(title)}
-                              </Typography.Text>
-                            ),
-                          };
-                        }),
-                        {
-                          value: MY_OWN_QUOTE,
-                          label: 'Type my own quote',
-                        },
-                      ]}
-                      onChange={(value) => {
-                        setPokemonState &&
-                          setPokemonState((prev) => ({
-                            ...prev,
-                            isCustomQuote: value === MY_OWN_QUOTE,
-                          }));
-                        onChange?.({...values, quote: value});
-                        form.setFieldValue('quote', value);
-                      }}
-                    />
-                  </Form.Item>
-                  <Input.TextArea
-                    value={quote}
-                    rows={4}
-                    placeholder="Enter Your Quote"
-                    onChange={(e) => {
-                      onChange?.({...values, quote: e.target.value});
-                      form.setFieldValue('quote', e.target.value);
-                      form.validateFields(['quote']);
-                    }}
-                    count={{
-                      show: true,
-                      max: 115,
-                    }}
-                  />
-                </Flex>
-              </Form.Item>
-            ) : (
-              <Form.Item<DesignSettingFormType>
-                name={'quote'}
-                label={`Quote`}
-                rules={[
-                  {required: true},
-                  {
-                    max: 115,
-                    message: 'Maximum ${max} characters',
-                  },
-                ]}
-              >
-                <Select
-                  labelRender={(props) =>
-                    typeof props.label === 'string' ? props.label : props.value
-                  }
-                  placeholder="Choose Your Quote"
+                onChange={(value) => {
+                  setPokemonState?.((prev) => ({
+                    ...prev,
+                    isCustomQuote: value === '',
+                  }));
+                  onChange?.({quote: value});
+                  form.setFieldValue('quote', value);
+                }}
+              />
+              {isCustomQuote && (
+                <Input.TextArea
                   value={quote}
-                  options={[
-                    ...quoteOptions.map((title) => {
-                      return {
-                        value: title,
-                        label: (
-                          <Typography.Text ellipsis={{tooltip: true}}>
-                            {convert(title)}
-                          </Typography.Text>
-                        ),
-                      };
-                    }),
-                    {
-                      value: MY_OWN_QUOTE,
-                      label: 'Type my own quote',
-                    },
-                  ]}
-                  onChange={(value) => {
-                    setPokemonState &&
-                      setPokemonState((prev) => ({
-                        ...prev,
-                        isCustomQuote: value === MY_OWN_QUOTE,
-                      }));
-                    form.setFieldValue('quote', value);
+                  rows={4}
+                  placeholder="Enter Your Quote"
+                  onChange={(e) => {
+                    onChange?.({quote: e.target.value});
+                    form.setFieldValue('quote', e.target.value);
+                    form.validateFields(['quote']);
+                  }}
+                  count={{
+                    show: true,
+                    max: 115,
                   }}
                 />
-              </Form.Item>
-            )}
-          </div>
+              )}
+            </Flex>
+          </Form.Item>
         </div>
 
         <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10 pt-5">
@@ -1001,9 +911,8 @@ function MessageSetting(props: MessageSettingProps) {
   );
 }
 
-// Styled
+/* Styled */
 const CustomDivider = styled(Divider)``;
-
 const StyledPokemonCard = styled.div<{$background?: string}>`
   position: relative;
   flex-shrink: 0;
@@ -1130,6 +1039,7 @@ const StyledPokemonCard = styled.div<{$background?: string}>`
   .pokemon {
     position: absolute;
     width: 70px;
+    height: 70px;
     left: 47px;
     top: 234px;
     background-repeat: no-repeat;
@@ -1194,7 +1104,6 @@ const StyledPokemonCard = styled.div<{$background?: string}>`
     }
   }
 `;
-
 const StyledTabs = styled(Tabs)`
   .ant-tabs-nav {
     margin-bottom: 24px;
@@ -1215,7 +1124,6 @@ const StyledTabs = styled(Tabs)`
     border-radius: 4px;
   }
 `;
-
 const CustomRadioItem = styled.div<{$image?: string}>`
   position: relative;
   display: flex;
@@ -1259,7 +1167,6 @@ const CustomRadioItem = styled.div<{$image?: string}>`
     }
   }
 `;
-
 const SubInputText = styled(Typography.Text)`
   margin: 0px 16px;
   color: var(--neutrals-4-color, #777e90) !important;
@@ -1268,7 +1175,6 @@ const SubInputText = styled(Typography.Text)`
   font-weight: 400;
   line-height: 20px; /* 166.667% */
 `;
-
 const PreviewImage = styled.div`
   width: 78px;
   height: 78px;
@@ -1289,9 +1195,6 @@ const PreviewImage = styled.div`
     height: 40px;
   }
 `;
-
-const PreviewTitle = styled.div``;
-
 const PokemonCardWrapper = styled.div`
   width: 420px;
   height: 586px;
