@@ -379,7 +379,8 @@ export default function PokemonCard() {
         ) : (
           <Image
             src={selectedMockupImage || ''}
-            className="object-cover object-center xl:w-[420px] xl:h-[586px] w-[256px] h-[351px]"
+            crop={false}
+            className="object-contain object-center xl:w-[420px] xl:h-[586px] w-[256px] h-[351px]"
             alt="mockup"
             width={420}
             height={586}
