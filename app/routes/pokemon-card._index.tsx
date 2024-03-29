@@ -366,7 +366,7 @@ export default function PokemonCard() {
             className="object-contain object-center xl:w-[420px] xl:h-[586px] w-[256px] h-[351px]"
             alt="mockup"
             width={420}
-            height={586}
+            // height={586}
           />
         )}
 
