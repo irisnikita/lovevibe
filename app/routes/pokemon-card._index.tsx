@@ -94,6 +94,9 @@ interface MessageSettingProps extends DesignSettingProps {
 
 interface CustomRadioProps {
   items: {key: string; label: string; image?: string}[];
+  style?: React.CSSProperties;
+  itemStyle?: React.CSSProperties;
+  showBottomLabel?: boolean;
   value: string;
   onChange: (value: string) => void;
 }
@@ -130,25 +133,32 @@ const INITIAL_STATE: TState = {
 
 // Components
 const CustomRadio: React.FC<CustomRadioProps> = memo((props) => {
-  const {items, value, onChange} = props;
+  const {items, value, style, itemStyle, showBottomLabel, onChange} = props;
 
   return (
-    <Flex gap={12} align="center">
+    <Flex gap={12} align="center" style={style}>
       {items.map(({key, image, label}) => {
         const isActive = key === value;
 
         return (
-          <CustomRadioItem
-            key={key}
-            $image={image}
-            className={`${isActive ? 'active' : ''}`}
-            onClick={() => onChange(key)}
-          >
-            {image ? '' : label}
-            <div className="icon-check">
-              <RadioCheck />
-            </div>
-          </CustomRadioItem>
+          <Flex vertical align="center" key={key}>
+            <CustomRadioItem
+              style={itemStyle}
+              $image={image}
+              className={`${isActive ? 'active' : ''}`}
+              onClick={() => onChange(key)}
+            >
+              {image ? '' : label}
+              <div className="icon-check">
+                <RadioCheck />
+              </div>
+            </CustomRadioItem>
+            {showBottomLabel && (
+              <Typography.Text className="!text-sm text-center mt-1">
+                {label}
+              </Typography.Text>
+            )}
+          </Flex>
         );
       })}
     </Flex>
@@ -490,6 +500,11 @@ function DesignSetting(props: DesignSettingProps) {
               label,
               image: background,
             }))}
+            showBottomLabel
+            itemStyle={{
+              width: 74,
+              height: 56,
+            }}
             value={form.getFieldValue('style')}
             onChange={(value) => {
               form.setFieldsValue({style: value});
@@ -633,12 +648,11 @@ function DesignSetting(props: DesignSettingProps) {
                         value: key,
                         label: (
                           <Flex align="center" gap={12}>
-                            <Image
-                              height={40}
-                              width={40}
-                              src={image || ''}
-                              className="object-contain object-center"
-                            />
+                            <div
+                              className="w-10 h-10 bg-contain bg-center bg-no-repeat"
+                              style={{backgroundImage: `url(${image})`}}
+                            ></div>
+
                             <Typography.Text ellipsis={{tooltip: true}}>{`${
                               index + 1
                             }. ${label}`}</Typography.Text>
