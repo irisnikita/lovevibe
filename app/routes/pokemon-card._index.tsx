@@ -361,12 +361,9 @@ export default function PokemonCard() {
             </Stage> */}
           </PokemonCardWrapper>
         ) : (
-          <Image
-            src={selectedMockupImage || ''}
-            className="object-contain object-center xl:w-[420px] w-[256px]"
-            alt="mockup"
-            width={420}
-            // height={586}
+          <div
+            style={{backgroundImage: `url(${BacksideCard})`}}
+            className="bg-contain bg-center bg-no-repeat xl:w-[420px] xl:h-[586px] w-[256px] h-[351px]"
           />
         )}
 
