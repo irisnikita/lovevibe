@@ -200,36 +200,23 @@ export default function PokemonCard() {
       scrollX: 0,
       scrollY: 0,
     });
+    const [width, height] = [420, 586];
 
     const pdf = new jsPDF({
       orientation: 'p',
       unit: 'px',
-      format: [canvas.width * 0.3, canvas.height * 0.3],
+      format: [width, height],
       putOnlyUsedFonts: true,
     });
-    const imageData = canvas.toDataURL('image/png', 100);
+    const imageData = canvas.toDataURL('image/png', 1);
     const pageWidth = pdf.internal.pageSize.getWidth();
     const imageWidth = canvas.width;
     const imageHeight = canvas.height;
     const ratio = pageWidth / imageWidth;
 
-    pdf.addImage(
-      imageData,
-      'PNG',
-      0,
-      0,
-      imageWidth * ratio,
-      imageHeight * ratio,
-    );
+    pdf.addImage(imageData, 'PNG', 0, 0, width, height);
     pdf.addPage();
-    pdf.addImage(
-      BacksideCard,
-      'PNG',
-      0,
-      0,
-      imageWidth * ratio,
-      imageHeight * ratio,
-    );
+    pdf.addImage(BacksideCard, 'PNG', 0, 0, width, height);
 
     pdf.save('pokemon-card.pdf');
 
@@ -362,7 +349,7 @@ export default function PokemonCard() {
           </PokemonCardWrapper>
         ) : (
           <div
-            style={{backgroundImage: `url(${BacksideCard})`}}
+            style={{backgroundImage: `url(${selectedMockupImage})`}}
             className="bg-contain bg-center bg-no-repeat xl:w-[420px] xl:h-[586px] w-[256px] h-[351px]"
           />
         )}
