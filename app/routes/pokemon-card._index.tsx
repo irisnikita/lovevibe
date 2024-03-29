@@ -282,10 +282,10 @@ export default function PokemonCard() {
   };
 
   return (
-    <div className="container pt-10 flex gap-[88px] h-[calc(100vh-100px)] xl:overflow-hidden overflow-auto xl:flex-row flex-col">
-      <div className="shrink-0">
+    <div className="container xl:pt-10 mt-4 flex xl:gap-[88px] gap-[10px] h-[calc(100vh-120px)] overflow-hidden xl:flex-row flex-col">
+      <div className="shrink-0 flex xl:flex-col flex-row gap-x-6 xl:relative top-0 sticky">
         {selectedMockup === -1 ? (
-          <div className="w-[420px] h-[586px]">
+          <PokemonCardWrapper>
             <StyledPokemonCard
               id="pokemon-card"
               $background={styleInfo?.backgroundCard}
@@ -365,18 +365,18 @@ export default function PokemonCard() {
                 />
               </div>
             </StyledPokemonCard>
-          </div>
+          </PokemonCardWrapper>
         ) : (
           <Image
             src={selectedMockupImage || ''}
-            className="object-cover object-center"
+            className="object-cover object-center xl:w-[420px] xl:h-[586px] w-[256px] h-[351px]"
             alt="mockup"
             width={420}
             height={586}
           />
         )}
 
-        <Flex align="center " gap={60} className="mt-6">
+        <Flex align="center" gap={60} className="mt-6 xl:!flex !hidden">
           <Typography.Text className="!text-xs !mb-2">
             Preview Image
           </Typography.Text>
@@ -384,15 +384,33 @@ export default function PokemonCard() {
             Mockup Images
           </Typography.Text>
         </Flex>
-        <Flex align="center">
-          <PreviewImage
-            id="preview-card"
-            style={{backgroundImage: `url(${PreviewCard})`}}
-            className={`${selectedMockup === -1 ? 'active' : ''} shrink-0`}
-            onClick={() => setState((prev) => ({...prev, selectedMockup: -1}))}
+        <Flex align="center" className="flex xl:flex-row flex-col xl:mt-0 mt-2">
+          <div className="flex items-center flex-col">
+            <Typography.Text className="!text-xs !mb-2 xl:hidden block">
+              Preview Image
+            </Typography.Text>
+            <PreviewImage
+              id="preview-card"
+              style={{backgroundImage: `url(${PreviewCard})`}}
+              className={`${selectedMockup === -1 ? 'active' : ''} shrink-0`}
+              onClick={() =>
+                setState((prev) => ({...prev, selectedMockup: -1}))
+              }
+            />
+          </div>
+          <Divider
+            type="vertical"
+            className="xl:!h-10 xl:!w-[1px] xl:!my-0 !my-5 !h-[1px] !w-full !mx-[30px]"
           />
-          <Divider type="vertical" className="!h-10 !mx-[30px]" />
-          <Flex align="center" justify="space-between" className="w-full">
+
+          <Typography.Text className="!text-xs !mb-2 xl:hidden block">
+            Mockup Images
+          </Typography.Text>
+          <Flex
+            align="center"
+            justify="space-between"
+            className="w-full flex xl:flex-row flex-col gap-y-4"
+          >
             {MOCKUP_IMAGES.map((mockup) => (
               <PreviewImage
                 key={mockup.key}
@@ -406,9 +424,9 @@ export default function PokemonCard() {
           </Flex>
         </Flex>
       </div>
-      <div className="flex-1 xl:overflow-auto pr-5">
+      <div className="flex-1 overflow-auto pr-5">
         <div className="sticky top-0 bg-white z-10">
-          <Typography.Title className="!text-primary !text-[32px] !font-semibold !mb-10">
+          <Typography.Title className="!text-primary !text-[32px] !font-semibold xl:!mb-10 !mb-4">
             Pokemon Couple Card
           </Typography.Title>
 
@@ -499,7 +517,7 @@ function DesignSetting(props: DesignSettingProps) {
 
                   return (
                     <React.Fragment key={key}>
-                      <div className="grid grid-cols-2 gap-x-10 gap-y-6">
+                      <div className="grid xl:xl:grid-cols-2 grid-cols-1 grid-cols-1 gap-x-10 gap-y-6">
                         <Form.Item
                           name={[name, 'gender']}
                           label={`${prefixLabel} Character’s Gender`}
@@ -594,7 +612,7 @@ function DesignSetting(props: DesignSettingProps) {
           }}
         </Form.List>
 
-        <div className="grid grid-cols-2 gap-10">
+        <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10">
           <Form.List name="pokemons">
             {(fields) => {
               return fields.map((field, index) => {
@@ -635,7 +653,7 @@ function DesignSetting(props: DesignSettingProps) {
           </Form.List>
         </div>
 
-        <div className="grid grid-cols-2 gap-10 pt-5">
+        <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10 pt-5">
           <Button
             type="primary"
             block
@@ -708,7 +726,7 @@ function MessageSetting(props: MessageSettingProps) {
           onChange?.(values);
         }}
       >
-        <div className="grid grid-cols-2 gap-10">
+        <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10">
           <Form.Item<DesignSettingFormType>
             name={'cardTitle'}
             label={`Card Title`}
@@ -745,7 +763,7 @@ function MessageSetting(props: MessageSettingProps) {
         </div>
 
         <CustomDivider />
-        <div className="grid grid-cols-2 gap-10">
+        <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10">
           <div>
             {isCustomQuoteTitle ? (
               <Form.Item<DesignSettingFormType>
@@ -949,7 +967,7 @@ function MessageSetting(props: MessageSettingProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-10 pt-5">
+        <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10 pt-5">
           <Button
             type="primary"
             block
@@ -1250,6 +1268,21 @@ const PreviewImage = styled.div`
   &.active {
     border: 3px solid var(--primary-color, #ef466f);
   }
+
+  @media screen and (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+  }
 `;
 
 const PreviewTitle = styled.div``;
+
+const PokemonCardWrapper = styled.div`
+  width: 420px;
+  height: 586px;
+
+  @media screen and (max-width: 768px) {
+    transform: scale(0.6);
+    margin: -108px -82px;
+  }
+`;
