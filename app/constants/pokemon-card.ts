@@ -108,12 +108,16 @@ export const POKEMON_STYLES = [
       [MALE]: MaleCloth1,
       [FEMALE]: GirlDress1,
     },
-    quoteTitles: ['Happy Anniversary!'],
+    quoteTitles: ['Happy Anniversary!', 'Dear My Lover:', 'Be Mine:'],
     quoteOptions: [
       'Every love story is beautiful, but ours is favorite',
       'Every moment of love is precious, and our story is the most beautiful melody to me',
-      'A lifetime of memories together, a special love that will last forever.',
-      'If I had my life to live over again, I would find you sooner so that I could love longer.',
+      `And I'd choose you; in a hundred lifetimes, in a hundred worlds, in any version of reality, I'd find you and I'd choose you.`,
+      `If I had my life to live over again, I would find you sooner so that I could love longer.`,
+      `
+      The Day I Met You I found my missing piece. <br />
+      I love you forever & always
+      `,
     ],
   },
   {

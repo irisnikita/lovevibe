@@ -753,7 +753,7 @@ function MessageSetting(props: MessageSettingProps) {
               allowClear
               count={{
                 show: true,
-                max: 16,
+                max: 17,
               }}
             />
           </Form.Item>
