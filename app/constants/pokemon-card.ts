@@ -108,7 +108,7 @@ export const POKEMON_STYLES = [
       [MALE]: MaleCloth1,
       [FEMALE]: GirlDress1,
     },
-    quoteTitles: ['Happy Anniversary!', 'Dear My Lover:', 'Be Mine:'],
+    quoteTitles: ['Happy Anniversary!', 'Dear My Lover', 'Be Mine'],
     quoteOptions: [
       'Every love story is beautiful, but ours is favorite',
       'Every moment of love is precious, and our story is the most beautiful melody to me',
@@ -133,12 +133,10 @@ export const POKEMON_STYLES = [
       [MALE]: MaleCloth1,
       [FEMALE]: GirlDress1,
     },
-    quoteTitles: [`Happy Birthday!`, `Birthday Wish:`],
+    quoteTitles: [`Birthday Wish`, `Happy Birthday, dear`, `My Dear`],
     quoteOptions: [
-      `Sometime you forget that you're awesome, so this is your reminder`,
-      `
-      May all your wish come true and enjoy your special day
-      `,
+      `May your day be filled with joy and may the year ahead be an adventure filled with new discoveries and victories`,
+      `Life isn't about what you can hold in your hands. It's about what you hold in your heart.`,
       `
       Life isn't about what you can hold in your hands. It's about what you hold in your heart.
       `,
@@ -159,7 +157,7 @@ export const POKEMON_STYLES = [
       [MALE]: MaleCloth1,
       [FEMALE]: GirlDress1,
     },
-    quoteTitles: [`Merry Christmas to my one and only:`, `Merry Christmas!`],
+    quoteTitles: [`Merry Christmas!`, `Happy Holiday!`, 'My Dear'],
     quoteOptions: [
       `Our love is a treasure. May Christmas sparkle with the magic of our journey.`,
       `
@@ -188,13 +186,14 @@ export const POKEMON_STYLES = [
       [MALE]: MaleCloth1,
       [FEMALE]: GirlDress1,
     },
-    quoteTitles: [`Happy Valentine's Day!`],
+    quoteTitles: [`Dear My Lover`, `My Dear`, `Be Mine`],
     quoteOptions: [
       'Every love story is beautiful, but ours is favorite',
+      `And I'd choose you; in a hundred lifetimes, in a hundred worlds, in any version of reality, I'd find you and I'd choose you.`,
+      `If I had my life to live over again, I would find you sooner so that I could love longer.`,
       `
-        Roses are red, <br />
-        Violets are blue, <br />
-        I love you more than I can say...
+        The Day I Met You I found my missing piece. <br />
+        I love you forever & always 
       `,
       `
         The Day I Met You I found my missing piece. <br />
@@ -216,7 +215,7 @@ export const POKEMON_STYLES = [
       [MALE]: MaleClothe2,
       [FEMALE]: GirlDress2,
     },
-    quoteTitles: [`My Dear:`],
+    quoteTitles: [`Dear My Lover`, `My Dear`, `Be Mine`],
     quoteOptions: [
       `Together, we face life's challenges, evolving our love into something stronger and more joyful each day.`,
       `Love is a timeless treasure to value more each year, a wealth of golden memories`,
