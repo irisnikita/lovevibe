@@ -1097,7 +1097,6 @@ const StyledPokemonCard = styled.div<{$background?: string}>`
   .pokemon {
     position: absolute;
     width: 70px;
-    height: 70px;
     left: 47px;
     top: 234px;
     background-repeat: no-repeat;
