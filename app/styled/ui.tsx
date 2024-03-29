@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 
 export const FormWrapper = styled.div`
-  font-weight: 600;
+  .ant-form-item-label {
+    font-weight: 600;
+  }
 
   form.ant-form {
     max-width: 100%;

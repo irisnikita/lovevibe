@@ -1,4 +1,4 @@
-import {useNonce} from '@shopify/hydrogen';
+import {Image, useNonce} from '@shopify/hydrogen';
 import {
   defer,
   type SerializeFrom,
@@ -25,6 +25,8 @@ import tailwindStyles from './styles/tailwind.css';
 import fonts from './styles/fonts.css';
 import {Layout} from '~/components/lovevibe/Layout';
 import {ConfigProvider} from './components/ConfigProvider';
+import {useEffect, useState} from 'react';
+import LovevibeLogo from 'public/images/logos/lovevibe.png';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -130,6 +132,13 @@ export async function loader({context}: LoaderFunctionArgs) {
 export default function App() {
   const nonce = useNonce();
   const data = useLoaderData<typeof loader>();
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
 
   return (
     <html lang="en">
@@ -141,6 +150,13 @@ export default function App() {
       </head>
       <body>
         <ConfigProvider>
+          <div
+            className={`fixed h-full w-full flex items-center pointer-events-none justify-center z-50 bg-white ${
+              isLoading ? 'opacity-100' : 'opacity-0'
+            } transition-opacity duration-300`}
+          >
+            <Image src={LovevibeLogo} width={70} />
+          </div>
           <Layout {...data}>
             <Outlet />
           </Layout>

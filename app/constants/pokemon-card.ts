@@ -6,20 +6,20 @@ import ValentineCard from 'public/images/pokemon/cards/valentine-card.webp';
 import WeddingCard from 'public/images/pokemon/cards/wedding-card.webp';
 
 // Backgrounds
-import AnniversaryBackground from 'public/images/pokemon/background-cards/1.png';
-import BirthdayBackground from 'public/images/pokemon/background-cards/2.png';
-import HolidayBackground from 'public/images/pokemon/background-cards/3.png';
-import ValentineBackground from 'public/images/pokemon/background-cards/4.png';
-import WeddingBackground from 'public/images/pokemon/background-cards/5.png';
+import AnniversaryBackground from 'public/images/pokemon/background-cards/1.webp';
+import BirthdayBackground from 'public/images/pokemon/background-cards/2.webp';
+import HolidayBackground from 'public/images/pokemon/background-cards/3.webp';
+import ValentineBackground from 'public/images/pokemon/background-cards/4.webp';
+import WeddingBackground from 'public/images/pokemon/background-cards/5.webp';
 
 // Hairs
-import MaleHair1 from 'public/images/pokemon/hairs/male-hair-1.png';
-import MaleHair2 from 'public/images/pokemon/hairs/male-hair-2.png';
-import MaleHair3 from 'public/images/pokemon/hairs/male-hair-3.png';
-import FemaleHair1 from 'public/images/pokemon/hairs/female-hair-1.png';
-import FemaleHair2 from 'public/images/pokemon/hairs/female-hair-2.png';
-import FemaleHair3 from 'public/images/pokemon/hairs/female-hair-3.png';
-import FemaleHair4 from 'public/images/pokemon/hairs/female-hair-4.png';
+import MaleHair1 from 'public/images/pokemon/hairs/male-hair-1.webp';
+import MaleHair2 from 'public/images/pokemon/hairs/male-hair-2.webp';
+import MaleHair3 from 'public/images/pokemon/hairs/male-hair-3.webp';
+import FemaleHair1 from 'public/images/pokemon/hairs/female-hair-1.webp';
+import FemaleHair2 from 'public/images/pokemon/hairs/female-hair-2.webp';
+import FemaleHair3 from 'public/images/pokemon/hairs/female-hair-3.webp';
+import FemaleHair4 from 'public/images/pokemon/hairs/female-hair-4.webp';
 
 // Skins
 import MaleSkin1 from 'public/images/pokemon/skins/male-1.png';
@@ -60,6 +60,9 @@ import MaleClothe2 from 'public/images/pokemon/clothes/man-cloth-2.png';
 import Mockup1 from 'public/images/pokemon/mockup/mk1.jpg';
 import Mockup2 from 'public/images/pokemon/mockup/mk2.jpg';
 import Mockup3 from 'public/images/pokemon/mockup/mk3.jpg';
+
+export const MY_OWN_QUOTE_TITLE = 'My own quote title';
+export const MY_OWN_QUOTE = 'Type my own quote';
 
 export const POKEMON_SETTING_TAB_KEYS = {
   DESIGN: 'design',
@@ -126,7 +129,7 @@ export const POKEMON_STYLES = [
       [MALE]: MaleCloth1,
       [FEMALE]: GirlDress1,
     },
-    quoteTitles: [`Happy Birthday, dear!`, `Birthday Wish:`],
+    quoteTitles: [`Happy Birthday!`, `Birthday Wish:`],
     quoteOptions: [
       `Sometime you forget that you're awesome, so this is your reminder`,
       `
