@@ -567,12 +567,7 @@ export default function PokemonCardPage() {
       <div className="pokemon-wrapper container xl:pt-10 mt-4 flex xl:gap-[88px] gap-[10px] h-[calc(100vh-120px)] xl:flex-row flex-col">
         <div className="shrink-0 flex xl:flex-col xl:relative xl:justify-normal justify-between flex-row gap-x-6 top-0 sticky">
           {selectedMockup === -1 ? (
-            <StyledPokemonCard
-              className="animate__animated animate__flipInY"
-              style={{animationDelay: '1.7s'}}
-              ref={canvasRef}
-              values={settings}
-            />
+            <StyledPokemonCard ref={canvasRef} values={settings} />
           ) : (
             <div
               style={{backgroundImage: `url(${selectedMockupImage})`}}
