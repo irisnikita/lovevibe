@@ -30,6 +30,7 @@ export const THEME: TTheme = {
     colorPrimary: '#ef466f',
     colorLink: '#ef466f',
     colorLinkHover: '#ef466f',
+    colorText: '#141416',
     fontFamily: `Urbanist, sans-serif`,
     fontSize: 16,
     fontSizexl: 16,
@@ -78,6 +79,9 @@ THEME.components = {
     borderRadius: 8,
     fontWeight: 700,
     controlHeight: 48,
+  },
+  Modal: {
+    colorIcon: '#141416',
   },
 };
 

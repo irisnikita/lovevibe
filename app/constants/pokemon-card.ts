@@ -195,10 +195,6 @@ export const POKEMON_STYLES = [
         The Day I Met You I found my missing piece. <br />
         I love you forever & always 
       `,
-      `
-        The Day I Met You I found my missing piece. <br />
-        I love you forever & always 
-      `,
       `You're The Only One I Want To Annoy For The Rest Of My Life`,
     ],
   },
