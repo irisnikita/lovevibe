@@ -19,7 +19,7 @@ import {
   type ShouldRevalidateFunction,
 } from '@remix-run/react';
 import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
-import favicon from '../public/favicon.svg';
+import favicon from '../public/images/logos/lovevibe-fav-icon_430x.avif';
 import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import tailwindStyles from './styles/tailwind.css';
@@ -84,7 +84,7 @@ export function links() {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    {rel: 'icon', type: 'image/png', href: LovevibeLogo},
+    {rel: 'icon', type: 'image/avif', href: favicon},
   ];
 }
 

@@ -505,12 +505,12 @@ export default function PokemonCardPage() {
   };
 
   // Handlers
-  const handleExportPokemonCard = () => {
+  const handleExportPokemonCard = async () => {
     if (canvasRef && canvasRef.current) {
       setState((prev) => ({...prev, isLoadingExport: true}));
 
       const stage = canvasRef.current;
-      const dataURL = stage.toDataURL();
+      const dataURL = await stage.toDataURL();
       const [width, height] = [420, 586];
 
       const pdf = new jsPDF({
