@@ -146,7 +146,6 @@ const INITIAL_STATE: TState = {
   isCustomQuoteTitle: false,
   showModal: false,
 };
-
 const POKEMON_DIMENSION = {
   width: 744,
   height: 1039,
@@ -564,8 +563,8 @@ export default function PokemonCardPage() {
 
   return (
     <>
-      <div className="pokemon-wrapper container xl:pt-10 mt-4 flex xl:gap-[88px] gap-[10px] h-[calc(100vh-120px)] xl:flex-row flex-col">
-        <div className="shrink-0 flex xl:flex-col xl:relative xl:justify-normal justify-between flex-row gap-x-6 top-0 sticky">
+      <div className="pokemon-wrapper container md:pt-10 mt-4 flex md:gap-[88px] md:h-auto gap-[10px] md:flex-row flex-col overflow-hidden h-[85vh]">
+        <div className="shrink-0 flex md:flex-col md:relative md:justify-normal justify-between flex-row gap-x-6 sticky top-0 bg-white z-20 py-2.5">
           {selectedMockup === -1 ? (
             <StyledPokemonCard ref={canvasRef} values={settings} />
           ) : (
@@ -575,7 +574,7 @@ export default function PokemonCardPage() {
             />
           )}
 
-          <Flex align="center" gap={60} className="mt-6 xl:!flex !hidden">
+          <Flex align="center" gap={60} className="mt-6 md:!flex !hidden">
             <Typography.Text className="!text-xs !mb-2">
               Preview Image
             </Typography.Text>
@@ -585,10 +584,10 @@ export default function PokemonCardPage() {
           </Flex>
           <Flex
             align="center"
-            className="flex xl:flex-row flex-col xl:mt-0 mt-2"
+            className="flex md:flex-row flex-col md:mt-0 mt-2"
           >
             <div className="flex items-center flex-col">
-              <Typography.Text className="!text-xs !mb-2 xl:hidden block">
+              <Typography.Text className="!text-xs !mb-2 md:hidden block">
                 Preview Image
               </Typography.Text>
               <PreviewImage
@@ -608,16 +607,15 @@ export default function PokemonCardPage() {
             </div>
             <Divider
               type="vertical"
-              className="xl:!h-10 xl:!w-[1px] xl:!my-0 !my-5 !h-[1px] !w-full !mx-[30px] bg-neutrals-6"
+              className="md:!h-10 md:!w-[1px] md:!my-0 !my-5 !h-[1px] !w-full !mx-[30px] bg-neutrals-6"
             />
-
-            <Typography.Text className="!text-xs !mb-2 xl:hidden block">
+            <Typography.Text className="!text-xs !mb-2 md:hidden block">
               Mockup Images
             </Typography.Text>
             <Flex
               align="center"
               justify="space-between"
-              className="w-full flex xl:flex-row flex-col gap-y-4"
+              className="w-full flex md:flex-row flex-col gap-y-4"
             >
               {MOCKUP_IMAGES.map((mockup) => (
                 <PreviewImage
@@ -632,9 +630,9 @@ export default function PokemonCardPage() {
             </Flex>
           </Flex>
         </div>
-        <div className="flex-1 overflow-auto pr-5">
+        <div className="flex-1 xl:h-[80vh] md:h-[70vh] overflow-auto pr-5">
           <div className="sticky -top-[1px] bg-white z-10">
-            <Typography.Title className="!text-primary !text-[32px] !font-semibold xl:!mb-10 !mb-4">
+            <Typography.Title className="!text-primary !text-[32px] !font-semibold md:!mb-10 !mb-4">
               Pokemon Couple Card
             </Typography.Title>
 
@@ -655,7 +653,7 @@ export default function PokemonCardPage() {
       <Modal
         destroyOnClose
         centered
-        className="xl:!w-[518px] !w-[80vw]"
+        className="md:!w-[518px] !w-[80vw]"
         open={showModal}
         onCancel={() => setState((prev) => ({...prev, showModal: false}))}
         onOk={() => setState((prev) => ({...prev, showModal: false}))}
@@ -665,14 +663,14 @@ export default function PokemonCardPage() {
           // wrapper: 'bg-slate-500',
         }}
       >
-        <Typography.Text className="xl:!text-[32px] !text-[24px] font-semibold">
+        <Typography.Text className="md:!text-[32px] !text-[24px] font-semibold">
           Review Your Image
         </Typography.Text>
         <StyledPokemonCard values={settings} />
         <Button
           block
           type="primary"
-          className="!flex items-center justify-center gap-2 x:!max-w-[420px] !max-w-[243px] mb-3"
+          className="!flex items-center justify-center gap-2 md:!max-w-[420px] !max-w-[243px] mb-3"
           loading={isLoadingExport}
           onClick={() => handleExportPokemonCard()}
         >
@@ -757,7 +755,7 @@ function DesignSetting(props: DesignSettingProps) {
 
                   return (
                     <React.Fragment key={key}>
-                      <div className="grid xl:xl:grid-cols-2 grid-cols-1 gap-x-10 gap-y-6">
+                      <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10 gap-y-6">
                         <Form.Item
                           name={[name, 'gender']}
                           label={`${prefixLabel} Character’s Gender`}
@@ -1228,7 +1226,7 @@ const PreviewImage = styled.div`
     border: none;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1280px) {
     width: 40px;
     height: 40px;
 
@@ -1367,9 +1365,8 @@ const PokemonCardWrapper = styled.div<{width?: number; height?: number}>`
     }
   }
 `;
-
 const StyledPokemonCard = styled(PokemonCard)`
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 1280px) {
     width: 240px;
     height: 335px;
 

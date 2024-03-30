@@ -35,6 +35,37 @@ img {
 
 /*
 * --------------------------------------------------
+* scrollbar
+* --------------------------------------------------
+*/
+/*----------  Scroll bar  ----------*/
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f2f2f2;
+  border-radius: 8px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 8px;
+}
+
+.scrollbar--gutter-stable {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  margin-right: -20px;
+  padding-right: -8px;
+}
+
+/*
+* --------------------------------------------------
 * components/Aside
 * --------------------------------------------------
 */
