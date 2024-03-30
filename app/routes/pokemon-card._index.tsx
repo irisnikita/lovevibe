@@ -703,7 +703,7 @@ function DesignSetting(props: DesignSettingProps) {
   const {characters} = formValues || {};
 
   return (
-    <FormWrapper>
+    <FormWrapper className="animate__animated animate__fadeIn">
       <Form<SettingFormType>
         name="design"
         form={form}
@@ -949,7 +949,7 @@ function MessageSetting(props: MessageSettingProps) {
   }, [form, values]);
 
   return (
-    <FormWrapper>
+    <FormWrapper className='animate__animated animate__fadeIn"'>
       <Form<SettingFormType>
         name="design"
         form={form}
