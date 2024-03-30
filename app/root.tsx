@@ -151,7 +151,7 @@ export default function App() {
       if (loadingRef) {
         loadingRef.current?.classList.add('animate__fadeOut');
       }
-    }, 1500);
+    }, 1000);
   }, []);
 
   return (

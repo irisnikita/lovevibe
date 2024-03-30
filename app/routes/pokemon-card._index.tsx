@@ -949,7 +949,7 @@ function MessageSetting(props: MessageSettingProps) {
   }, [form, values]);
 
   return (
-    <FormWrapper className='animate__animated animate__fadeIn"'>
+    <FormWrapper className="animate__animated animate__fadeIn">
       <Form<SettingFormType>
         name="design"
         form={form}
