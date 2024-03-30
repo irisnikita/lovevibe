@@ -1,0 +1,116 @@
+.pokemon-wrapper {
+  .canvas-pokemon-card {
+  }
+}
+
+.pokemon__character {
+  position: absolute;
+  height: 124px;
+  width: 73px;
+  top: 161px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: all 200ms;
+
+  &.left {
+    left: 130px;
+  }
+
+  &.right {
+    left: 220px;
+
+    .hat {
+      transform: translate(-50%) scaleX(-1);
+    }
+
+    &.holiday {
+      .hat {
+        left: 48px;
+      }
+    }
+
+    &.wedding {
+      &.female {
+        .cloth {
+          transform: scaleX(-1);
+          left: 13px;
+        }
+      }
+    }
+  }
+
+  &.male {
+    .hair {
+      left: -5px;
+    }
+
+    &.wedding {
+      .cloth {
+        width: 66px;
+        top: 66px;
+      }
+    }
+  }
+
+  &.female {
+    top: 155px;
+
+    .hair {
+      top: 4px;
+    }
+
+    .cloth {
+      top: 69px;
+    }
+
+    &.wedding {
+      top: 160px;
+
+      .cloth {
+        width: 66px;
+        top: 71px;
+        left: 27px;
+      }
+    }
+  }
+
+  /* Style */
+  &.holiday {
+    .hat {
+      top: -18px;
+      left: 25px;
+      width: 50px;
+    }
+  }
+
+  .hair {
+    position: absolute;
+    transform: scale(1.1);
+    left: 0;
+    top: 0;
+    width: 81px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .hat {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    height: auto;
+    object-fit: contain;
+    transform: translate(-50%);
+    z-index: 20;
+  }
+
+  .cloth {
+    position: absolute;
+    top: 65px;
+    left: 50%;
+    width: 54px;
+    height: auto;
+    object-fit: contain;
+    transform: translate(-50%);
+  }
+}

@@ -34,16 +34,16 @@ import Pokemon3 from 'public/images/pokemon/pokemons/pokemon-3.png';
 import Pokemon4 from 'public/images/pokemon/pokemons/pokemon-4.png';
 import Pokemon5 from 'public/images/pokemon/pokemons/pokemon-5.png';
 import Pokemon6 from 'public/images/pokemon/pokemons/pokemon-6.png';
-import Pokemon7 from 'public/images/pokemon/pokemons/pokemon-7.png';
-import Pokemon8 from 'public/images/pokemon/pokemons/pokemon-8.png';
-import Pokemon9 from 'public/images/pokemon/pokemons/pokemon-9.png';
-import Pokemon10 from 'public/images/pokemon/pokemons/pokemon-10.png';
-import Pokemon11 from 'public/images/pokemon/pokemons/pokemon-11.png';
-import Pokemon12 from 'public/images/pokemon/pokemons/pokemon-12.png';
-import Pokemon13 from 'public/images/pokemon/pokemons/pokemon-13.png';
-import Pokemon14 from 'public/images/pokemon/pokemons/pokemon-14.png';
-import Pokemon15 from 'public/images/pokemon/pokemons/pokemon-15.png';
-import Pokemon16 from 'public/images/pokemon/pokemons/pokemon-16.png';
+import Pokemon7 from 'public/images/pokemon/pokemons/pokemon-7.webp';
+import Pokemon8 from 'public/images/pokemon/pokemons/pokemon-8.webp';
+import Pokemon9 from 'public/images/pokemon/pokemons/pokemon-9.webp';
+import Pokemon10 from 'public/images/pokemon/pokemons/pokemon-10.webp';
+import Pokemon11 from 'public/images/pokemon/pokemons/pokemon-11.webp';
+import Pokemon12 from 'public/images/pokemon/pokemons/pokemon-12.webp';
+import Pokemon13 from 'public/images/pokemon/pokemons/pokemon-13.webp';
+import Pokemon14 from 'public/images/pokemon/pokemons/pokemon-14.webp';
+import Pokemon15 from 'public/images/pokemon/pokemons/pokemon-15.webp';
+import Pokemon16 from 'public/images/pokemon/pokemons/pokemon-16.webp';
 
 // Hats
 import Hat1 from 'public/images/pokemon/hats/hat-1.png';

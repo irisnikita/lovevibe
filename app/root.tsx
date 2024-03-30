@@ -22,6 +22,7 @@ import favicon from '../public/favicon.svg';
 import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import tailwindStyles from './styles/tailwind.css';
+import pokemonCardStyles from './styles/pokemon-card.css';
 import fonts from './styles/fonts.css';
 import {Layout} from '~/components/lovevibe/Layout';
 import {ConfigProvider} from './components/ConfigProvider';
@@ -54,6 +55,7 @@ export function links() {
     {rel: 'stylesheet', href: resetStyles},
     {rel: 'stylesheet', href: appStyles},
     {rel: 'stylesheet', href: tailwindStyles},
+    {rel: 'stylesheet', href: pokemonCardStyles},
     {rel: 'stylesheet', href: fonts},
     {
       rel: 'preconnect',

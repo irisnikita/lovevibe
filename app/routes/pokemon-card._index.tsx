@@ -1,12 +1,19 @@
 /* eslint-disable no-template-curly-in-string */
 // Libraries
 import {Flex, Form} from 'antd';
-import React, {memo, useEffect, useMemo, useState} from 'react';
+import React, {
+  LegacyRef,
+  memo,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import styled from '@emotion/styled';
 import html2canvas from 'html2canvas';
 import {jsPDF} from 'jspdf';
 import {convert} from 'html-to-text';
-import {Layer, Stage, Text} from 'react-konva';
+import {Layer, Stage, Text, Image as KonvaImage, Group} from 'react-konva';
 import {type MetaFunction} from '@shopify/remix-oxygen';
 
 // Images
@@ -34,18 +41,21 @@ import {
   CHARACTER_SKINS,
   POKEMONS,
   MOCKUP_IMAGES,
+  POKEMON_STYLE_KEYS,
 } from '~/constants';
 
 // Styled
 import {FormWrapper} from '~/styled';
 import {ArrowRight, RadioCheck} from '~/icons';
-import {Image} from '@shopify/hydrogen';
+import {Image as HydrogenImage} from '@shopify/hydrogen';
 
 // Preview
 import PreviewCard from 'public/images/pokemon/preview.png';
 
 // Hooks
 import {useDeepCompareEffect} from '~/hooks';
+import useImage from 'use-image';
+import {getImageRatio} from '~/utils';
 
 const {FEMALE, MALE} = CHARACTER_GENDER_KEYS;
 
@@ -177,6 +187,19 @@ export default function PokemonCard() {
   )?.image;
   const styleInfo = POKEMON_STYLES.find((s) => s.key === style);
 
+  // Refs
+  const canvasRef = useRef<any>(null);
+  console.log('🚀 ~ PokemonCard ~ canvasRef:', canvasRef);
+
+  // Konva
+  const [backgroundImage] = useImage(styleInfo?.backgroundCard || '');
+
+  if (backgroundImage) {
+    backgroundImage.crossOrigin = 'anonymous';
+    backgroundImage.width = 744;
+    backgroundImage.width = 1039;
+  }
+
   const handleUpdateSettings = (values: Partial<PokemonSettings>) => {
     setState((prev) => ({
       ...prev,
@@ -223,6 +246,27 @@ export default function PokemonCard() {
     setState((prev) => ({...prev, isLoadingExport: false}));
   };
 
+  const handleExportPokemonCardV2 = () => {
+    if (canvasRef && canvasRef.current) {
+      const stage = canvasRef.current;
+      const dataURL = stage.toDataURL();
+      const [width, height] = [420, 586];
+
+      const pdf = new jsPDF({
+        orientation: 'p',
+        unit: 'px',
+        format: [width, height],
+        putOnlyUsedFonts: true,
+      });
+
+      pdf.addImage(dataURL, 'PNG', 0, 0, width, height);
+      pdf.addPage();
+      pdf.addImage(BacksideCard, 'PNG', 0, 0, width, height);
+
+      pdf.save('pokemon-card.pdf');
+    }
+  };
+
   // Variables
   const {settings} = state;
   const renderSettings = {
@@ -250,102 +294,285 @@ export default function PokemonCard() {
         onChange={(values) => handleUpdateSettings(values)}
         onFinishSubmit={(e) => {
           handleExportPokemonCard();
+
+          handleExportPokemonCardV2();
         }}
       />
     ),
   };
 
   return (
-    <div className="container xl:pt-10 mt-4 flex xl:gap-[88px] gap-[10px] h-[calc(100vh-120px)] overflow-hidden xl:flex-row flex-col">
+    <div className="pokemon-wrapper container xl:pt-10 mt-4 flex xl:gap-[88px] gap-[10px] h-[calc(100vh-120px)] xl:flex-row flex-col">
       <div className="shrink-0 flex xl:flex-col flex-row gap-x-6 xl:relative top-0 sticky">
         {selectedMockup === -1 ? (
           <PokemonCardWrapper>
-            <StyledPokemonCard
-              id="pokemon-card"
-              $background={styleInfo?.backgroundCard}
+            <Stage
+              className="canvas-pokemon-card"
+              width={744}
+              height={1039}
+              ref={(ref) => {
+                canvasRef.current = ref;
+              }}
             >
-              {characters.map(({gender, name, hair, skin}, idx) => {
-                const position = idx === 0 ? 'left' : 'right';
-                const skinInfo = CHARACTER_SKINS.find(({key}) => key === skin);
-                const hairInfo = CHARACTER_HAIRS.find(({key}) => key === hair);
-                const hatImage = styleInfo?.hats[gender] || '';
-                const clothImage = styleInfo?.clothes[gender] || '';
-
-                return (
-                  <div
-                    key={idx}
-                    className={`character ${position} ${gender} ${style}`}
-                    style={{backgroundImage: `url(${skinInfo?.image})`}}
-                  >
-                    <Image
-                      className="hair"
-                      src={hairInfo?.image || ''}
-                      alt={hairInfo?.label}
-                    />
-
-                    {!!hatImage && (
-                      <Image
-                        className="hat"
-                        src={hatImage || ''}
-                        width={34}
-                        alt={'Hat'}
-                      />
-                    )}
-
-                    <Image
-                      className="cloth"
-                      src={clothImage || ''}
-                      width={34}
-                      alt={'Cloth'}
-                    />
-                  </div>
-                );
-              })}
-
-              {pokemons.map((pokemon, idx) => {
-                if (!pokemon) {
-                  return null;
-                }
-
-                const position = idx === 0 ? 'left' : 'right';
-                const pokemonInfo = POKEMONS.find(({key}) => key === pokemon);
-
-                return (
-                  <div
-                    key={`${pokemon}-${idx}`}
-                    className={`pokemon ${position} object-contain object-center`}
-                    style={{
-                      objectFit: 'contain',
-                      objectPosition: 'center',
-                      backgroundImage: `url(${pokemonInfo?.image})`,
-                    }}
-                    // width={70}
-                    // height={70}
-                    // src={pokemonInfo?.image || ''}
-                  />
-                );
-              })}
-
-              <div className="card-title">{cardTitle}</div>
-              <div className="card-year">{`${cardYear} HP`}</div>
-              <div className="character-names">
-                {characters.map(({name}) => name).join(' and ')}
-              </div>
-
-              <div className="quote-wrapper">
-                <div className="quote-title">{quoteTitle}</div>
-                <div
-                  className="quote"
-                  dangerouslySetInnerHTML={{__html: `${quote || ''}`}}
-                />
-              </div>
-            </StyledPokemonCard>
-
-            {/* <Stage width={420} height={586}>
               <Layer>
-                <Text text="Try to drag a star" />
+                {/* <Image width={420} height={586} src={PreviewCard} /> */}
+                <KonvaImage image={backgroundImage} width={744} height={1039} />
+                {characters.map((character, idx) => {
+                  const {gender, hair, name, skin} = character;
+                  const position = idx === 0 ? 'left' : 'right';
+                  const skinInfo = CHARACTER_SKINS.find(
+                    ({key}) => key === skin,
+                  );
+                  const hairInfo = CHARACTER_HAIRS.find(
+                    ({key}) => key === hair,
+                  );
+                  const hatImage = styleInfo?.hats[gender] || '';
+                  const clothImage = styleInfo?.clothes[gender] || '';
+                  const skinData: any = {
+                    image: '',
+                    x: 234,
+                    y: 295,
+                  };
+                  const hairData: any = {
+                    image: '',
+                    width: 144,
+                    height: 83,
+                    x: 220,
+                    y: 277,
+                  };
+                  const hatData: any = {
+                    image: '',
+                    width: 56,
+                    height: 69,
+                    x: 262,
+                    y: 233,
+                  };
+                  const clothData: any = {
+                    image: '',
+                    width: 94,
+                    height: 94,
+                    x: 252,
+                    y: 399,
+                  };
+
+                  switch (style) {
+                    case POKEMON_STYLE_KEYS.HOLIDAY: {
+                      hatData.y = 240;
+                      hatData.width = 93;
+                      hatData.height = 65;
+                      break;
+                    }
+
+                    default:
+                      break;
+                  }
+
+                  switch (idx) {
+                    case 0: {
+                      if (gender === FEMALE) {
+                        hairData.x = 226;
+                        clothData.x = 259;
+                      } else {
+                        //
+                      }
+
+                      if (style === POKEMON_STYLE_KEYS.HOLIDAY) {
+                        hatData.x = 230;
+                      }
+
+                      break;
+                    }
+
+                    case 1:
+                    default: {
+                      skinData.x = 390;
+                      hatData.x = 482;
+                      if (gender === FEMALE) {
+                        hairData.x = 383;
+                        clothData.x = 415;
+                      } else if (gender === MALE) {
+                        clothData.x = 408;
+                        hairData.x = 376;
+                      }
+
+                      if (style === POKEMON_STYLE_KEYS.HOLIDAY) {
+                        hatData.x = 520;
+                      }
+                      break;
+                    }
+                  }
+
+                  switch (gender) {
+                    case MALE: {
+                      if (style === POKEMON_STYLE_KEYS.WEDDING) {
+                        clothData.width = 122;
+                        clothData.height = 94;
+
+                        if (idx === 0) {
+                          clothData.x = 237;
+                        } else {
+                          clothData.x = 394;
+                        }
+                      }
+
+                      break;
+                    }
+
+                    case FEMALE:
+                    default: {
+                      hairData.height = 147.3;
+                      hairData.y = 282;
+                      hatData.y = 240;
+                      clothData.y = 408;
+                      clothData.width = 80;
+                      clothData.height = 82;
+
+                      if (style === POKEMON_STYLE_KEYS.WEDDING) {
+                        clothData.width = 140;
+                        clothData.height = 90;
+
+                        if (idx === 0) {
+                          clothData.x = 208;
+                        } else {
+                          clothData.x = 365;
+                        }
+                      }
+
+                      if (style === POKEMON_STYLE_KEYS.HOLIDAY) {
+                        hatData.y = 250;
+                      }
+                      break;
+                    }
+                  }
+
+                  if (typeof window !== 'undefined') {
+                    skinData.image = new Image();
+                    skinData.image.src = skinInfo?.image || '';
+                    skinData.image.crossOrigin = 'anonymous';
+
+                    hairData.image = new Image();
+                    hairData.image.src = hairInfo?.image || '';
+                    hairData.image.crossOrigin = 'anonymous';
+
+                    hatData.image = new Image();
+                    hatData.image.src = hatImage || '';
+                    hatData.image.crossOrigin = 'anonymous';
+
+                    clothData.image = new Image();
+                    clothData.image.src = clothImage || '';
+                    clothData.image.crossOrigin = 'anonymous';
+                  }
+
+                  return (
+                    <React.Fragment key={idx}>
+                      <KonvaImage
+                        image={skinData.image}
+                        y={skinData.y}
+                        x={skinData.x}
+                        width={130}
+                        height={198}
+                      />
+                      <KonvaImage
+                        image={hairData.image}
+                        y={hairData.y}
+                        x={hairData.x}
+                        width={hairData.width}
+                        height={hairData.height}
+                      />
+                      <KonvaImage
+                        image={hatData.image}
+                        y={hatData.y}
+                        x={hatData.x}
+                        width={hatData.width}
+                        height={hatData.height}
+                        scale={{x: idx === 1 ? -1 : 1, y: 1}}
+                      />
+                      <KonvaImage
+                        image={clothData.image}
+                        y={clothData.y}
+                        x={clothData.x}
+                        width={clothData.width}
+                        height={clothData.height}
+                      />
+                    </React.Fragment>
+                  );
+                })}
+                {pokemons.map((pokemon, idx) => {
+                  const pokemonInfo = POKEMONS.find(({key}) => key === pokemon);
+
+                  const positions = {
+                    y: 415,
+                    x: idx === 0 ? 205 : 540,
+                  };
+                  let pokemonImage: HTMLImageElement | undefined;
+
+                  if (typeof window !== 'undefined') {
+                    pokemonImage = new Image();
+                    pokemonImage.src = pokemonInfo?.image || '';
+                    pokemonImage.crossOrigin = 'anonymous';
+                  }
+
+                  return (
+                    <KonvaImage
+                      key={`${pokemon} - ${idx}`}
+                      image={pokemonImage}
+                      width={120}
+                      height={120}
+                      scaleX={idx === 0 ? -1 : 1}
+                      x={positions.x}
+                      y={positions.y}
+                    />
+                  );
+                })}
+
+                <Text
+                  fontFamily="TGL"
+                  fontSize={45}
+                  width={410}
+                  text={cardTitle.slice(0, 17)}
+                  x={60}
+                  y={60}
+                />
+                <Text
+                  fontFamily="TGL"
+                  fontSize={45}
+                  width={200}
+                  align="right"
+                  ellipsis
+                  text={`${cardYear || ''} HP`}
+                  fill="#D00303"
+                  x={420}
+                  y={60}
+                />
+                <Text
+                  fontFamily="Urbanist"
+                  fontStyle="italic 600"
+                  fontSize={25}
+                  width={744}
+                  align="center"
+                  ellipsis
+                  text={characters.map((char) => char.name).join(' and ')}
+                  x={0}
+                  y={571}
+                />
+                <Group y={638} x={193} width={485}>
+                  <Text
+                    fontFamily="TGL"
+                    fontSize={40}
+                    text={quoteTitle?.slice(0, 16) || ''}
+                  />
+                  <Text
+                    fontFamily="Urbanist"
+                    fontSize={25}
+                    width={485}
+                    lineHeight={1.2}
+                    y={55}
+                    ellipsis
+                    text={convert(quote || '').slice(0, 115)}
+                  />
+                </Group>
               </Layer>
-            </Stage> */}
+            </Stage>
           </PokemonCardWrapper>
         ) : (
           <div
@@ -1136,14 +1363,6 @@ const CustomRadioItem = styled.div<{$image?: string}>`
     }
   }
 `;
-const SubInputText = styled(Typography.Text)`
-  margin: 0px 16px;
-  color: var(--neutrals-4-color, #777e90) !important;
-  font-size: 12px !important;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px; /* 166.667% */
-`;
 const PreviewImage = styled.div`
   width: 78px;
   height: 78px;
@@ -1165,8 +1384,127 @@ const PreviewImage = styled.div`
   }
 `;
 const PokemonCardWrapper = styled.div`
+  position: relative;
   width: 420px;
   height: 586px;
+  overflow: hidden;
+
+  canvas {
+    width: 420px !important;
+    height: 586px !important;
+  }
+
+  .character {
+    position: absolute;
+    height: 124px;
+    width: 73px;
+    top: 161px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: all 200ms;
+
+    &.left {
+      left: 130px;
+    }
+
+    &.right {
+      left: 220px;
+
+      .hat {
+        transform: translate(-50%) scaleX(-1);
+      }
+
+      &.holiday {
+        .hat {
+          left: 48px;
+        }
+      }
+
+      &.wedding {
+        &.female {
+          .cloth {
+            transform: scaleX(-1);
+            left: 13px;
+          }
+        }
+      }
+    }
+
+    &.male {
+      .hair {
+        left: -5px;
+      }
+
+      &.wedding {
+        .cloth {
+          width: 66px;
+          top: 66px;
+        }
+      }
+    }
+
+    &.female {
+      top: 155px;
+
+      .hair {
+        top: 4px;
+      }
+
+      .cloth {
+        top: 69px;
+      }
+
+      &.wedding {
+        top: 160px;
+
+        .cloth {
+          width: 66px;
+          top: 71px;
+          left: 27px;
+        }
+      }
+    }
+
+    /* Style */
+    &.holiday {
+      .hat {
+        top: -18px;
+        left: 25px;
+        width: 50px;
+      }
+    }
+
+    .hair {
+      position: absolute;
+      transform: scale(1.1);
+      left: 0;
+      top: 0;
+      width: 81px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .hat {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      height: auto;
+      object-fit: contain;
+      transform: translate(-50%);
+      z-index: 20;
+    }
+
+    .cloth {
+      position: absolute;
+      top: 65px;
+      left: 50%;
+      width: 54px;
+      height: auto;
+      object-fit: contain;
+      transform: translate(-50%);
+    }
+  }
 
   @media screen and (max-width: 768px) {
     transform: scale(0.6);
