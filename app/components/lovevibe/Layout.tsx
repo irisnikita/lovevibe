@@ -6,7 +6,6 @@ import type {
   HeaderQuery,
 } from 'storefrontapi.generated';
 import {Aside} from '~/components/Aside';
-import {Footer} from '~/components/Footer';
 import {Header} from '~/components/lovevibe/Header';
 import {CartMain} from '~/components/Cart';
 import {

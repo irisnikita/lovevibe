@@ -1,3 +1,4 @@
+import {useEffect, useRef, useState} from 'react';
 import {Image, useNonce} from '@shopify/hydrogen';
 import {
   defer,
@@ -26,8 +27,9 @@ import pokemonCardStyles from './styles/pokemon-card.css';
 import fonts from './styles/fonts.css';
 import {Layout} from '~/components/lovevibe/Layout';
 import {ConfigProvider} from './components/ConfigProvider';
-import {useEffect, useState} from 'react';
 import LovevibeLogo from 'public/images/logos/lovevibe.png';
+import {Spin, Flex} from '~/components/ui';
+import {css} from '@emotion/css';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -69,6 +71,10 @@ export function links() {
     {
       rel: 'stylesheet',
       href: 'https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap',
+    },
+    {
+      rel: 'stylesheet',
+      href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css',
     },
     {
       rel: 'preconnect',
@@ -136,10 +142,16 @@ export default function App() {
   const data = useLoaderData<typeof loader>();
   const [isLoading, setLoading] = useState(true);
 
+  const loadingRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+      setLoading(true);
+
+      if (loadingRef) {
+        loadingRef.current?.classList.add('animate__fadeOut');
+      }
+    }, 1500);
   }, []);
 
   return (
@@ -153,11 +165,16 @@ export default function App() {
       <body>
         <ConfigProvider>
           <div
-            className={`fixed h-full w-full flex items-center pointer-events-none justify-center z-50 bg-white ${
+            ref={loadingRef}
+            className={`animate__animated fixed h-full w-full flex items-center pointer-events-none justify-center z-50 bg-white ${
               isLoading ? 'opacity-100' : 'opacity-0'
             } transition-opacity duration-300`}
           >
-            <Image src={LovevibeLogo} width={70} />
+            <Image
+              className="animate__animated animate__bounce animate__infinite"
+              src={LovevibeLogo}
+              width={100}
+            />
           </div>
           <Layout {...data}>
             <Outlet />

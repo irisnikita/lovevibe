@@ -6,3 +6,5 @@ export * from './Select';
 export * from './Input';
 export * from './InputNumber';
 export * from './Modal';
+export * from './Spin';
+export * from './Flex';
