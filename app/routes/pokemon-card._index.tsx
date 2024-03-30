@@ -526,7 +526,7 @@ export default function PokemonCardPage() {
 
       pdf.save('pokemon-card.pdf');
 
-      setState((prev) => ({...prev, isLoadingExport: false}));
+      setState((prev) => ({...prev, isLoadingExport: false, showModal: false}));
     }
   };
 
