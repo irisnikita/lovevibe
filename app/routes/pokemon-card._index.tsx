@@ -1374,8 +1374,8 @@ const StyledPokemonCard = styled(PokemonCard)`
     height: 335px;
 
     canvas {
-      width: 234px !important;
-      height: 329px !important;
+      width: 240px !important;
+      height: 335px !important;
     }
   }
 `;
