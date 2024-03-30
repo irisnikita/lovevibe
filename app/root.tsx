@@ -162,7 +162,7 @@ export default function App() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
-        {process.env.NODE_ENV !== 'development' && (
+        {/* {process.env.NODE_ENV !== 'development' && (
           <>
             <script
               async
@@ -195,7 +195,7 @@ export default function App() {
               }}
             />
           </>
-        )}
+        )} */}
       </head>
       <body>
         <ConfigProvider>
