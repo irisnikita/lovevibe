@@ -2,6 +2,7 @@
 
 // Types
 import {theme, type ThemeConfig} from 'antd';
+import {cloneDeep} from 'lodash';
 
 // Variables
 const {defaultAlgorithm, darkAlgorithm, getDesignToken, useToken} = theme;
@@ -84,6 +85,14 @@ THEME.components = {
     colorIcon: '#141416',
   },
 };
+
+export const VIOLET_THEME: TTheme = cloneDeep(THEME);
+VIOLET_THEME.token = {
+  ...VIOLET_THEME.token,
+  colorPrimary: '#613193',
+  colorLink: '#613193',
+  colorLinkHover: '#613193',
+} as any;
 
 export const GLOBAL_TOKEN = getDesignToken(THEME);
 

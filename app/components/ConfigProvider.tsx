@@ -4,12 +4,17 @@ import {
   ConfigProvider as AntdConfigProvider,
   type ConfigProviderProps as AntdConfigProviderProps,
 } from 'antd';
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 
 // Constants
 import {THEME} from '~/constants';
 import {StyleProvider} from '@ant-design/cssinjs';
 
-interface ConfigProviderProps extends Omit<AntdConfigProviderProps, 'theme'> {}
+// Queries
+import {QueryClientProvider} from '@tanstack/react-query';
+import {queryClient} from '~/queries/config';
+
+interface ConfigProviderProps extends AntdConfigProviderProps {}
 
 export const ConfigProvider: React.FC<
   React.PropsWithChildren<ConfigProviderProps>
@@ -17,8 +22,11 @@ export const ConfigProvider: React.FC<
   const {children, ...restOfProps} = props;
 
   return (
-    <AntdConfigProvider theme={THEME} {...restOfProps}>
-      <StyleProvider hashPriority="high">{children}</StyleProvider>
-    </AntdConfigProvider>
+    <QueryClientProvider client={queryClient}>
+      <AntdConfigProvider theme={THEME} {...restOfProps}>
+        <StyleProvider hashPriority="high">{children}</StyleProvider>
+      </AntdConfigProvider>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   );
 };

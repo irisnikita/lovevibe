@@ -1,5 +1,6 @@
-import {Await} from '@remix-run/react';
-import {Suspense} from 'react';
+import type {ThemeConfig} from 'antd';
+import {Await, useLocation} from '@remix-run/react';
+import {Suspense, useEffect} from 'react';
 import type {
   CartApiQueryFragment,
   FooterQuery,
@@ -12,6 +13,9 @@ import {
   PredictiveSearchForm,
   PredictiveSearchResults,
 } from '~/components/Search';
+import {ConfigProvider} from '../ConfigProvider';
+import {THEME} from '~/constants';
+import {getRouteFromPath} from '~/utils';
 
 export type LayoutProps = {
   cart: Promise<CartApiQueryFragment | null>;
@@ -19,6 +23,7 @@ export type LayoutProps = {
   footer: Promise<FooterQuery>;
   header: HeaderQuery;
   isLoggedIn: Promise<boolean>;
+  theme?: ThemeConfig;
 };
 
 export function Layout({
@@ -28,19 +33,30 @@ export function Layout({
   header,
   isLoggedIn,
 }: LayoutProps) {
+  const location = useLocation();
+  const routeInfo = getRouteFromPath(location.pathname);
+
+  useEffect(() => {
+    if (routeInfo?.themeKey) {
+      document
+        .querySelector('html')
+        ?.setAttribute('data-theme', routeInfo?.themeKey);
+    }
+  }, [routeInfo?.themeKey]);
+
   return (
-    <>
+    <ConfigProvider theme={routeInfo?.theme || THEME}>
       {/* <CartAside cart={cart} />
       <SearchAside />
       <MobileMenuAside menu={header?.menu} shop={header?.shop} /> */}
-      {header && <Header />}
+      {header && <Header logo={routeInfo?.logo} />}
       <main>{children}</main>
       {/* <Suspense>
         <Await resolve={footer}>
           {(footer) => <Footer menu={footer?.menu} shop={header?.shop} />}
         </Await>
       </Suspense> */}
-    </>
+    </ConfigProvider>
   );
 }
 

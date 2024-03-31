@@ -17,6 +17,8 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
   type ShouldRevalidateFunction,
+  useRouteLoaderData,
+  useLocation,
 } from '@remix-run/react';
 import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
 import favicon from '../public/images/logos/lovevibe-fav-icon_430x.avif';
@@ -99,6 +101,7 @@ export const useRootLoaderData = () => {
 
 export async function loader({context}: LoaderFunctionArgs) {
   const {storefront, customerAccount, cart} = context;
+  console.log('🚀 ~ loader ~ context:', JSON.stringify(context));
   const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
 
   const isLoggedInPromise = customerAccount.isLoggedIn();
@@ -141,6 +144,7 @@ export async function loader({context}: LoaderFunctionArgs) {
 export default function App() {
   const nonce = useNonce();
   const data = useLoaderData<typeof loader>();
+
   const [isLoading, setLoading] = useState(true);
 
   const loadingRef = useRef<HTMLDivElement>(null);
@@ -198,23 +202,21 @@ export default function App() {
         )}
       </head>
       <body>
-        <ConfigProvider>
-          <div
-            ref={loadingRef}
-            className={`animate__animated fixed h-full w-full flex items-center pointer-events-none justify-center z-50 bg-white ${
-              isLoading ? 'opacity-100' : 'opacity-0'
-            } transition-opacity duration-300`}
-          >
-            <Image
-              className="animate__animated animate__bounce animate__infinite"
-              src={LovevibeLogo}
-              width={100}
-            />
-          </div>
-          <Layout {...data}>
-            <Outlet />
-          </Layout>
-        </ConfigProvider>
+        <div
+          ref={loadingRef}
+          className={`animate__animated fixed h-full w-full flex items-center pointer-events-none justify-center z-50 bg-white ${
+            isLoading ? 'opacity-100' : 'opacity-0'
+          } transition-opacity duration-300`}
+        >
+          <Image
+            className="animate__animated animate__bounce animate__infinite"
+            src={LovevibeLogo}
+            width={100}
+          />
+        </div>
+        <Layout {...data}>
+          <Outlet />
+        </Layout>
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />

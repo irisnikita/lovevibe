@@ -9,7 +9,13 @@ import LovevibeLogo from 'public/images/logos/lovevibe.png';
 import {ArrowRight} from '~/icons';
 import {Link} from '@remix-run/react';
 
-export function Header() {
+interface HeaderProps {
+  logo?: string;
+}
+
+export function Header(props: HeaderProps) {
+  const {logo} = props;
+
   // const {shop, menu} = header;
   return (
     <header className="container flex items-center justify-between pt-8">
@@ -18,7 +24,7 @@ export function Header() {
           alt="lovevibe logo"
           sizes="(min-width: 768px) 50vw, 100vw"
           width={75}
-          src={LovevibeLogo}
+          src={logo || LovevibeLogo}
         />
       </Link>
       <Button

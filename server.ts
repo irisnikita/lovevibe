@@ -15,7 +15,7 @@ import {
 } from '@shopify/remix-oxygen';
 import {AppSession} from '~/lib/session';
 import {CART_QUERY_FRAGMENT} from '~/lib/fragments';
-
+import {createGoogleClient} from '~/lib/google';
 /**
  * Export a fetch handler in module format.
  */
@@ -38,6 +38,14 @@ export default {
         caches.open('hydrogen'),
         AppSession.init(request, [env.SESSION_SECRET]),
       ]);
+
+      /**
+       * Create a Google Maps API client.
+       */
+      const googleClient = createGoogleClient({
+        cache,
+        waitUntil,
+      });
 
       /**
        * Create Hydrogen's Storefront client.
@@ -87,6 +95,7 @@ export default {
           storefront,
           customerAccount,
           cart,
+          googleClient,
           env,
           waitUntil,
         }),

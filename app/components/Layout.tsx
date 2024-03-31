@@ -13,6 +13,7 @@ import {
   PredictiveSearchForm,
   PredictiveSearchResults,
 } from '~/components/Search';
+import {ConfigProvider} from './ConfigProvider';
 
 export type LayoutProps = {
   cart: Promise<CartApiQueryFragment | null>;
@@ -30,7 +31,7 @@ export function Layout({
   isLoggedIn,
 }: LayoutProps) {
   return (
-    <>
+    <ConfigProvider>
       <CartAside cart={cart} />
       <SearchAside />
       <MobileMenuAside menu={header?.menu} shop={header?.shop} />
@@ -41,7 +42,7 @@ export function Layout({
           {(footer) => <Footer menu={footer?.menu} shop={header?.shop} />}
         </Await>
       </Suspense>
-    </>
+    </ConfigProvider>
   );
 }
 

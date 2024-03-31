@@ -1,3 +1,4 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable no-template-curly-in-string */
 // Libraries
 import {Flex, Form} from 'antd';
@@ -21,7 +22,6 @@ import BacksideCard from 'public/images/pokemon/backside-card.png';
 
 // Components
 import {
-  Tabs,
   Typography,
   Divider,
   Select,
@@ -30,6 +30,7 @@ import {
   Button,
   Modal,
 } from '~/components/ui';
+import {Tabs} from '~/components/lovevibe/Tabs';
 
 // Constants
 import {
@@ -57,6 +58,7 @@ import PreviewCard from 'public/images/pokemon/preview.png';
 import {useDeepCompareEffect} from '~/hooks';
 import useImage from 'use-image';
 import {getImageRatio} from '~/utils';
+import {Checkbox} from '~/components/lovevibe/Checkbox';
 
 const {FEMALE, MALE} = CHARACTER_GENDER_KEYS;
 
@@ -101,14 +103,6 @@ interface MessageSettingProps extends DesignSettingProps {
   isCustomQuoteTitle?: boolean;
   setPokemonState?: React.Dispatch<React.SetStateAction<TState>>;
 }
-interface CustomRadioProps {
-  items: {key: string; label: string; image?: string}[];
-  style?: React.CSSProperties;
-  itemStyle?: React.CSSProperties;
-  showBottomLabel?: boolean;
-  value: string;
-  onChange: (value: string) => void;
-}
 interface PokemonCardProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   values: PokemonSettings;
   width?: number;
@@ -152,39 +146,6 @@ const POKEMON_DIMENSION = {
 };
 
 /* Components */
-const CustomRadio: React.FC<CustomRadioProps> = memo((props) => {
-  const {items, value, style, itemStyle, showBottomLabel, onChange} = props;
-
-  return (
-    <Flex gap={12} align="center" style={style} wrap="wrap">
-      {items.map(({key, image, label}) => {
-        const isActive = key === value;
-
-        return (
-          <Flex vertical align="center" key={key}>
-            <CustomRadioItem
-              style={itemStyle}
-              $image={image}
-              className={`${isActive ? 'active' : ''}`}
-              onClick={() => onChange(key)}
-            >
-              {image ? '' : label}
-              <div className="icon-check">
-                <RadioCheck />
-              </div>
-            </CustomRadioItem>
-            {showBottomLabel && (
-              <Typography.Text className="!text-sm text-center mt-1">
-                {label}
-              </Typography.Text>
-            )}
-          </Flex>
-        );
-      })}
-    </Flex>
-  );
-});
-
 const PokemonCard = React.forwardRef<any, PokemonCardProps>((props, ref) => {
   const {width, height, values, ...restOfProps} = props || {};
   const {cardTitle, cardYear, characters, pokemons, style, quote, quoteTitle} =
@@ -636,7 +597,7 @@ export default function PokemonCardPage() {
               Pokemon Couple Card
             </Typography.Title>
 
-            <StyledTabs
+            <Tabs
               items={POKEMON_SETTING_TABS.map((tab, idx) => ({
                 ...tab,
                 label: `${idx + 1}. ${tab.label}`,
@@ -716,7 +677,7 @@ function DesignSetting(props: DesignSettingProps) {
         }}
       >
         <Form.Item<SettingFormType> label="Style" name="style">
-          <CustomRadio
+          <Checkbox
             items={POKEMON_STYLES.map(({key, label, background}) => ({
               key,
               label,
@@ -730,7 +691,7 @@ function DesignSetting(props: DesignSettingProps) {
             value={form.getFieldValue('style')}
             onChange={(value) => {
               onChange?.({quote: undefined, quoteTitle: undefined});
-              form.setFieldsValue({style: value});
+              form.setFieldsValue({style: value as string});
             }}
           />
         </Form.Item>
@@ -760,7 +721,7 @@ function DesignSetting(props: DesignSettingProps) {
                           name={[name, 'gender']}
                           label={`${prefixLabel} Character’s Gender`}
                         >
-                          <CustomRadio
+                          <Checkbox
                             items={CHARACTER_GENDERS}
                             value={gender}
                             onChange={(value) => {
@@ -805,7 +766,7 @@ function DesignSetting(props: DesignSettingProps) {
                           name={[name, 'hair']}
                           label={`${prefixLabel} Character’s Hair`}
                         >
-                          <CustomRadio
+                          <Checkbox
                             items={characterHairs.map(
                               ({key, label, image}) => ({
                                 key,
@@ -815,7 +776,7 @@ function DesignSetting(props: DesignSettingProps) {
                             )}
                             value={characters?.[index]?.hair}
                             onChange={(value) => {
-                              characters[index].hair = value;
+                              characters[index].hair = value as string;
                               form.setFieldsValue({characters});
                             }}
                           />
@@ -824,7 +785,7 @@ function DesignSetting(props: DesignSettingProps) {
                           name={[name, 'skin']}
                           label={`${prefixLabel} Character’s Skin Color`}
                         >
-                          <CustomRadio
+                          <Checkbox
                             items={characterSkins.map(
                               ({key, label, image}) => ({
                                 key,
@@ -834,7 +795,7 @@ function DesignSetting(props: DesignSettingProps) {
                             )}
                             value={characters?.[index]?.skin}
                             onChange={(value) => {
-                              characters[index].skin = value;
+                              characters[index].skin = value as string;
                               form.setFieldsValue({characters});
                             }}
                           />
@@ -1140,69 +1101,6 @@ function MessageSetting(props: MessageSettingProps) {
 
 /* Styled */
 const CustomDivider = styled(Divider)``;
-const StyledTabs = styled(Tabs)`
-  .ant-tabs-nav {
-    margin-bottom: 24px;
-
-    &::before {
-      border: none;
-    }
-  }
-
-  .ant-tabs-tab {
-    font-weight: 700;
-    padding: 8px 12px;
-    color: var(--neutrals-4-color) !important;
-  }
-
-  .ant-tabs-ink-bar {
-    height: 3px !important;
-    border-radius: 4px;
-  }
-`;
-const CustomRadioItem = styled.div<{$image?: string}>`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  box-sizing: border-box;
-  border: 2px solid var(--neutrals-5-color);
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 200ms;
-
-  ${({$image}) => $image && `background-image: url(${$image})`};
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-
-  .icon-check {
-    position: absolute;
-    bottom: -3px;
-    right: -3px;
-    background-color: var(--primary-color);
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 20px;
-    width: 20px;
-    border-radius: 4px;
-    opacity: 0;
-    transition: all 200ms;
-  }
-
-  &.active {
-    border: 3px solid var(--primary-color);
-
-    .icon-check {
-      opacity: 1;
-    }
-  }
-`;
 const PreviewImage = styled.div`
   width: 78px;
   height: 78px;

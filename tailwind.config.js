@@ -25,11 +25,11 @@ export default {
     },
     extend: {
       colors: {
-        primary: '#ef466f',
-        secondary: '#f4c73c',
-        success: '#45b26b',
-        danger: '#ea3223',
-        error: '#ef4646',
+        primary: 'var(--primary-color)',
+        secondary: 'var(--secondary-color)',
+        success: 'var(--success-color)',
+        danger: 'var(--danger-color)',
+        error: 'var(--error-color)',
         'neutrals-1': '#141416',
         'neutrals-2': '#23262f',
         'neutrals-3': '#353945',

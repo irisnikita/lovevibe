@@ -24,7 +24,11 @@
     "@shopify/cli-hydrogen": "^7.0.1",
     "@shopify/hydrogen": "~2024.1.1",
     "@shopify/remix-oxygen": "^2.0.3",
+    "@tanstack/react-query": "^5.28.9",
+    "@tanstack/react-query-devtools": "^5.28.10",
     "antd": "^5.15.4",
+    "axios": "^1.6.8",
+    "global-agent": "^3.0.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "html-to-text": "^9.0.5",
@@ -38,6 +42,7 @@
     "react-fast-compare": "^3.2.2",
     "react-konva": "^18.2.10",
     "react-konva-utils": "^1.0.6",
+    "use-dehydrated-state": "^0.1.0",
     "use-image": "^1.1.1"
   },
   "devDependencies": {
