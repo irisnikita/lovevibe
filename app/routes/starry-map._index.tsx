@@ -10,7 +10,6 @@ import {
   type MetaFunction,
 } from '@shopify/remix-oxygen';
 import React, {useEffect, useState} from 'react';
-import * as d3 from 'd3';
 
 // Components
 import {Select, Typography, Button, Spin, Input} from '~/components/ui';
@@ -37,6 +36,8 @@ import {ArrowRight} from '~/icons';
 // Hooks
 import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
 import {css} from '@emotion/css';
+import {ClientOnly} from 'remix-utils/client-only';
+import {Hello} from '~/components/test.client';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Pokemon Card | LoveVibe'}];
@@ -90,119 +91,131 @@ const CelestialMap: React.FC<CelestialMapProps> = (props) => {
   const {values, locationDetail} = props;
   const {geometry} = locationDetail?.geometry || {};
   const {lat: LAT, lng: LON} = locationDetail || {};
-
-  console.log(LAT, LON);
-
   const celestialMapRef = React.useRef(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // console.log(Celestial);
+      console.log('this', this);
     }
-    // const d3Cles = require('d3-celestial');
-    // console.log('🚀 ~ useEffect ~ d3Cles:', d3Cles);
-    // const fontString = `10px Roboto, sans-serif`;
-    // const config = {
-    //   container: 'map',
-    //   width: 500,
-    //   formFields: {download: true},
-    //   datapath: 'https://ofrohn.github.io/data/',
-    //   form: false,
-    //   advanced: false,
-    //   interactive: false,
-    //   disableAnimations: false,
-    //   zoomlevel: null,
-    //   zoomextend: 1,
-    //   projection: 'airy',
-    //   transform: 'equatorial',
-    //   follow: 'zenith',
-    //   geopos: [LAT, LON],
-    //   lines: {
-    //     graticule: {
-    //       show: true,
-    //       color: '#cccccc',
-    //       width: 0.3,
-    //       opacity: 0.5,
-    //     },
-    //     equatorial: {show: false},
-    //     ecliptic: {show: false},
-    //     galactic: {show: false},
-    //     supergalactic: {show: false},
-    //   },
-    //   planets: {
-    //     show: false,
-    //     // List of all objects to show
-    //     which: [
-    //       'sol',
-    //       'mer',
-    //       'ven',
-    //       'ter',
-    //       'lun',
-    //       'mar',
-    //       'jup',
-    //       'sat',
-    //       'ura',
-    //       'nep',
-    //     ],
-    //     names: false, // Show name in nameType language next to symbol
-    //     nameStyle: {
-    //       fill: '#00ccff',
-    //       font: "14px 'Lucida Sans Unicode', Consolas, sans-serif",
-    //       align: 'right',
-    //       baseline: 'top',
-    //     },
-    //     namesType: 'desig',
-    //   },
-    //   dsos: {
-    //     show: false,
-    //     names: false,
-    //   },
-    //   constellations: {
-    //     names: false,
-    //     namesType: 'iau',
-    //     nameStyle: {
-    //       fill: '#ffffff',
-    //       align: 'center',
-    //       baseline: 'middle',
-    //       font: [fontString, `0px Roboto, sans-serif`],
-    //     },
-    //     lines: true,
-    //     lineStyle: {stroke: '#ffffff', width: 0.4, opacity: 1},
-    //   },
-    //   mw: {
-    //     show: true,
-    //     style: {fill: '#ffffff', width: 0.5, opacity: 0.2},
-    //   },
-    //   background: {
-    //     fill: values.mapColor,
-    //     stroke: '#ffffff',
-    //     opacity: 1,
-    //     width: 1,
-    //   },
-    //   stars: {
-    //     colors: false,
-    //     size: 4,
-    //     limit: 6,
-    //     exponent: -0.28,
-    //     designation: false,
-    //     propername: false,
-    //     propernameType: 'name',
-    //     propernameStyle: {
-    //       fill: '#ffffff',
-    //       font: fontString,
-    //       align: 'right',
-    //       baseline: 'center',
-    //     },
-    //     propernameLimit: 2.0,
-    //   },
-    // };
-    // const celestial = Celestial(config)(d3.select(celestialMapRef.current));
-    // return () => {
-    //   celestial.stop();
-    // };
+
+    const fontString = `10px Roboto, sans-serif`;
+
+    // Celestial.display(config);
+    // Celestial.skyview({date: new Date()});
   }, [values]);
 
-  return <div ref={celestialMapRef}>Map</div>;
+  return <Hello />;
+
+  return (
+    <div id="celestial-map" ref={celestialMapRef}>
+      <Button
+        onClick={() => {
+          // const {Celestial} = require('d3-celestial');
+
+          // const config = {
+          //   container: 'celestial-map',
+          //   width: 500,
+          //   formFields: {download: true},
+          //   datapath: 'https://ofrohn.github.io/data/',
+          //   form: false,
+          //   advanced: false,
+          //   interactive: false,
+          //   disableAnimations: false,
+          //   zoomlevel: null,
+          //   zoomextend: 1,
+          //   projection: 'airy',
+          //   transform: 'equatorial',
+          //   follow: 'zenith',
+          //   geopos: [LAT, LON],
+          //   lines: {
+          //     graticule: {
+          //       show: true,
+          //       color: '#cccccc',
+          //       width: 0.3,
+          //       opacity: 0.5,
+          //     },
+          //     equatorial: {show: false},
+          //     ecliptic: {show: false},
+          //     galactic: {show: false},
+          //     supergalactic: {show: false},
+          //   },
+          //   planets: {
+          //     show: false,
+          //     // List of all objects to show
+          //     which: [
+          //       'sol',
+          //       'mer',
+          //       'ven',
+          //       'ter',
+          //       'lun',
+          //       'mar',
+          //       'jup',
+          //       'sat',
+          //       'ura',
+          //       'nep',
+          //     ],
+          //     names: false, // Show name in nameType language next to symbol
+          //     nameStyle: {
+          //       fill: '#00ccff',
+          //       font: "14px 'Lucida Sans Unicode', Consolas, sans-serif",
+          //       align: 'right',
+          //       baseline: 'top',
+          //     },
+          //     namesType: 'desig',
+          //   },
+          //   dsos: {
+          //     show: false,
+          //     names: false,
+          //   },
+          //   constellations: {
+          //     names: false,
+          //     namesType: 'iau',
+          //     nameStyle: {
+          //       fill: '#ffffff',
+          //       align: 'center',
+          //       baseline: 'middle',
+          //       font: [fontString, `0px Roboto, sans-serif`],
+          //     },
+          //     lines: true,
+          //     lineStyle: {stroke: '#ffffff', width: 0.4, opacity: 1},
+          //   },
+          //   mw: {
+          //     show: true,
+          //     style: {fill: '#ffffff', width: 0.5, opacity: 0.2},
+          //   },
+          //   background: {
+          //     fill: values.mapColor,
+          //     stroke: '#ffffff',
+          //     opacity: 1,
+          //     width: 1,
+          //   },
+          //   stars: {
+          //     colors: false,
+          //     size: 4,
+          //     limit: 6,
+          //     exponent: -0.28,
+          //     designation: false,
+          //     propername: false,
+          //     propernameType: 'name',
+          //     propernameStyle: {
+          //       fill: '#ffffff',
+          //       font: fontString,
+          //       align: 'right',
+          //       baseline: 'center',
+          //     },
+          //     propernameLimit: 2.0,
+          //   },
+          // };
+
+          console.log({this: this});
+          // Celestial.display(config);
+        }}
+      >
+        Button
+      </Button>
+      Map
+    </div>
+  );
 };
 
 // Common
@@ -479,11 +492,18 @@ export default function StarryMapPage() {
           </Form>
         </FormWrapper>
       </div>
-      <StarryMapPoster $color={values.mapColor}>
-        <div className="frame">
-          <CelestialMap values={values} locationDetail={state.locationDetail} />
-        </div>
-      </StarryMapPoster>
+      <ClientOnly fallback={null}>
+        {() => (
+          <StarryMapPoster $color={values.mapColor}>
+            <div className="frame">
+              <CelestialMap
+                values={values}
+                locationDetail={state.locationDetail}
+              />
+            </div>
+          </StarryMapPoster>
+        )}
+      </ClientOnly>
     </div>
   );
 }

@@ -31,9 +31,6 @@ import {Layout} from '~/components/lovevibe/Layout';
 import LovevibeLogo from 'public/images/logos/lovevibe.png';
 import {gaTrackingId} from './constants';
 
-// Public
-import celestial from 'public/js/celestial';
-
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
  */
@@ -93,7 +90,8 @@ export function links() {
 
 export function scripts() {
   // return [{src: celestial}];
-  return [{src: celestial}];
+
+  return [];
 }
 
 /**
@@ -265,7 +263,7 @@ export function ErrorBoundary() {
           </div>
         </Layout>
         <ScrollRestoration nonce={nonce} />
-        <Scripts nonce={nonce} />
+        <Scripts nonce={nonce} crossOrigin="anonymous" />
         <LiveReload nonce={nonce} />
       </body>
     </html>
