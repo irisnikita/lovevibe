@@ -1,21 +1,23 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable no-template-curly-in-string */
 // Libraries
-import {Flex, Form} from 'antd';
+import {Flex, Form, AutoComplete, DatePicker, Switch} from 'antd';
 import styled from '@emotion/styled';
 import {
   json,
-  LoaderFunctionArgs,
+  type LoaderFunctionArgs,
   type MetaFunction,
 } from '@shopify/remix-oxygen';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import * as d3 from 'd3';
 
 // Components
-import {Select, Typography, Button} from '~/components/ui';
+import {Select, Typography, Button, Spin, Input} from '~/components/ui';
 import {Tabs} from '~/components/lovevibe';
 
 // Constants
-import {CHARACTER_GENDER_KEYS} from '~/constants';
+import {API_SECRET_KEY, CHARACTER_GENDER_KEYS} from '~/constants';
 
 // Styled
 import {FormWrapper} from '~/styled';
@@ -31,9 +33,10 @@ import {
   STAR_STYLE_KEYS,
 } from '~/constants/starry-map';
 import {ArrowRight} from '~/icons';
-import {useDebounce} from '~/hooks/useDebounceV2';
-import {useAutoComplete, useGetPlaceDetails} from '~/queries';
-import {googleServices} from '~/services/google';
+
+// Hooks
+import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
+import {css} from '@emotion/css';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Pokemon Card | LoveVibe'}];
@@ -44,18 +47,37 @@ interface StarryMapSettings {
   mapColor: string;
   printSize?: string;
   location?: string;
+  date?: Date;
+  name: string;
+  title: string;
+  showLocationLabel: boolean;
+  showDateLabel: boolean;
+  showCoordinates: boolean;
 }
+
 type TState = {
   values: StarryMapSettings;
   activeTab: string;
   locationSearch?: string;
+  locationDetail?: any;
 };
+
+interface CelestialMapProps {
+  values: StarryMapSettings;
+  locationDetail?: TState['locationDetail'];
+}
 
 const INITIAL_STARRY_MAP_SETTINGS: StarryMapSettings = {
   starStyle: [STAR_STYLE_KEYS.CONSTELLATIONS],
   mapColor: MAP_COLORS_KEYS.BLACK,
   printSize: undefined,
   location: undefined,
+  name: '',
+  title: '',
+  showCoordinates: true,
+  showDateLabel: true,
+  showLocationLabel: true,
+  date: undefined,
 };
 
 const INITIAL_STATE: TState = {
@@ -63,37 +85,199 @@ const INITIAL_STATE: TState = {
   activeTab: STARRY_MAP_SETTING_TAB_KEYS.CHOOSE_STYLE,
 };
 
+// Components
+const CelestialMap: React.FC<CelestialMapProps> = (props) => {
+  const {values, locationDetail} = props;
+  const {geometry} = locationDetail?.geometry || {};
+  const {lat: LAT, lng: LON} = locationDetail || {};
+
+  console.log(LAT, LON);
+
+  const celestialMapRef = React.useRef(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // console.log(Celestial);
+    }
+    // const d3Cles = require('d3-celestial');
+    // console.log('🚀 ~ useEffect ~ d3Cles:', d3Cles);
+    // const fontString = `10px Roboto, sans-serif`;
+    // const config = {
+    //   container: 'map',
+    //   width: 500,
+    //   formFields: {download: true},
+    //   datapath: 'https://ofrohn.github.io/data/',
+    //   form: false,
+    //   advanced: false,
+    //   interactive: false,
+    //   disableAnimations: false,
+    //   zoomlevel: null,
+    //   zoomextend: 1,
+    //   projection: 'airy',
+    //   transform: 'equatorial',
+    //   follow: 'zenith',
+    //   geopos: [LAT, LON],
+    //   lines: {
+    //     graticule: {
+    //       show: true,
+    //       color: '#cccccc',
+    //       width: 0.3,
+    //       opacity: 0.5,
+    //     },
+    //     equatorial: {show: false},
+    //     ecliptic: {show: false},
+    //     galactic: {show: false},
+    //     supergalactic: {show: false},
+    //   },
+    //   planets: {
+    //     show: false,
+    //     // List of all objects to show
+    //     which: [
+    //       'sol',
+    //       'mer',
+    //       'ven',
+    //       'ter',
+    //       'lun',
+    //       'mar',
+    //       'jup',
+    //       'sat',
+    //       'ura',
+    //       'nep',
+    //     ],
+    //     names: false, // Show name in nameType language next to symbol
+    //     nameStyle: {
+    //       fill: '#00ccff',
+    //       font: "14px 'Lucida Sans Unicode', Consolas, sans-serif",
+    //       align: 'right',
+    //       baseline: 'top',
+    //     },
+    //     namesType: 'desig',
+    //   },
+    //   dsos: {
+    //     show: false,
+    //     names: false,
+    //   },
+    //   constellations: {
+    //     names: false,
+    //     namesType: 'iau',
+    //     nameStyle: {
+    //       fill: '#ffffff',
+    //       align: 'center',
+    //       baseline: 'middle',
+    //       font: [fontString, `0px Roboto, sans-serif`],
+    //     },
+    //     lines: true,
+    //     lineStyle: {stroke: '#ffffff', width: 0.4, opacity: 1},
+    //   },
+    //   mw: {
+    //     show: true,
+    //     style: {fill: '#ffffff', width: 0.5, opacity: 0.2},
+    //   },
+    //   background: {
+    //     fill: values.mapColor,
+    //     stroke: '#ffffff',
+    //     opacity: 1,
+    //     width: 1,
+    //   },
+    //   stars: {
+    //     colors: false,
+    //     size: 4,
+    //     limit: 6,
+    //     exponent: -0.28,
+    //     designation: false,
+    //     propername: false,
+    //     propernameType: 'name',
+    //     propernameStyle: {
+    //       fill: '#ffffff',
+    //       font: fontString,
+    //       align: 'right',
+    //       baseline: 'center',
+    //     },
+    //     propernameLimit: 2.0,
+    //   },
+    // };
+    // const celestial = Celestial(config)(d3.select(celestialMapRef.current));
+    // return () => {
+    //   celestial.stop();
+    // };
+  }, [values]);
+
+  return <div ref={celestialMapRef}>Map</div>;
+};
+
 // Common
 export default function StarryMapPage() {
   // State
   const [state, setState] = useState<TState>(INITIAL_STATE);
-  const {activeTab} = state;
+  const {activeTab, values} = state;
 
   // Form
   const [form] = Form.useForm<StarryMapSettings>();
 
   // Watches
-  const starStyle = Form.useWatch('starStyle', form);
-  const location = Form.useWatch('location', form);
+  const formValues = Form.useWatch([], form);
+  const {starStyle, location, mapColor} = formValues || {};
 
   // Hooks
-  const debounceLocationSearch = useDebounce(state.locationSearch, 500);
+  const {
+    placesService,
+    placePredictions,
+    getPlacePredictions,
+    isPlacePredictionsLoading,
+  } = usePlacesService({
+    apiKey: API_SECRET_KEY,
+  });
 
-  // // Queries
-  // const {data: locationList} = useAutoComplete({
-  //   query: debounceLocationSearch || '',
-  // });
-  // const {data: locationDetail} = useGetPlaceDetails({
-  //   placeId: location,
-  // });
+  const predictionOptions = placePredictions.map((p) => ({
+    value: p.place_id,
+    label: p.description,
+  }));
 
-  // console.log('🚀 ~ StarryMapPage ~ locationDetail:', locationDetail);
+  // Handlers
+  const onFinishSubmit = (values: StarryMapSettings) => {
+    const currentTabIdx = STARRY_MAP_SETTING_TABS.findIndex(
+      (tab) => tab.key === activeTab,
+    );
+    if (currentTabIdx + 1 < STARRY_MAP_SETTING_TABS.length) {
+      setState((prev) => ({
+        ...prev,
+        activeTab: STARRY_MAP_SETTING_TABS[currentTabIdx + 1].key,
+      }));
+    }
 
-  useEffect(() => {
-    googleServices.autoComplete(debounceLocationSearch || '').then((values) => {
-      console.log('🚀 ~ StarryMapPage ~ values:', values);
-    });
-  }, [debounceLocationSearch]);
+    console.log('🚀 ~ onFinishSubmit ~ values:', values);
+  };
+
+  const onChangeTabs = async (key: string) => {
+    const tabIdx = STARRY_MAP_SETTING_TABS.findIndex((tab) => tab.key === key);
+    const currentTabIdx = STARRY_MAP_SETTING_TABS.findIndex(
+      (tab) => tab.key === activeTab,
+    );
+
+    if (tabIdx < currentTabIdx) {
+      setState((prev) => ({
+        ...prev,
+        activeTab: key,
+      }));
+    } else if (tabIdx === currentTabIdx + 1) {
+      form.submit();
+    }
+  };
+
+  const onSelectLocation = (value: string) => {
+    form.setFieldValue('location', value);
+    placesService?.getDetails(
+      {
+        placeId: placePredictions[0].place_id,
+      },
+      (placeDetails: any) => {
+        setState((prev) => ({
+          ...prev,
+          locationDetail: placeDetails,
+        }));
+      },
+    );
+  };
 
   const renderStep1 = () => {
     return (
@@ -157,53 +341,86 @@ export default function StarryMapPage() {
 
   const renderStep2 = () => {
     return (
-      <>
-        <Form.Item<StarryMapSettings>
+      <Flex vertical className="w-[356px]">
+        <Form.Item
+          name={'location'}
           label="Location"
-          name="location"
           rules={[{required: true}]}
         >
-          <Select
-            showSearch
-            placeholder="Type to search and choose your location"
-            onSearch={(value) =>
-              setState((prev) => ({...prev, locationSearch: value}))
-            }
-          />
+          <div>
+            <AutoComplete
+              labelRender={(props) => props.label}
+              options={predictionOptions}
+              dropdownRender={(node) => (
+                <Spin spinning={isPlacePredictionsLoading}>{node}</Spin>
+              )}
+              value={predictionOptions.find((p) => p.value === location)?.label}
+              placeholder="Type to search and choose your location"
+              onSelect={onSelectLocation}
+              onSearch={(value) => {
+                getPlacePredictions({input: value});
+              }}
+            />
+          </div>
+        </Form.Item>
+        <Form.Item<StarryMapSettings>
+          name={'date'}
+          label="Date"
+          rules={[{required: true}]}
+        >
+          <DatePicker className="w-full" />
+        </Form.Item>
+      </Flex>
+    );
+  };
+
+  const renderStep3 = () => {
+    return (
+      <>
+        <div className="grid grid-cols-2 gap-x-10">
+          <Form.Item<StarryMapSettings>
+            name="name"
+            label="Names"
+            rules={[{required: true}]}
+          >
+            <Input className="" placeholder="Type your names" />
+          </Form.Item>
+          <Form.Item<StarryMapSettings>
+            name="name"
+            label="Title"
+            rules={[{required: true}]}
+          >
+            <Input className="" placeholder="Type your title" />
+          </Form.Item>
+        </div>
+
+        <Form.Item<StarryMapSettings> label="Choose the information you want to display">
+          <div
+            className={`grid grid-cols-3 px-10 py-6 w-full border border-neutrals-5 rounded-xl ${css`
+              .ant-form-item-label {
+                font-weight: 500;
+              }
+            `}`}
+          >
+            <Form.Item<StarryMapSettings>
+              name="showLocationLabel"
+              label="Location"
+            >
+              <Switch />
+            </Form.Item>
+            <Form.Item<StarryMapSettings> name="showDateLabel" label="Date">
+              <Switch />
+            </Form.Item>
+            <Form.Item<StarryMapSettings>
+              name="showCoordinates"
+              label="Coordinates"
+            >
+              <Switch />
+            </Form.Item>
+          </div>
         </Form.Item>
       </>
     );
-  };
-
-  // Handlers
-  const onFinishSubmit = (values: StarryMapSettings) => {
-    const currentTabIdx = STARRY_MAP_SETTING_TABS.findIndex(
-      (tab) => tab.key === activeTab,
-    );
-    if (currentTabIdx + 1 < STARRY_MAP_SETTING_TABS.length) {
-      setState((prev) => ({
-        ...prev,
-        activeTab: STARRY_MAP_SETTING_TABS[currentTabIdx + 1].key,
-      }));
-    }
-
-    console.log('🚀 ~ onFinishSubmit ~ values:', values);
-  };
-
-  const onChangeTabs = async (key: string) => {
-    const tabIdx = STARRY_MAP_SETTING_TABS.findIndex((tab) => tab.key === key);
-    const currentTabIdx = STARRY_MAP_SETTING_TABS.findIndex(
-      (tab) => tab.key === activeTab,
-    );
-
-    if (tabIdx < currentTabIdx) {
-      setState((prev) => ({
-        ...prev,
-        activeTab: key,
-      }));
-    } else if (tabIdx === currentTabIdx + 1) {
-      form.submit();
-    }
   };
 
   const renderSteps = () => {
@@ -214,7 +431,7 @@ export default function StarryMapPage() {
         return renderStep2();
       case STARRY_MAP_SETTING_TAB_KEYS.CUSTOMIZE_INFORMATION:
       default:
-        return null;
+        return renderStep3();
     }
   };
 
@@ -240,6 +457,12 @@ export default function StarryMapPage() {
             form={form}
             layout="vertical"
             initialValues={INITIAL_STARRY_MAP_SETTINGS}
+            validateMessages={{
+              required: 'Required field',
+            }}
+            onValuesChange={(_, values) =>
+              setState((prev) => ({...prev, values}))
+            }
             onFinish={onFinishSubmit}
           >
             {renderSteps()}
@@ -256,13 +479,31 @@ export default function StarryMapPage() {
           </Form>
         </FormWrapper>
       </div>
-      <StarryMapPoster />
+      <StarryMapPoster $color={values.mapColor}>
+        <div className="frame">
+          <CelestialMap values={values} locationDetail={state.locationDetail} />
+        </div>
+      </StarryMapPoster>
     </div>
   );
 }
 
-export const StarryMapPoster = styled.div`
+export const StarryMapPoster = styled.div<{$color: string}>`
   flex-shrink: 0;
   width: 420px;
   height: 563px;
+  border: 3px solid var(--neutrals-5-color);
+  padding: 22px;
+  background-color: ${({$color}) => $color};
+  transition: all 0.2s ease-in-out;
+
+  .frame {
+    width: 100%;
+    height: 100%;
+    border: 3px solid
+      ${({$color}) =>
+        $color === MAP_COLORS_KEYS.WHITE
+          ? MAP_COLORS_KEYS.BLACK
+          : MAP_COLORS_KEYS.WHITE};
+  }
 `;

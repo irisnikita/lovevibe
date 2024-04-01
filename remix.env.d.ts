@@ -54,3 +54,5 @@ declare module '@shopify/remix-oxygen' {
     waitUntil: ExecutionContext['waitUntil'];
   }
 }
+
+declare module 'd3-celestial';

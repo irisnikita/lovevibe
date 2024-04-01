@@ -558,7 +558,18 @@ input::placeholder {
   line-height: 20px;
 }
 
-.ant-input-number-input:focus {
+.ant-input-number-input:focus,
+.ant-select-selection-search-input {
   box-shadow: none !important;
   border-color: var(--primary-color) !important;
+}
+
+/* Switches */
+.ant-switch.ant-switch-checked .ant-switch-handle {
+  inset-inline-start: calc(100% - 28px) !important;
+}
+
+.ant-switch .ant-switch-handle {
+  top: 4px !important;
+  inset-inline-start: 4px !important;
 }

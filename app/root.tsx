@@ -28,11 +28,11 @@ import tailwindStyles from './styles/tailwind.css';
 import pokemonCardStyles from './styles/pokemon-card.css';
 import fonts from './styles/fonts.css';
 import {Layout} from '~/components/lovevibe/Layout';
-import {ConfigProvider} from './components/ConfigProvider';
 import LovevibeLogo from 'public/images/logos/lovevibe.png';
-import {Spin, Flex} from '~/components/ui';
-import {css} from '@emotion/css';
 import {gaTrackingId} from './constants';
+
+// Public
+import celestial from 'public/js/celestial';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -91,6 +91,11 @@ export function links() {
   ];
 }
 
+export function scripts() {
+  // return [{src: celestial}];
+  return [{src: celestial}];
+}
+
 /**
  * Access the result of the root loader from a React component.
  */
@@ -101,7 +106,7 @@ export const useRootLoaderData = () => {
 
 export async function loader({context}: LoaderFunctionArgs) {
   const {storefront, customerAccount, cart} = context;
-  console.log('🚀 ~ loader ~ context:', JSON.stringify(context));
+
   const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
 
   const isLoggedInPromise = customerAccount.isLoggedIn();

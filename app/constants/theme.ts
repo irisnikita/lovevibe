@@ -81,8 +81,18 @@ THEME.components = {
     fontWeight: 700,
     controlHeight: 48,
   },
+  DatePicker: {
+    borderRadius: 8,
+    controlHeight: 48,
+    colorTextPlaceholder: '#777E90',
+  },
   Modal: {
     colorIcon: '#141416',
+  },
+  Switch: {
+    trackMinWidth: 64,
+    trackHeight: 32,
+    handleSize: 24,
   },
 };
 
