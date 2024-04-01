@@ -41,7 +41,7 @@ import {Hello} from '~/components/test.client';
 import {pick} from 'lodash';
 
 export const meta: MetaFunction = () => {
-  return [{title: 'Pokemon Card | LoveVibe'}];
+  return [{title: 'Starry Map | LoveVibe'}];
 };
 
 interface StarryMapSettings {
