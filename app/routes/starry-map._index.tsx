@@ -38,6 +38,7 @@ import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocomplet
 import {css} from '@emotion/css';
 import {ClientOnly} from 'remix-utils/client-only';
 import {Hello} from '~/components/test.client';
+import {pick} from 'lodash';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Pokemon Card | LoveVibe'}];
@@ -111,7 +112,6 @@ const CelestialMap: React.FC<CelestialMapProps> = (props) => {
       <Button
         onClick={() => {
           // const {Celestial} = require('d3-celestial');
-
           // const config = {
           //   container: 'celestial-map',
           //   width: 500,
@@ -206,8 +206,6 @@ const CelestialMap: React.FC<CelestialMapProps> = (props) => {
           //     propernameLimit: 2.0,
           //   },
           // };
-
-          console.log({this: this});
           // Celestial.display(config);
         }}
       >
@@ -257,8 +255,6 @@ export default function StarryMapPage() {
         activeTab: STARRY_MAP_SETTING_TABS[currentTabIdx + 1].key,
       }));
     }
-
-    console.log('🚀 ~ onFinishSubmit ~ values:', values);
   };
 
   const onChangeTabs = async (key: string) => {
@@ -279,6 +275,9 @@ export default function StarryMapPage() {
 
   const onSelectLocation = (value: string) => {
     form.setFieldValue('location', value);
+    handleChangeValues({
+      location: value,
+    });
     placesService?.getDetails(
       {
         placeId: placePredictions[0].place_id,
@@ -310,6 +309,10 @@ export default function StarryMapPage() {
                   itemStyle={{width: 105}}
                   onChange={(starStyle) => {
                     if (starStyle.length !== 0) {
+                      handleChangeValues({
+                        starStyle: starStyle as string[],
+                      });
+
                       form.setFieldsValue({
                         starStyle:
                           typeof starStyle === 'string'
@@ -399,7 +402,7 @@ export default function StarryMapPage() {
             <Input className="" placeholder="Type your names" />
           </Form.Item>
           <Form.Item<StarryMapSettings>
-            name="name"
+            name="title"
             label="Title"
             rules={[{required: true}]}
           >
@@ -448,6 +451,13 @@ export default function StarryMapPage() {
     }
   };
 
+  const handleChangeValues = (values: Partial<StarryMapSettings>) => {
+    setState((prev) => ({
+      ...prev,
+      values: {...prev.values, ...values},
+    }));
+  };
+
   return (
     <div className="container mt-[60px] flex gap-[88px]">
       <div className="flex-1">
@@ -473,9 +483,9 @@ export default function StarryMapPage() {
             validateMessages={{
               required: 'Required field',
             }}
-            onValuesChange={(_, values) =>
-              setState((prev) => ({...prev, values}))
-            }
+            onValuesChange={(changedValues) => {
+              handleChangeValues(changedValues);
+            }}
             onFinish={onFinishSubmit}
           >
             {renderSteps()}
