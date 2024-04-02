@@ -524,31 +524,31 @@ export default function PokemonCardPage() {
 
   return (
     <>
-      <div className="pokemon-wrapper container md:pt-10 mt-4 flex md:gap-[88px] md:h-auto gap-[10px] md:flex-row flex-col overflow-hidden h-[85vh]">
-        <div className="shrink-0 flex md:flex-col md:relative md:justify-normal justify-between flex-row gap-x-6 sticky top-0 bg-white z-20 py-2.5">
+      <div className="pokemon-wrapper container mt-4 flex h-[85vh] flex-col gap-[10px] overflow-hidden md:h-auto md:flex-row md:gap-[88px] md:pt-10">
+        <div className="relative z-20 flex shrink-0 flex-row justify-between gap-x-6 bg-white py-2.5 md:flex-col md:justify-normal">
           {selectedMockup === -1 ? (
             <StyledPokemonCard ref={canvasRef} values={settings} />
           ) : (
             <div
               style={{backgroundImage: `url(${selectedMockupImage})`}}
-              className="bg-contain bg-center bg-no-repeat xl:w-[420px] xl:h-[586px] w-[256px] h-[351px]"
+              className="h-[351px] w-[256px] bg-contain bg-center bg-no-repeat xl:h-[586px] xl:w-[420px]"
             />
           )}
 
-          <Flex align="center" gap={60} className="mt-6 md:!flex !hidden">
-            <Typography.Text className="!text-xs !mb-2">
+          <Flex align="center" gap={60} className="mt-6 !hidden md:!flex">
+            <Typography.Text className="!mb-2 !text-xs">
               Preview Image
             </Typography.Text>
-            <Typography.Text className="!text-xs !mb-2">
+            <Typography.Text className="!mb-2 !text-xs">
               Mockup Images
             </Typography.Text>
           </Flex>
           <Flex
             align="center"
-            className="flex md:flex-row flex-col md:mt-0 mt-2"
+            className="mt-2 flex flex-col md:mt-0 md:flex-row"
           >
-            <div className="flex items-center flex-col">
-              <Typography.Text className="!text-xs !mb-2 md:hidden block">
+            <div className="flex flex-col items-center">
+              <Typography.Text className="!mb-2 block !text-xs md:hidden">
                 Preview Image
               </Typography.Text>
               <PreviewImage
@@ -568,15 +568,15 @@ export default function PokemonCardPage() {
             </div>
             <Divider
               type="vertical"
-              className="md:!h-10 md:!w-[1px] md:!my-0 !my-5 !h-[1px] !w-full !mx-[30px] bg-neutrals-6"
+              className="!mx-[30px] !my-5 !h-px !w-full bg-neutrals-6 md:!my-0 md:!h-10 md:!w-px"
             />
-            <Typography.Text className="!text-xs !mb-2 md:hidden block">
+            <Typography.Text className="!mb-2 block !text-xs md:hidden">
               Mockup Images
             </Typography.Text>
             <Flex
               align="center"
               justify="space-between"
-              className="w-full flex md:flex-row flex-col gap-y-4"
+              className="flex w-full flex-col gap-y-4 md:flex-row"
             >
               {MOCKUP_IMAGES.map((mockup) => (
                 <PreviewImage
@@ -591,30 +591,28 @@ export default function PokemonCardPage() {
             </Flex>
           </Flex>
         </div>
-        <div className="flex-1 xl:h-[80vh] md:h-[70vh] overflow-auto pr-5">
-          <div className="sticky -top-[1px] bg-white z-10">
-            <Typography.Title className="!text-primary !text-[32px] !font-semibold md:!mb-10 !mb-4">
-              Pokemon Couple Card
-            </Typography.Title>
+        <div className="flex-1 overflow-auto pr-5 md:h-[70vh] xl:h-[80vh]">
+          <Typography.Title className="!mb-4 !text-[32px] !font-semibold !text-primary md:!mb-10">
+            Pokemon Couple Card
+          </Typography.Title>
 
-            <Tabs
-              items={POKEMON_SETTING_TABS.map((tab, idx) => ({
-                ...tab,
-                label: `${idx + 1}. ${tab.label}`,
-              }))}
-              activeKey={state.activeTab}
-              onChange={(activeTab) => {
-                setState((prev) => ({...prev, activeTab}));
-              }}
-            />
-          </div>
+          <Tabs
+            items={POKEMON_SETTING_TABS.map((tab, idx) => ({
+              ...tab,
+              label: `${idx + 1}. ${tab.label}`,
+            }))}
+            activeKey={state.activeTab}
+            onChange={(activeTab) => {
+              setState((prev) => ({...prev, activeTab}));
+            }}
+          />
           {renderSettings[state.activeTab]}
         </div>
       </div>
       <Modal
         destroyOnClose
         centered
-        className="md:!w-[518px] !w-[80vw]"
+        className="!w-[80vw] md:!w-[518px]"
         open={showModal}
         onCancel={() => setState((prev) => ({...prev, showModal: false}))}
         onOk={() => setState((prev) => ({...prev, showModal: false}))}
@@ -624,14 +622,14 @@ export default function PokemonCardPage() {
           // wrapper: 'bg-slate-500',
         }}
       >
-        <Typography.Text className="md:!text-[32px] !text-[24px] font-semibold">
+        <Typography.Text className="!text-[24px] font-semibold md:!text-[32px]">
           Review Your Image
         </Typography.Text>
         <StyledPokemonCard values={settings} />
         <Button
           block
           type="primary"
-          className="!flex items-center justify-center gap-2 md:!max-w-[420px] !max-w-[243px] mb-3"
+          className="mb-3 !flex !max-w-[243px] items-center justify-center gap-2 md:!max-w-[420px]"
           loading={isLoadingExport}
           onClick={() => handleExportPokemonCard()}
         >
@@ -716,7 +714,7 @@ function DesignSetting(props: DesignSettingProps) {
 
                   return (
                     <React.Fragment key={key}>
-                      <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10 gap-y-6">
+                      <div className="grid grid-cols-1 gap-x-10 gap-y-6 xl:grid-cols-2">
                         <Form.Item
                           name={[name, 'gender']}
                           label={`${prefixLabel} Character’s Gender`}
@@ -811,7 +809,7 @@ function DesignSetting(props: DesignSettingProps) {
           }}
         </Form.List>
 
-        <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10">
+        <div className="grid grid-cols-1 gap-x-10 xl:grid-cols-2">
           <Form.List name="pokemons">
             {(fields) => {
               return fields.map((field, index) => {
@@ -832,7 +830,7 @@ function DesignSetting(props: DesignSettingProps) {
                         label: (
                           <Flex align="center" gap={12}>
                             <div
-                              className="w-10 h-10 bg-contain bg-center bg-no-repeat"
+                              className="size-10 bg-contain bg-center bg-no-repeat"
                               style={{backgroundImage: `url(${image})`}}
                             ></div>
 
@@ -850,7 +848,7 @@ function DesignSetting(props: DesignSettingProps) {
           </Form.List>
         </div>
 
-        <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10 pt-5">
+        <div className="grid grid-cols-1 gap-x-10 pt-5 xl:grid-cols-2">
           <Button
             type="primary"
             block
@@ -922,7 +920,7 @@ function MessageSetting(props: MessageSettingProps) {
           onChange?.(values);
         }}
       >
-        <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10">
+        <div className="grid grid-cols-1 gap-x-10 xl:grid-cols-2">
           <Form.Item<SettingFormType>
             name={'cardTitle'}
             label={`Card Title`}
@@ -959,7 +957,7 @@ function MessageSetting(props: MessageSettingProps) {
         </div>
 
         <CustomDivider />
-        <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10">
+        <div className="grid grid-cols-1 gap-x-10 xl:grid-cols-2">
           <Form.Item
             name={'quoteTitle'}
             label={`Quote Title`}
@@ -1080,7 +1078,7 @@ function MessageSetting(props: MessageSettingProps) {
           </Form.Item>
         </div>
 
-        <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-10 pt-5">
+        <div className="grid grid-cols-1 gap-x-10 pt-5 xl:grid-cols-2">
           <Button
             type="primary"
             block

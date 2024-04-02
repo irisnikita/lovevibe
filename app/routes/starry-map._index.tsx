@@ -200,7 +200,7 @@ export default function StarryMapPage() {
   const renderStep1 = () => {
     return (
       <>
-        <div className="flex md:flex-row flex-col gap-x-[60px]">
+        <div className="flex flex-col gap-x-[60px] md:flex-row">
           <div>
             <Form.Item<StarryMapSettings>
               label="Star Style"
@@ -259,7 +259,7 @@ export default function StarryMapPage() {
 
   const renderStep2 = () => {
     return (
-      <Flex vertical className="md:w-[356px] w-full">
+      <Flex vertical className="w-full md:w-[356px]">
         <Form.Item
           name={'location'}
           label="Location"
@@ -295,7 +295,7 @@ export default function StarryMapPage() {
   const renderStep3 = () => {
     return (
       <>
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-x-10">
+        <div className="grid grid-cols-1 gap-x-10 md:grid-cols-2">
           <Form.Item<StarryMapSettings>
             name="name"
             label="Names"
@@ -314,7 +314,7 @@ export default function StarryMapPage() {
 
         <Form.Item<StarryMapSettings> label="Choose the information you want to display">
           <div
-            className={`grid grid-cols-3 px-10 py-6 w-full border border-neutrals-5 rounded-xl ${css`
+            className={`grid w-full grid-cols-3 rounded-xl border border-neutrals-5 px-10 py-6 ${css`
               .ant-form-item-label {
                 font-weight: 500;
               }
@@ -383,9 +383,9 @@ export default function StarryMapPage() {
 
   return (
     <>
-      <div className="container md:mt-[60px] mt-2 mb-10 flex md:flex-row md:items-start items-center flex-col-reverse gap-x-[88px] gap-y-2">
-        <div className="flex-1 w-full">
-          <Typography.Title className="md:!text-[40px] !text-2xl !font-semibold !text-primary md:!mb-[60px] !mb-[16px] md:text-left text-center">
+      <div className="container mb-10 mt-2 flex flex-col-reverse items-center gap-x-[88px] gap-y-2 md:mt-[60px] md:flex-row md:items-start">
+        <div className="w-full flex-1">
+          <Typography.Title className="!mb-[16px] text-center !text-2xl !font-semibold !text-primary md:!mb-[60px] md:text-left md:!text-[40px]">
             COUPLE STAR MAP
           </Typography.Title>
 
@@ -396,11 +396,11 @@ export default function StarryMapPage() {
               ...item,
               label: `${idx + 1}. ${item.label}`,
             }))}
-            className="md:border-none border-b border-neutrals-6"
+            className="border-b border-neutrals-6 md:border-none"
             onChange={onChangeTabs}
           />
 
-          <FormWrapper className="md:mt-6 mt-4">
+          <FormWrapper className="mt-4 md:mt-6">
             <Form<StarryMapSettings>
               name="starry-map"
               form={form}
@@ -420,7 +420,7 @@ export default function StarryMapPage() {
                   loading={isLoading}
                   type="primary"
                   htmlType="submit"
-                  className="!flex items-center justify-center gap-3 md:!w-[300px] !w-full mt-5"
+                  className="mt-5 !flex !w-full items-center justify-center gap-3 md:!w-[300px]"
                 >
                   {activeTab ===
                   STARRY_MAP_SETTING_TAB_KEYS.CUSTOMIZE_INFORMATION
@@ -442,7 +442,7 @@ export default function StarryMapPage() {
         </div>
         <ClientOnly fallback={null}>
           {() => (
-            <div className="md:relative sticky top-0 md:w-fit w-full bg-white flex justify-center">
+            <div className="top-0 flex w-full justify-center bg-white md:w-fit">
               <StarryMapPoster
                 id="starry-map-poster"
                 values={values}
@@ -465,7 +465,7 @@ export default function StarryMapPage() {
           // wrapper: 'bg-slate-500',
         }}
       >
-        <Typography.Text className="md:!text-[32px] !text-[24px] font-semibold">
+        <Typography.Text className="!text-[24px] font-semibold md:!text-[32px]">
           Review Your Image
         </Typography.Text>
         {/* <StyledPokemonCard values={settings} /> */}
@@ -473,7 +473,7 @@ export default function StarryMapPage() {
         <Button
           block
           type="primary"
-          className="!flex items-center justify-center gap-2 md:!max-w-[420px] !max-w-[243px] mb-3"
+          className="mb-3 !flex !max-w-[243px] items-center justify-center gap-2 md:!max-w-[420px]"
           loading={false}
           onClick={() => handleExportStarryMap()}
         >
