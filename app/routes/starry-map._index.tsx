@@ -390,7 +390,7 @@ export default function StarryMapPage() {
           </Typography.Title>
 
           <Tabs
-            moreIcon={null}
+            moreIcon={undefined}
             activeKey={activeTab}
             items={STARRY_MAP_SETTING_TABS.map((item, idx) => ({
               ...item,
