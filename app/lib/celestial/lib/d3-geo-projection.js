@@ -3,7 +3,7 @@
 typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-geo'), require('d3-array')) :
 typeof define === 'function' && define.amd ? define(['exports', 'd3-geo', 'd3-array'], factory) :
 (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.d3 = global.d3 || {}, global.d3, global.d3));
-}(this, (function (exports, d3Geo, d3Array) { 'use strict';
+}(this, (function (exports, d3Geo, d3Array) { 
 
 var abs = Math.abs;
 var atan = Math.atan;

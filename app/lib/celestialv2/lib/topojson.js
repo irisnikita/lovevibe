@@ -3,7 +3,7 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
 	(factory((global.topojson = global.topojson || {})));
-}(this, (function (exports) { 'use strict';
+}(this, (function (exports) { 
 
 var identity = function(x) {
   return x;

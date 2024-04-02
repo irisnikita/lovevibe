@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import {useEffect} from 'react';
+// import {Celestial} from '~/lib/celestialv2/celestial';
 
 export const Hello = () => {
   const [LAT, LON] = [49.2827, 123.1207];
@@ -142,6 +143,9 @@ export const Hello = () => {
 
   useEffect(() => {
     setTimeout(() => {
+      const {Celestial} = require('~/lib/celestialv2/celestial');
+
+      console.log('hello', Celestial);
       // Celestial.display(celestialConfig);
     }, 1000);
   }, []);

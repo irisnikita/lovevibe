@@ -38,7 +38,6 @@ import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocomplet
 import {css} from '@emotion/css';
 import {ClientOnly} from 'remix-utils/client-only';
 import {Hello} from '~/components/test.client';
-import {pick} from 'lodash';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Starry Map | LoveVibe'}];
@@ -95,10 +94,11 @@ const CelestialMap: React.FC<CelestialMapProps> = (props) => {
   const celestialMapRef = React.useRef(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      console.log('this', this);
-    }
-
+    setTimeout(() => {
+      if (typeof window !== 'undefined') {
+        console.log('this', this);
+      }
+    }, 2000);
     const fontString = `10px Roboto, sans-serif`;
 
     // Celestial.display(config);

@@ -9698,7 +9698,6 @@ canvas.text = function () {
       ? define(['exports'], factory)
       : factory((global.d3 = global.d3 || {}));
   })(this, function (exports) {
-    'use strict';
 
     var slice = [].slice;
 

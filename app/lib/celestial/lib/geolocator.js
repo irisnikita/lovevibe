@@ -9,7 +9,7 @@
     root.geolocator = factory(root.d3, root.topojson, root);
   }
 }(this, function(d3, topojson, window) {
-  'use strict';
+  
   var originalGeolocator = null;
   if (window) originalGeolocator = window.geolocator;
   var plugins = [];

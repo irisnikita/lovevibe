@@ -8,7 +8,7 @@
         typeof globalThis !== 'undefined' ? globalThis : global || self),
       factory((global.d3 = global.d3 || {})));
 })(this, function (exports) {
-  'use strict';
+  
 
   var version = '7.8.5';
 

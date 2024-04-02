@@ -8,7 +8,7 @@
         typeof globalThis !== 'undefined' ? globalThis : global || self),
       factory((global.geoZoom = global.geoZoom || {})));
 })(this, function (exports) {
-  'use strict';
+ 
 
   var xhtml = 'http://www.w3.org/1999/xhtml';
 
