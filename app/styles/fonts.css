@@ -21,3 +21,24 @@
   font-display: swap;
   src: url(../../public/fonts/TGL12096.01.woff2) format('woff2');
 }
+
+@font-face {
+  font-family: 'Louis George';
+  font-style: 700;
+  font-display: swap;
+  src: url(../../public/fonts/LOUIS\ GEORGE\ CAFE\ BOLD.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Maretha';
+  font-style: normal;
+  font-display: swap;
+  src: url(../../public/fonts/MARETHA-WYD7V.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Cambria';
+  font-style: normal;
+  font-display: swap;
+  src: url(../../public/fonts/Cambria-01.woff2) format('woff2');
+}

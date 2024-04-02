@@ -35,7 +35,6 @@ export function createGoogleClient({
         // });
 
         const data = await googleServices.autoComplete(query || '');
-        console.log('🚀 ~ data:', data);
 
         // if (!response.ok) {
         //   throw new Error(

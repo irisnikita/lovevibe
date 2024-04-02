@@ -18,11 +18,12 @@ export function Header(props: HeaderProps) {
 
   // const {shop, menu} = header;
   return (
-    <header className="container flex items-center justify-between pt-8">
+    <header className="container flex items-center justify-between md:pt-8 md:pb-0 md:px-40 p-4">
       <Link to="https://lovevibe.co" prefetch="intent">
         <Image
           alt="lovevibe logo"
-          sizes="(min-width: 768px) 50vw, 100vw"
+          sizes="(max-width: 768px) 50vw, 100vw  "
+          className="w-[62px] md:w-[75px]"
           width={75}
           src={logo || LovevibeLogo}
         />

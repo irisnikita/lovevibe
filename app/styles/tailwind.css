@@ -6,4 +6,8 @@
   img {
     @apply inline-block;
   }
+
+  body > main {
+    margin: 0px;
+  }
 }

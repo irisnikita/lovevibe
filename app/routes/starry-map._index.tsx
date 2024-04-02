@@ -1,22 +1,18 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable eslint-comments/disable-enable-pair */
-/* eslint-disable no-template-curly-in-string */
 // Libraries
+import {useState} from 'react';
 import {Flex, Form, AutoComplete, DatePicker, Switch} from 'antd';
+import {type MetaFunction} from '@shopify/remix-oxygen';
+import {type Dayjs} from 'dayjs';
 import styled from '@emotion/styled';
-import {
-  json,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from '@shopify/remix-oxygen';
-import React, {useEffect, useState} from 'react';
 
 // Components
-import {Select, Typography, Button, Spin, Input} from '~/components/ui';
+import {Select, Typography, Button, Spin, Input, Modal} from '~/components/ui';
 import {Tabs} from '~/components/lovevibe';
-
 // Constants
-import {API_SECRET_KEY, CHARACTER_GENDER_KEYS} from '~/constants';
+
+import {API_SECRET_KEY} from '~/constants';
+import {StarryMapPoster} from '~/components/starry-map/StarryMapPoster.client';
 
 // Styled
 import {FormWrapper} from '~/styled';
@@ -37,18 +33,19 @@ import {ArrowRight} from '~/icons';
 import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
 import {css} from '@emotion/css';
 import {ClientOnly} from 'remix-utils/client-only';
-import {Hello} from '~/components/test.client';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Starry Map | LoveVibe'}];
 };
 
-interface StarryMapSettings {
+export interface StarryMapSettings {
   starStyle: string[];
   mapColor: string;
   printSize?: string;
   location?: string;
-  date?: Date;
+  date?: Dayjs;
   name: string;
   title: string;
   showLocationLabel: boolean;
@@ -61,12 +58,10 @@ type TState = {
   activeTab: string;
   locationSearch?: string;
   locationDetail?: any;
+  showModal: boolean;
+  previewImage?: string;
+  isLoading?: boolean;
 };
-
-interface CelestialMapProps {
-  values: StarryMapSettings;
-  locationDetail?: TState['locationDetail'];
-}
 
 const INITIAL_STARRY_MAP_SETTINGS: StarryMapSettings = {
   starStyle: [STAR_STYLE_KEYS.CONSTELLATIONS],
@@ -84,143 +79,16 @@ const INITIAL_STARRY_MAP_SETTINGS: StarryMapSettings = {
 const INITIAL_STATE: TState = {
   values: INITIAL_STARRY_MAP_SETTINGS,
   activeTab: STARRY_MAP_SETTING_TAB_KEYS.CHOOSE_STYLE,
-};
-
-// Components
-const CelestialMap: React.FC<CelestialMapProps> = (props) => {
-  const {values, locationDetail} = props;
-  const {geometry} = locationDetail?.geometry || {};
-  const {lat: LAT, lng: LON} = locationDetail || {};
-  const celestialMapRef = React.useRef(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (typeof window !== 'undefined') {
-        console.log('this', this);
-      }
-    }, 2000);
-    const fontString = `10px Roboto, sans-serif`;
-
-    // Celestial.display(config);
-    // Celestial.skyview({date: new Date()});
-  }, [values]);
-
-  return <Hello />;
-
-  return (
-    <div id="celestial-map" ref={celestialMapRef}>
-      <Button
-        onClick={() => {
-          // const {Celestial} = require('d3-celestial');
-          // const config = {
-          //   container: 'celestial-map',
-          //   width: 500,
-          //   formFields: {download: true},
-          //   datapath: 'https://ofrohn.github.io/data/',
-          //   form: false,
-          //   advanced: false,
-          //   interactive: false,
-          //   disableAnimations: false,
-          //   zoomlevel: null,
-          //   zoomextend: 1,
-          //   projection: 'airy',
-          //   transform: 'equatorial',
-          //   follow: 'zenith',
-          //   geopos: [LAT, LON],
-          //   lines: {
-          //     graticule: {
-          //       show: true,
-          //       color: '#cccccc',
-          //       width: 0.3,
-          //       opacity: 0.5,
-          //     },
-          //     equatorial: {show: false},
-          //     ecliptic: {show: false},
-          //     galactic: {show: false},
-          //     supergalactic: {show: false},
-          //   },
-          //   planets: {
-          //     show: false,
-          //     // List of all objects to show
-          //     which: [
-          //       'sol',
-          //       'mer',
-          //       'ven',
-          //       'ter',
-          //       'lun',
-          //       'mar',
-          //       'jup',
-          //       'sat',
-          //       'ura',
-          //       'nep',
-          //     ],
-          //     names: false, // Show name in nameType language next to symbol
-          //     nameStyle: {
-          //       fill: '#00ccff',
-          //       font: "14px 'Lucida Sans Unicode', Consolas, sans-serif",
-          //       align: 'right',
-          //       baseline: 'top',
-          //     },
-          //     namesType: 'desig',
-          //   },
-          //   dsos: {
-          //     show: false,
-          //     names: false,
-          //   },
-          //   constellations: {
-          //     names: false,
-          //     namesType: 'iau',
-          //     nameStyle: {
-          //       fill: '#ffffff',
-          //       align: 'center',
-          //       baseline: 'middle',
-          //       font: [fontString, `0px Roboto, sans-serif`],
-          //     },
-          //     lines: true,
-          //     lineStyle: {stroke: '#ffffff', width: 0.4, opacity: 1},
-          //   },
-          //   mw: {
-          //     show: true,
-          //     style: {fill: '#ffffff', width: 0.5, opacity: 0.2},
-          //   },
-          //   background: {
-          //     fill: values.mapColor,
-          //     stroke: '#ffffff',
-          //     opacity: 1,
-          //     width: 1,
-          //   },
-          //   stars: {
-          //     colors: false,
-          //     size: 4,
-          //     limit: 6,
-          //     exponent: -0.28,
-          //     designation: false,
-          //     propername: false,
-          //     propernameType: 'name',
-          //     propernameStyle: {
-          //       fill: '#ffffff',
-          //       font: fontString,
-          //       align: 'right',
-          //       baseline: 'center',
-          //     },
-          //     propernameLimit: 2.0,
-          //   },
-          // };
-          // Celestial.display(config);
-        }}
-      >
-        Button
-      </Button>
-      Map
-    </div>
-  );
+  showModal: false,
+  previewImage: '',
+  isLoading: false,
 };
 
 // Common
 export default function StarryMapPage() {
   // State
   const [state, setState] = useState<TState>(INITIAL_STATE);
-  const {activeTab, values} = state;
+  const {activeTab, values, locationDetail, showModal, isLoading} = state;
 
   // Form
   const [form] = Form.useForm<StarryMapSettings>();
@@ -245,7 +113,7 @@ export default function StarryMapPage() {
   }));
 
   // Handlers
-  const onFinishSubmit = (values: StarryMapSettings) => {
+  const onFinishSubmit = async (values: StarryMapSettings) => {
     const currentTabIdx = STARRY_MAP_SETTING_TABS.findIndex(
       (tab) => tab.key === activeTab,
     );
@@ -254,6 +122,44 @@ export default function StarryMapPage() {
         ...prev,
         activeTab: STARRY_MAP_SETTING_TABS[currentTabIdx + 1].key,
       }));
+    }
+
+    // Last step
+    if (currentTabIdx + 1 === STARRY_MAP_SETTING_TABS.length) {
+      setState((prev) => ({...prev, showModal: true, isLoading: true}));
+      const {printSize} = state.values;
+
+      const starryMapPosterEl = document.querySelector(
+        '#starry-map-poster',
+      ) as HTMLElement;
+      const canvas = await html2canvas(starryMapPosterEl, {
+        scale: 3,
+        allowTaint: true,
+        useCORS: true,
+        scrollX: 0,
+        scrollY: 0,
+      });
+      canvas.id = 'starry-map-preview-canvas';
+
+      const previewStarryMapEl = document.querySelector('#starry-map-preview');
+
+      previewStarryMapEl.appendChild(canvas);
+
+      setState((prev) => ({...prev, isLoading: false}));
+
+      // const {width, height} =
+      //   PRINT_SIZE.find((size) => size.value === printSize) || {};
+
+      // const pdf = new jsPDF({
+      //   orientation: 'p',
+      //   unit: 'cm',
+      //   format: [width, height],
+      //   putOnlyUsedFonts: true,
+      // });
+
+      // pdf.addImage(dataUrl, 'PNG', 0, 0, width, height);
+
+      // pdf.save('starry-map.pdf')
     }
   };
 
@@ -294,7 +200,7 @@ export default function StarryMapPage() {
   const renderStep1 = () => {
     return (
       <>
-        <Flex gap={60}>
+        <div className="flex md:flex-row flex-col gap-x-[60px]">
           <div>
             <Form.Item<StarryMapSettings>
               label="Star Style"
@@ -308,18 +214,14 @@ export default function StarryMapPage() {
                   items={Object.values(STAR_STYLE)}
                   itemStyle={{width: 105}}
                   onChange={(starStyle) => {
-                    if (starStyle.length !== 0) {
-                      handleChangeValues({
-                        starStyle: starStyle as string[],
-                      });
+                    handleChangeValues({
+                      starStyle: starStyle as string[],
+                    });
 
-                      form.setFieldsValue({
-                        starStyle:
-                          typeof starStyle === 'string'
-                            ? [starStyle]
-                            : starStyle,
-                      });
-                    }
+                    form.setFieldsValue({
+                      starStyle:
+                        typeof starStyle === 'string' ? [starStyle] : starStyle,
+                    });
                   }}
                 />
               </div>
@@ -350,14 +252,14 @@ export default function StarryMapPage() {
               }
             />
           </Form.Item>
-        </Flex>
+        </div>
       </>
     );
   };
 
   const renderStep2 = () => {
     return (
-      <Flex vertical className="w-[356px]">
+      <Flex vertical className="md:w-[356px] w-full">
         <Form.Item
           name={'location'}
           label="Location"
@@ -393,7 +295,7 @@ export default function StarryMapPage() {
   const renderStep3 = () => {
     return (
       <>
-        <div className="grid grid-cols-2 gap-x-10">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-x-10">
           <Form.Item<StarryMapSettings>
             name="name"
             label="Names"
@@ -458,82 +360,145 @@ export default function StarryMapPage() {
     }));
   };
 
+  const handleExportStarryMap = async () => {
+    const canvas = document.querySelector(
+      '#starry-map-preview-canvas',
+    ) as HTMLCanvasElement;
+    const dataUrl = canvas?.toDataURL('png', 1.0);
+
+    const {width, height} =
+      PRINT_SIZE.find((size) => size.value === values.printSize) || {};
+
+    const pdf = new jsPDF({
+      orientation: 'p',
+      unit: 'cm',
+      format: [width, height],
+      putOnlyUsedFonts: true,
+    });
+
+    pdf.addImage(dataUrl, 'PNG', 0, 0, width, height);
+
+    pdf.save('starry-map.pdf');
+  };
+
   return (
-    <div className="container mt-[60px] flex gap-[88px]">
-      <div className="flex-1">
-        <Typography.Title className="!text-[40px] !font-semibold !text-primary !mb-[60px]">
-          COUPLE STAR MAP
-        </Typography.Title>
+    <>
+      <div className="container md:mt-[60px] mt-2 mb-10 flex md:flex-row md:items-start items-center flex-col-reverse gap-x-[88px] gap-y-2">
+        <div className="flex-1 w-full">
+          <Typography.Title className="md:!text-[40px] !text-2xl !font-semibold !text-primary md:!mb-[60px] !mb-[16px] md:text-left text-center">
+            COUPLE STAR MAP
+          </Typography.Title>
 
-        <Tabs
-          activeKey={activeTab}
-          items={STARRY_MAP_SETTING_TABS.map((item, idx) => ({
-            ...item,
-            label: `${idx + 1}. ${item.label}`,
-          }))}
-          onChange={onChangeTabs}
-        />
+          <Tabs
+            moreIcon={null}
+            activeKey={activeTab}
+            items={STARRY_MAP_SETTING_TABS.map((item, idx) => ({
+              ...item,
+              label: `${idx + 1}. ${item.label}`,
+            }))}
+            className="md:border-none border-b border-neutrals-6"
+            onChange={onChangeTabs}
+          />
 
-        <FormWrapper className="mt-6">
-          <Form<StarryMapSettings>
-            name="starry-map"
-            form={form}
-            layout="vertical"
-            initialValues={INITIAL_STARRY_MAP_SETTINGS}
-            validateMessages={{
-              required: 'Required field',
-            }}
-            onValuesChange={(changedValues) => {
-              handleChangeValues(changedValues);
-            }}
-            onFinish={onFinishSubmit}
-          >
-            {renderSteps()}
-            <Form.Item noStyle>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="!flex items-center justify-center gap-3 !w-[300px] mt-5"
-              >
-                Continue
-                <ArrowRight />
-              </Button>
-            </Form.Item>
-          </Form>
-        </FormWrapper>
-      </div>
-      <ClientOnly fallback={null}>
-        {() => (
-          <StarryMapPoster $color={values.mapColor}>
-            <div className="frame">
-              <CelestialMap
+          <FormWrapper className="md:mt-6 mt-4">
+            <Form<StarryMapSettings>
+              name="starry-map"
+              form={form}
+              layout="vertical"
+              initialValues={INITIAL_STARRY_MAP_SETTINGS}
+              validateMessages={{
+                required: 'Required field',
+              }}
+              onValuesChange={(changedValues) => {
+                handleChangeValues(changedValues);
+              }}
+              onFinish={onFinishSubmit}
+            >
+              {renderSteps()}
+              <Form.Item noStyle>
+                <Button
+                  loading={isLoading}
+                  type="primary"
+                  htmlType="submit"
+                  className="!flex items-center justify-center gap-3 md:!w-[300px] !w-full mt-5"
+                >
+                  {activeTab ===
+                  STARRY_MAP_SETTING_TAB_KEYS.CUSTOMIZE_INFORMATION
+                    ? 'Download Preview Image'
+                    : 'Continue'}
+                  <ArrowRight
+                    style={{
+                      transform:
+                        activeTab ===
+                        STARRY_MAP_SETTING_TAB_KEYS.CUSTOMIZE_INFORMATION
+                          ? 'rotate(90deg)'
+                          : '',
+                    }}
+                  />
+                </Button>
+              </Form.Item>
+            </Form>
+          </FormWrapper>
+        </div>
+        <ClientOnly fallback={null}>
+          {() => (
+            <div className="md:relative sticky top-0 md:w-fit w-full bg-white flex justify-center">
+              <StarryMapPoster
+                id="starry-map-poster"
                 values={values}
-                locationDetail={state.locationDetail}
+                locationDetail={locationDetail}
               />
             </div>
-          </StarryMapPoster>
-        )}
-      </ClientOnly>
-    </div>
+          )}
+        </ClientOnly>
+      </div>
+      <Modal
+        destroyOnClose
+        centered
+        // className="md:!w-[518px] !w-[80vw]"
+        open={showModal}
+        onCancel={() => setState((prev) => ({...prev, showModal: false}))}
+        onOk={() => setState((prev) => ({...prev, showModal: false}))}
+        footer={null}
+        classNames={{
+          body: 'flex flex-col items-center gap-6',
+          // wrapper: 'bg-slate-500',
+        }}
+      >
+        <Typography.Text className="md:!text-[32px] !text-[24px] font-semibold">
+          Review Your Image
+        </Typography.Text>
+        {/* <StyledPokemonCard values={settings} /> */}
+        <StarryMapPreview id="starry-map-preview" />
+        <Button
+          block
+          type="primary"
+          className="!flex items-center justify-center gap-2 md:!max-w-[420px] !max-w-[243px] mb-3"
+          loading={false}
+          onClick={() => handleExportStarryMap()}
+        >
+          Download Image
+          <ArrowRight style={{transform: 'rotate(90deg)'}} />
+        </Button>
+      </Modal>
+    </>
   );
 }
 
-export const StarryMapPoster = styled.div<{$color: string}>`
-  flex-shrink: 0;
+const StarryMapPreview = styled.div`
   width: 420px;
-  height: 563px;
-  border: 3px solid var(--neutrals-5-color);
-  padding: 22px;
-  background-color: ${({$color}) => $color};
-  transition: all 0.2s ease-in-out;
 
-  .frame {
-    width: 100%;
-    height: 100%;
-    border: 3px solid
-      ${({$color}) =>
-        $color === MAP_COLORS_KEYS.WHITE
-          ? MAP_COLORS_KEYS.BLACK
-          : MAP_COLORS_KEYS.WHITE};
+  canvas {
+    width: 420px !important;
+    height: 586px !important;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 243px;
+
+    canvas {
+      width: 243px !important;
+      height: 330px !important;
+    }
   }
 `;

@@ -91,7 +91,9 @@ export function links() {
 export function scripts() {
   // return [{src: celestial}];
 
-  return [];
+  return [
+    {src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js'},
+  ];
 }
 
 /**
@@ -169,6 +171,25 @@ export default function App() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"
+          integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        ></script>
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"
+          integrity="sha512-ilnmzGTqmx3gXTbd1eLUf6LTgAFEULf1d1Pf18LR3o+IQjt1j+rtlOHX1upJUSdWlganBwNe0E7U4U5iWH+uYw=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        ></script>
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/d3-geo-projection/0.2.16/d3.geo.projection.js"
+          integrity="sha512-vvJsNeKXpTSMINXu88cHEE7v8N+WTR/PkosErt+NZoDtBGBwSdyKKr99Mtk2VmlK8r7asdTnJBXhMseL8fWsyw=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        ></script>
+
         {process.env.NODE_ENV !== 'development' && (
           <>
             <script

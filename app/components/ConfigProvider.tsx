@@ -5,6 +5,8 @@ import {
   type ConfigProviderProps as AntdConfigProviderProps,
 } from 'antd';
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import dayjs from 'dayjs';
 
 // Constants
 import {THEME} from '~/constants';
@@ -13,6 +15,9 @@ import {StyleProvider} from '@ant-design/cssinjs';
 // Queries
 import {QueryClientProvider} from '@tanstack/react-query';
 import {queryClient} from '~/queries/config';
+
+dayjs.extend(advancedFormat);
+dayjs().format('Q Do k kk X x');
 
 interface ConfigProviderProps extends AntdConfigProviderProps {}
 
