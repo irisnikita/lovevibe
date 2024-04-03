@@ -72,7 +72,7 @@ const celestialConfig = {
   lines: {
     graticule: {
       show: false,
-      color: '#cccccc',
+      color: '#ffffff',
       width: 0.5,
       opacity: 0.5,
     },
@@ -194,24 +194,24 @@ export const StarryMapPoster: React.FC<CelestialMapProps> = (props) => {
           !!starStyle.includes(CONSTELLATIONS);
         celestialConfig.mw.show = !!starStyle.includes(MILKY_WAY);
         celestialConfig.lines.graticule.show = !!starStyle.includes(GRATICULE);
-        celestialConfig.background.fill = mapColor;
+        // celestialConfig.background.fill = mapColor;
 
         switch (mapColor) {
           case BLACK:
-            celestialConfig.constellations.nameStyle.fill = WHITE;
-            celestialConfig.lines.graticule.color = WHITE;
-            celestialConfig.constellations.lineStyle.stroke = WHITE;
+            //     celestialConfig.constellations.nameStyle.fill = WHITE;
+            //     celestialConfig.lines.graticule.color = WHITE;
+            //     celestialConfig.constellations.lineStyle.stroke = WHITE;
             celestialConfig.background.stroke = WHITE;
-            celestialConfig.mw.style.fill = WHITE;
-            celestialConfig.stars.style.fill = WHITE;
+            //     celestialConfig.mw.style.fill = WHITE;
+            //     celestialConfig.stars.style.fill = WHITE;
             break;
           case WHITE:
           default:
-            celestialConfig.constellations.nameStyle.fill = BLACK;
-            celestialConfig.constellations.lineStyle.stroke = BLACK;
+            //     celestialConfig.constellations.nameStyle.fill = BLACK;
+            //     celestialConfig.constellations.lineStyle.stroke = BLACK;
             celestialConfig.background.stroke = BLACK;
-            celestialConfig.mw.style.fill = BLACK;
-            celestialConfig.stars.style.fill = BLACK;
+            //     celestialConfig.mw.style.fill = BLACK;
+            //     celestialConfig.stars.style.fill = BLACK;
             break;
         }
 
@@ -279,11 +279,7 @@ const StarryMapPosterWrapper = styled.div<{
     width: 100%;
     height: 100%;
     padding: 22px;
-    border: 3px solid
-      ${({$color}) =>
-        $color === MAP_COLORS_KEYS.WHITE
-          ? MAP_COLORS_KEYS.BLACK
-          : MAP_COLORS_KEYS.WHITE};
+    border: 3px solid ${({$color}) => $color};
   }
 
   .map {
@@ -322,7 +318,7 @@ const StarryMapPosterWrapper = styled.div<{
       width: 25px;
       height: 2px;
       border-radius: 4px;
-      background-color: white;
+      background-color: ${({$color}) => $color || 'white'};
       margin-bottom: 14px;
     }
 

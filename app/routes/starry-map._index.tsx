@@ -134,14 +134,13 @@ export default function StarryMapPage() {
 
     // Last step
     if (currentTabIdx + 1 === STARRY_MAP_SETTING_TABS.length) {
-      setState((prev) => ({...prev, showModal: true, isLoading: true}));
+      setState((prev) => ({...prev, isLoading: true}));
       const {printSize} = state.values;
 
       const starryMapPosterEl = document.querySelector(
         '#starry-map-poster',
       ) as HTMLElement;
       const canvas = await html2canvas(starryMapPosterEl, {
-        scale: 3,
         allowTaint: true,
         useCORS: true,
         scrollX: 0,
@@ -149,11 +148,16 @@ export default function StarryMapPage() {
       });
       canvas.id = 'starry-map-preview-canvas';
 
-      const previewStarryMapEl = document.querySelector('#starry-map-preview');
+      setState((prev) => ({...prev, showModal: true, isLoading: false}));
 
-      previewStarryMapEl.appendChild(canvas);
+      // Settimeout for modal appear, then starry-map-preview append then set canvas
+      setTimeout(() => {
+        const previewStarryMapEl = document.querySelector(
+          '#starry-map-preview',
+        );
 
-      setState((prev) => ({...prev, isLoading: false}));
+        previewStarryMapEl.appendChild(canvas);
+      }, 500);
 
       // const {width, height} =
       //   PRINT_SIZE.find((size) => size.value === printSize) || {};
@@ -369,9 +373,18 @@ export default function StarryMapPage() {
   };
 
   const handleExportStarryMap = async () => {
-    const canvas = document.querySelector(
-      '#starry-map-preview-canvas',
-    ) as HTMLCanvasElement;
+    setState((prev) => ({...prev, isLoading: true}));
+
+    const starryMapPosterEl = document.querySelector(
+      '#starry-map-poster',
+    ) as HTMLElement;
+    const canvas = await html2canvas(starryMapPosterEl, {
+      scale: 5,
+      allowTaint: true,
+      useCORS: true,
+      scrollX: 0,
+      scrollY: 0,
+    });
     const dataUrl = canvas?.toDataURL('png', 1.0);
 
     const {width, height} =
@@ -387,6 +400,8 @@ export default function StarryMapPage() {
     pdf.addImage(dataUrl, 'PNG', 0, 0, width, height);
 
     pdf.save('starry-map.pdf');
+
+    setState((prev) => ({...prev, isLoading: false}));
   };
 
   return (
@@ -485,7 +500,7 @@ export default function StarryMapPage() {
           block
           type="primary"
           className="mb-3 !flex !max-w-[243px] items-center justify-center gap-2 md:!max-w-[420px]"
-          loading={false}
+          loading={isLoading}
           onClick={() => handleExportStarryMap()}
         >
           Download Image
