@@ -1,5 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
-import {Image, useNonce} from '@shopify/hydrogen';
+import {Image, useNonce, Seo} from '@shopify/hydrogen';
 import {
   defer,
   type SerializeFrom,
@@ -84,7 +83,7 @@ export function links() {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    {rel: 'icon', type: 'image/avif', href: favicon},
+    // {rel: 'icon', type: 'image/avif', href: favicon},
   ];
 }
 
@@ -150,25 +149,12 @@ export default function App() {
   const nonce = useNonce();
   const data = useLoaderData<typeof loader>();
 
-  const [isLoading, setLoading] = useState(true);
-
-  const loadingRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(true);
-
-      if (loadingRef) {
-        loadingRef.current?.classList.add('animate__fadeOut');
-      }
-    }, 1000);
-  }, []);
-
   return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <Seo />
         <Meta />
         <Links />
         <script
@@ -226,18 +212,6 @@ export default function App() {
         )}
       </head>
       <body>
-        <div
-          ref={loadingRef}
-          className={`animate__animated fixed h-full w-full flex items-center pointer-events-none justify-center z-50 bg-white ${
-            isLoading ? 'opacity-100' : 'opacity-0'
-          } transition-opacity duration-300`}
-        >
-          <Image
-            className="animate__animated animate__bounce animate__infinite"
-            src={LovevibeLogo}
-            width={100}
-          />
-        </div>
         <Layout {...data}>
           <Outlet />
         </Layout>

@@ -16,6 +16,7 @@ import {
 import {ConfigProvider} from '../ConfigProvider';
 import {THEME} from '~/constants';
 import {getRouteFromPath} from '~/utils';
+import {PageLoading} from '../ui';
 
 export type LayoutProps = {
   cart: Promise<CartApiQueryFragment | null>;
@@ -49,6 +50,7 @@ export function Layout({
       {/* <CartAside cart={cart} />
       <SearchAside />
       <MobileMenuAside menu={header?.menu} shop={header?.shop} /> */}
+      <PageLoading logoUrl={routeInfo?.logo} />
       {header && <Header logo={routeInfo?.logo} />}
       <main>{children}</main>
       {/* <Suspense>

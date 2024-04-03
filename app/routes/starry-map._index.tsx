@@ -5,11 +5,14 @@ import {Flex, Form, AutoComplete, DatePicker, Switch} from 'antd';
 import {type MetaFunction} from '@shopify/remix-oxygen';
 import {type Dayjs} from 'dayjs';
 import styled from '@emotion/styled';
+import lovevibeIcon from 'public/images/logos/lovevibe-violet-logo.png';
+
+// Images
+import favIcon from 'public/images/logos/lovevibe-violet-fav.png';
 
 // Components
 import {Select, Typography, Button, Spin, Input, Modal} from '~/components/ui';
 import {Tabs} from '~/components/lovevibe';
-// Constants
 
 import {API_SECRET_KEY} from '~/constants';
 import {StarryMapPoster} from '~/components/starry-map/StarryMapPoster.client';
@@ -37,7 +40,12 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 export const meta: MetaFunction = () => {
-  return [{title: 'Starry Map | LoveVibe'}];
+  return [
+    {
+      title: 'Starry Map | LoveVibe',
+      content: `Explore the universe through the lens of "Starry Map." Dive into a celestial journey filled with stars, constellations, and galaxies. Discover the wonders of the cosmos and unravel the mysteries of the night sky. Let "Starry Map" be your guide to unlocking the secrets of the universe and expanding your cosmic knowledge.`,
+    },
+  ];
 };
 
 export interface StarryMapSettings {
@@ -502,3 +510,7 @@ const StarryMapPreview = styled.div`
     }
   }
 `;
+
+export function links() {
+  return [{rel: 'icon', type: 'image/png', href: favIcon}];
+}

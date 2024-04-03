@@ -10,3 +10,4 @@ export * from './Spin';
 export * from './Flex';
 export * from './AutoComplete';
 export * from './DatePicker';
+export * from './PageLoading';

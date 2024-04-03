@@ -11,7 +11,6 @@ import React, {
   useState,
 } from 'react';
 import styled from '@emotion/styled';
-import html2canvas from 'html2canvas';
 import {jsPDF} from 'jspdf';
 import {convert} from 'html-to-text';
 import {Layer, Stage, Text, Image as KonvaImage, Group} from 'react-konva';
@@ -19,6 +18,7 @@ import {type MetaFunction} from '@shopify/remix-oxygen';
 
 // Images
 import BacksideCard from 'public/images/pokemon/backside-card.png';
+import favIcon from 'public/images/logos/lovevibe-fav.png';
 
 // Components
 import {
@@ -63,7 +63,12 @@ import {Checkbox} from '~/components/lovevibe/Checkbox';
 const {FEMALE, MALE} = CHARACTER_GENDER_KEYS;
 
 export const meta: MetaFunction = () => {
-  return [{title: 'Pokemon Card | LoveVibe'}];
+  return [
+    {
+      title: 'Pokemon Card | LoveVibe',
+      content: `Immerse yourself in the world of Pokemon with "Pokemon Card Design." Unleash your creativity as you craft unique and captivating designs for your very own Pokemon cards. Whether you're a seasoned trainer or a budding artist, "Pokemon Card Design" offers endless possibilities to showcase your favorite Pokemon and create memorable collectibles. Join the community of Pokemon enthusiasts and embark on a journey to design, share, and trade your custom Pokemon cards. Let your imagination run wild with "Pokemon Card Design"!`,
+    },
+  ];
 };
 
 /* Types */
@@ -1272,3 +1277,7 @@ const StyledPokemonCard = styled(PokemonCard)`
     }
   }
 `;
+
+export function links() {
+  return [{rel: 'icon', type: 'image/png', href: favIcon}];
+}
