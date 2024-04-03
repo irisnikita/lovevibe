@@ -135,7 +135,7 @@ const celestialConfig = {
     fill: STARMAP_COLORS[0].map,
     stroke: '#ffffff',
     opacity: 1,
-    width: 2,
+    width: 3,
   },
 
   stars: {
@@ -287,6 +287,11 @@ const StarryMapPosterWrapper = styled.div<{
   }
 
   .map {
+    border-radius: 100%;
+    border: 1px solid ${({$color}) => $color};
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 296px !important;
     height: 296px !important;
 

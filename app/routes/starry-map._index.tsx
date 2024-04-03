@@ -408,7 +408,10 @@ export default function StarryMapPage() {
             onChange={onChangeTabs}
           />
 
-          <FormWrapper className="mt-4 md:mt-6">
+          <FormWrapper
+            key={activeTab}
+            className="animate__animated animate__fadeIn mt-4 md:mt-6"
+          >
             <Form<StarryMapSettings>
               name="starry-map"
               form={form}
