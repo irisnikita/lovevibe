@@ -157,6 +157,8 @@ export default function App() {
         <Seo />
         <Meta />
         <Links />
+
+        {/* Old D3 Scripts */}
         <script
           src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"
           integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw=="
@@ -176,6 +178,7 @@ export default function App() {
           referrerPolicy="no-referrer"
         ></script>
 
+        {/* GA4 Tracking */}
         {process.env.NODE_ENV !== 'development' && (
           <>
             <script

@@ -18,6 +18,7 @@
   --neutrals-4-color: #777e90;
   --neutrals-5-color: #b1b5c3;
   --neutrals-6-color: #dfe2e7;
+  --neutrals-7-color: #f4f5f6;
   --neutrals-8-color: #fcfcfd;
   --neutrals-9-color: #211b0a;
   --font-heading-size: 40px;
@@ -31,6 +32,13 @@
 
 html[data-theme='violet'] {
   --primary-color: #613193;
+}
+
+html[data-theme='blue'] {
+  --primary-color: #2a5994;
+}
+html[data-theme='orange'] {
+  --primary-color: #ee774a;
 }
 
 img {
@@ -572,4 +580,10 @@ input::placeholder {
 .ant-switch .ant-switch-handle {
   top: 4px !important;
   inset-inline-start: 4px !important;
+}
+
+.ant-alert {
+  svg {
+    font-size: 20px !important;
+  }
 }

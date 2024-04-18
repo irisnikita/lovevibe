@@ -15,3 +15,11 @@ export const convertToGPSCoordinatesWithDirections = (
     longitude,
   )}° ${longDirection}`;
 };
+
+export const safeParseJson = (json: string): Record<string, any> => {
+  try {
+    return JSON.parse(json);
+  } catch (e) {
+    return null;
+  }
+};

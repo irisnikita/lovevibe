@@ -94,14 +94,38 @@ THEME.components = {
     trackHeight: 32,
     handleSize: 24,
   },
+  Alert: {
+    defaultPadding: '16px',
+    colorInfoBg: '#3772FF19',
+    colorInfoBorder: 'transparent',
+    fontSizeIcon: 24,
+    marginXS: 10,
+  },
 };
 
 export const VIOLET_THEME: TTheme = cloneDeep(THEME);
+export const BLUE_THEME: TTheme = cloneDeep(THEME);
+export const ORANGE_THEME: TTheme = cloneDeep(THEME);
+
 VIOLET_THEME.token = {
   ...VIOLET_THEME.token,
   colorPrimary: '#613193',
   colorLink: '#613193',
   colorLinkHover: '#613193',
+} as any;
+
+BLUE_THEME.token = {
+  ...BLUE_THEME.token,
+  colorPrimary: '#2A5994',
+  colorLink: '#2A5994',
+  colorLinkHover: '#2A5994',
+} as any;
+
+ORANGE_THEME.token = {
+  ...ORANGE_THEME.token,
+  colorPrimary: '#EE774A',
+  colorLink: '#EE774A',
+  colorLinkHover: '#EE774A',
 } as any;
 
 export const GLOBAL_TOKEN = getDesignToken(THEME);
