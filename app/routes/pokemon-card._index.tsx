@@ -2,14 +2,7 @@
 /* eslint-disable no-template-curly-in-string */
 // Libraries
 import {Flex, Form} from 'antd';
-import React, {
-  LegacyRef,
-  memo,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import styled from '@emotion/styled';
 import {jsPDF} from 'jspdf';
 import {convert} from 'html-to-text';
@@ -18,7 +11,6 @@ import {type MetaFunction} from '@shopify/remix-oxygen';
 
 // Images
 import BacksideCard from 'public/images/pokemon/backside-card.png';
-import favIcon from 'public/images/logos/lovevibe-fav.png';
 
 // Components
 import {
@@ -1277,7 +1269,3 @@ const StyledPokemonCard = styled(PokemonCard)`
     }
   }
 `;
-
-export function links() {
-  return [{rel: 'icon', type: 'image/png', href: favIcon}];
-}

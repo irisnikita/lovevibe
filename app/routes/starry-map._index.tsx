@@ -5,7 +5,10 @@ import {Flex, Form, AutoComplete, DatePicker, Switch} from 'antd';
 import {type MetaFunction} from '@shopify/remix-oxygen';
 import {type Dayjs} from 'dayjs';
 import styled from '@emotion/styled';
-import lovevibeIcon from 'public/images/logos/lovevibe-violet-logo.png';
+import {css} from '@emotion/css';
+import {ClientOnly} from 'remix-utils/client-only';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 // Images
 import favIcon from 'public/images/logos/lovevibe-violet-fav.png';
@@ -20,6 +23,7 @@ import {StarryMapPoster} from '~/components/starry-map/StarryMapPoster.client';
 // Styled
 import {FormWrapper} from '~/styled';
 
+// Components
 import {Checkbox} from '~/components/lovevibe/Checkbox';
 import {
   MAP_COLORS,
@@ -32,12 +36,10 @@ import {
 } from '~/constants/starry-map';
 import {ArrowRight} from '~/icons';
 
+// Icons
+
 // Hooks
 import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
-import {css} from '@emotion/css';
-import {ClientOnly} from 'remix-utils/client-only';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 
 export const meta: MetaFunction = () => {
   return [
@@ -528,7 +530,3 @@ const StarryMapPreview = styled.div`
     }
   }
 `;
-
-export function links() {
-  return [{rel: 'icon', type: 'image/png', href: favIcon}];
-}

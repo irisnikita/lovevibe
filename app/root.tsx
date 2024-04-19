@@ -16,18 +16,16 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
   type ShouldRevalidateFunction,
-  useRouteLoaderData,
-  useLocation,
 } from '@remix-run/react';
 import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
 import favicon from '../public/images/logos/lovevibe-fav-icon_430x.avif';
 import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import tailwindStyles from './styles/tailwind.css';
+import animateStyles from './styles/animate.css';
 import pokemonCardStyles from './styles/pokemon-card.css';
 import fonts from './styles/fonts.css';
 import {Layout} from '~/components/lovevibe/Layout';
-import LovevibeLogo from 'public/images/logos/lovevibe.png';
 import {gaTrackingId} from './constants';
 
 /**
@@ -76,6 +74,10 @@ export function links() {
       href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css',
     },
     {
+      rel: 'stylesheet',
+      href: animateStyles,
+    },
+    {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
     },
@@ -83,7 +85,7 @@ export function links() {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    // {rel: 'icon', type: 'image/avif', href: favicon},
+    {rel: 'icon', type: 'image/avif', href: favicon},
   ];
 }
 

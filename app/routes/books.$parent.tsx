@@ -101,7 +101,7 @@ export default function Books() {
   }, [parent]);
 
   return (
-    <div className="container mb-[60px] mt-8 flex justify-center md:mb-[100px] md:mt-10">
+    <div className="animate__animated animate__fadeIn animate__delay-2_5s container mb-[60px] mt-8 flex justify-center md:mb-[100px] md:mt-10">
       <div className="w-full max-w-[736px]">
         <div className="flex flex-col">
           <Typography.Title className="!text-[32px] !font-semibold !text-primary md:!text-[40px]">

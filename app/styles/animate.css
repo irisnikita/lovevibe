@@ -1,0 +1,13 @@
+.animate__animated.animate__delay-2_5s {
+  -webkit-animation-delay: 2.5s;
+  animation-delay: 2.5s;
+  -webkit-animation-delay: calc(var(--animate-delay) * 2.5);
+  animation-delay: calc(var(--animate-delay) * 2.5);
+}
+
+.animate__animated.animate__delay-2_7s {
+  -webkit-animation-delay: 2.7s;
+  animation-delay: 2.7s;
+  -webkit-animation-delay: calc(var(--animate-delay) * 2.7);
+  animation-delay: calc(var(--animate-delay) * 2.7);
+}
