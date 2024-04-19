@@ -1,7 +1,7 @@
 // Libraries
 import {useMemo, useState} from 'react';
 import {useLoaderData} from '@remix-run/react';
-import {json} from '@shopify/remix-oxygen';
+import {json, defer} from '@shopify/remix-oxygen';
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
 import styled from '@emotion/styled';
 
@@ -35,7 +35,7 @@ export async function loader({params, context}: LoaderFunctionArgs) {
   const {metaobjects} = await storefront.query(BOOK_QUERY);
   const books = metaobjects?.edges || [];
 
-  return json({
+  return defer({
     parent,
     books,
   });
