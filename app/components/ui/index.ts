@@ -14,3 +14,6 @@ export * from './PageLoading';
 export * from './Alert';
 export * from './Collapse';
 export * from './Empty';
+export * from './Flex';
+export * from './Card';
+export * from './Form';

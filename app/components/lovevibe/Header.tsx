@@ -18,7 +18,7 @@ export function Header(props: HeaderProps) {
 
   // const {shop, menu} = header;
   return (
-    <header className="container flex items-center justify-between md:pt-8 md:pb-0 md:px-40 p-4">
+    <header className="container flex items-center justify-between p-4 md:px-20 md:pb-0 md:pt-8 xl:px-40">
       <Link to="https://lovevibe.co" prefetch="intent">
         <Image
           alt="lovevibe logo"
@@ -31,7 +31,7 @@ export function Header(props: HeaderProps) {
       <Button
         type="link"
         href="https://lovevibe.co/pages/all-ideas"
-        className="!flex items-center gap-1 underline !font-bold"
+        className="!flex items-center gap-1 !font-bold underline"
       >
         Discover More Product
         <ArrowRight />

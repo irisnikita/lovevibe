@@ -34,6 +34,7 @@ export const THEME: TTheme = {
     colorText: '#141416',
     fontFamily: `Urbanist, sans-serif`,
     fontSize: 16,
+    fontSizeSM: 14,
     fontSizexl: 16,
     siderWidth: 270,
     headerHeight: 64,
@@ -67,8 +68,11 @@ THEME.components = {
   Input: {
     borderRadius: 8,
     controlHeight: 48,
+    controlHeightSM: 36,
+    borderRadiusSM: 8,
     controlPaddingHorizontal: 12,
     colorTextPlaceholder: '#777E90',
+    fontSizeSM: 14,
   },
   InputNumber: {
     borderRadius: 8,
@@ -80,6 +84,8 @@ THEME.components = {
     borderRadius: 8,
     fontWeight: 700,
     controlHeight: 48,
+    defaultColor: 'var(--primary-color)',
+    defaultBorderColor: 'var(--primary-color)',
   },
   DatePicker: {
     borderRadius: 8,
@@ -100,6 +106,11 @@ THEME.components = {
     colorInfoBorder: 'transparent',
     fontSizeIcon: 24,
     marginXS: 10,
+  },
+  Card: {
+    colorBgContainer: 'var(--neutrals-8-color)',
+    borderRadiusLG: 20,
+    colorBorderSecondary: 'var(--neutrals-7-color)',
   },
 };
 

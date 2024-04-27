@@ -1,1 +1,1 @@
-export {Input} from 'antd';
+export {Input, type InputProps} from 'antd';

@@ -23,3 +23,7 @@ export const safeParseJson = (json: string): Record<string, any> => {
     return null;
   }
 };
+
+export const numberTwoDigits = (number: number) => {
+  return number < 10 ? `0${number}` : number;
+};

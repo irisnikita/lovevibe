@@ -1,5 +1,6 @@
 // Libraries
 import styled from '@emotion/styled';
+import type {FlexProps} from 'antd';
 import {xor} from 'lodash';
 import {memo} from 'react';
 
@@ -9,19 +10,31 @@ import {Flex, Typography} from '~/components/ui';
 // Icons
 import {RadioCheck} from '~/icons';
 
-interface CheckboxProps {
+interface CheckboxProps
+  extends Omit<FlexProps, 'value' | 'onChange' | 'children'> {
   items: {key: string; label: string; image?: string}[];
-  style?: React.CSSProperties;
-  itemStyle?: React.CSSProperties;
   showBottomLabel?: boolean;
   value: string | string[];
   multiple?: boolean;
+
+  // Props for item
+  itemStyle?: React.CSSProperties;
+  itemProps?: React.HTMLAttributes<HTMLDivElement>;
+
   onChange: (value: string | string[]) => void;
 }
 
 export const Checkbox: React.FC<CheckboxProps> = memo((props) => {
-  const {items, value, style, itemStyle, showBottomLabel, multiple, onChange} =
-    props;
+  const {
+    items,
+    value,
+    itemStyle,
+    showBottomLabel,
+    multiple,
+    onChange,
+    itemProps,
+    ...restOfProps
+  } = props;
 
   const onChangeCheckbox = (key: string) => {
     if (multiple && Array.isArray(value)) {
@@ -32,16 +45,19 @@ export const Checkbox: React.FC<CheckboxProps> = memo((props) => {
   };
 
   return (
-    <Flex gap={12} align="center" style={style} wrap="wrap">
+    <Flex gap={12} align="center" wrap="wrap" {...restOfProps}>
       {items.map(({key, image, label}) => {
         const isActive = multiple ? value?.includes(key) : key === value;
 
         return (
           <Flex vertical align="center" key={key}>
             <CheckboxItem
-              style={itemStyle}
+              {...itemProps}
+              style={{...itemProps?.style, ...itemStyle}}
+              className={`${itemProps?.className || ''} ${
+                isActive ? 'active' : ''
+              }`}
               $image={image}
-              className={`${isActive ? 'active' : ''}`}
               onClick={() => onChangeCheckbox(key)}
             >
               {image ? '' : label}
@@ -50,7 +66,7 @@ export const Checkbox: React.FC<CheckboxProps> = memo((props) => {
               </div>
             </CheckboxItem>
             {showBottomLabel && (
-              <Typography.Text className="!text-sm text-center mt-1">
+              <Typography.Text className="mt-1 text-center !text-sm">
                 {label}
               </Typography.Text>
             )}
@@ -75,7 +91,7 @@ const CheckboxItem = styled.div<{$image?: string}>`
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  transition: all 200ms;
+  transition: all 200ms linear;
 
   ${({$image}) => $image && `background-image: url(${$image})`};
   background-position: center;

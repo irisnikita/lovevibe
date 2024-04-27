@@ -28,6 +28,13 @@
     android emoji, emojisymbols, emojione mozilla, twemoji mozilla,
     segoe ui symbol, Noto Color Emoji Compat, emoji, sans-serif;
   --padding: 1.5rem;
+
+  --screen-xs: 0;
+  --screen-sm: 640px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+  --screen-xxl: 1536px;
 }
 
 html[data-theme='violet'] {
@@ -586,4 +593,13 @@ input::placeholder {
   svg {
     font-size: 20px !important;
   }
+}
+
+.ant-input.ant-input-sm {
+  font-size: 14px;
+  height: 36px;
+}
+
+.ant-card {
+  box-shadow: 0px 12px 24px 0px rgba(15, 15, 15, 0.03);
 }
