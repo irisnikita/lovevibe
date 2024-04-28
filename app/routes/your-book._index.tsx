@@ -1,6 +1,5 @@
 // Libraries
 import React, {useMemo, useState} from 'react';
-import {defer} from '@shopify/remix-oxygen';
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
 import styled from '@emotion/styled';
 import {clone, set} from 'lodash';
@@ -23,6 +22,8 @@ import {numberTwoDigits} from '~/utils';
 // Images
 import WhiteBook from 'public/images/books/book-white.png';
 import BlueBook from 'public/images/books/book-blue.png';
+import {Form, json, useLoaderData} from '@remix-run/react';
+import {YOUR_BOOK_CREATE_MUTATION} from '~/graphql/your-book';
 
 export const meta: MetaFunction = () => {
   return [
@@ -35,7 +36,28 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({params, context}: LoaderFunctionArgs) {
-  return defer({});
+  const {storefront} = context;
+
+  return {storefront};
+}
+
+export async function action({request, context}: LoaderFunctionArgs) {
+  const {storefront} = context;
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+
+  const response = await storefront.mutate(YOUR_BOOK_CREATE_MUTATION, {
+    variables: {
+      metaobject: {
+        type: 'your_book',
+        fields: {key: 'properties', value: '{"bookColor": 2}'},
+      },
+    },
+  });
+
+  console.log('response::', JSON.stringify(response));
+
+  return json({});
 }
 
 const TUTORIALS = [
@@ -76,6 +98,8 @@ export default function YourBooks() {
   const [state, setState] = useState(INITIAL_STATE);
   const {bookColor, bookPages, currentPage} = state;
 
+  const {storefront} = useLoaderData<typeof loader>();
+
   // Memos
   const pageTotal = useMemo(() => {
     return Math.ceil(bookPages.length / LIMIT);
@@ -90,16 +114,11 @@ export default function YourBooks() {
   }, [bookColor]);
 
   // Handlers
-  const onChangeBookPage = ({
-    index,
-    quotes,
-  }: {
-    index: number;
-    quotes: string;
-  }) => {
+  const onChangeBookPage = ({key, quotes}: {key: number; quotes: string}) => {
     const cloneBookPages = clone(bookPages);
+    const pageIdx = cloneBookPages.findIndex((page) => page.key === key);
 
-    set(cloneBookPages, `[${index}].quotes`, quotes);
+    set(cloneBookPages, `[${pageIdx}].quotes`, quotes);
 
     setState((prev) => ({
       ...prev,
@@ -114,6 +133,17 @@ export default function YourBooks() {
         currentPage: prev.currentPage + 1,
       }));
     }
+  };
+
+  const onClickShareLink = () => {
+    (storefront as any).mutate(YOUR_BOOK_CREATE_MUTATION, {
+      variables: {
+        metaobject: {
+          type: 'your_book',
+          fields: {key: 'properties', value: '{"bookColor": 2}'},
+        },
+      },
+    });
   };
 
   const renderFooter = () => {
@@ -131,7 +161,21 @@ export default function YourBooks() {
           <Card classNames={{body: 'md:!py-10 md:!px-6'}} className="w-full">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <Button>Download printable version</Button>
-              <Button>Share book via link</Button>
+
+              <Form method="post">
+                <input
+                  className="hidden"
+                  name="properties"
+                  readOnly
+                  value={JSON.stringify({
+                    bookColor,
+                    bookPages,
+                  })}
+                />
+                <Button htmlType="submit" block>
+                  Share book via link
+                </Button>
+              </Form>
             </div>
           </Card>
         </Flex>
@@ -249,7 +293,7 @@ export default function YourBooks() {
                   size="small"
                   placeholder="Enter your quotes..."
                   onChange={({target}) =>
-                    onChangeBookPage({index, quotes: target.value})
+                    onChangeBookPage({key, quotes: target.value})
                   }
                 />
                 <Typography.Text>{contents[1]}</Typography.Text>

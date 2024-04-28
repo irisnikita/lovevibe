@@ -3129,6 +3129,13 @@
     domhandler "^5.0.3"
     selderee "^0.11.0"
 
+"@shopify/admin-api-client@^0.2.9":
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/@shopify/admin-api-client/-/admin-api-client-0.2.9.tgz#51581627491e151d8d03980f2e7db5324fc2fc86"
+  integrity sha512-0K/P6e4bofCyk5BQ1OCiw9bq2d2hlxHM3B8FQEQclyMyU/b3oMowhy56sOQQODViaiZoDH/atmeWJwOX1di0Qg==
+  dependencies:
+    "@shopify/graphql-client" "^0.10.4"
+
 "@shopify/cli-hydrogen@^7.0.1":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@shopify/cli-hydrogen/-/cli-hydrogen-7.1.2.tgz#c84843bc990fddca87ae252151b3eee00a5268aa"
@@ -3314,6 +3321,11 @@
     "@shopify/plugin-did-you-mean" "3.52.0"
     zod-to-json-schema "3.21.4"
 
+"@shopify/graphql-client@^0.10.4":
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/@shopify/graphql-client/-/graphql-client-0.10.4.tgz#701201a61a59cfce0656f7fb6e5d4f8ccf0b6b37"
+  integrity sha512-wbor9lk+GrdvCYnQBY0R/PuEVmOedwZQR0ld4zp1DB6eGaEpuoO5kPB4fk+Kz65mFD9hi2KqK6Nu7/ICsIJSHg==
+
 "@shopify/graphql-codegen@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@shopify/graphql-codegen/-/graphql-codegen-0.0.1.tgz#5d1633d148db7fb091b51af50087b55cca8a6ff1"
@@ -3331,10 +3343,10 @@
   dependencies:
     "@shopify/graphql-codegen" "^0.0.1"
 
-"@shopify/hydrogen-react@2024.1.1":
-  version "2024.1.1"
-  resolved "https://registry.yarnpkg.com/@shopify/hydrogen-react/-/hydrogen-react-2024.1.1.tgz#a38b7475507c0197f0ca10d364deed213cab93d9"
-  integrity sha512-3ZDTUZPauXyV6TTxSjsEd0KEybT0jDpaEaB2tPtpjq783rJ1xD+wS9sWqqaKhAY2EUngg03muZiiuBeZIbR4Fw==
+"@shopify/hydrogen-react@2024.4.1":
+  version "2024.4.1"
+  resolved "https://registry.yarnpkg.com/@shopify/hydrogen-react/-/hydrogen-react-2024.4.1.tgz#9483f43b17f129eca2bb42221109f116a7b83e99"
+  integrity sha512-rE/JuMsuYRgDgUipDOTfkZq5Vd05y959FJYk5SljWwPJfS1k8fFdt0YFX/42uEDENPoL6qxS2JRMOjwrglE85g==
   dependencies:
     "@google/model-viewer" "^1.12.1"
     "@xstate/fsm" "^2.0.0"
@@ -3343,14 +3355,16 @@
     type-fest "^4.5.0"
     worktop "^0.7.3"
 
-"@shopify/hydrogen@~2024.1.1":
-  version "2024.1.6"
-  resolved "https://registry.yarnpkg.com/@shopify/hydrogen/-/hydrogen-2024.1.6.tgz#d65852fe0c399a61cf4c2c3629243a0f4a308439"
-  integrity sha512-o8551/zHRqKgGbUT9uIJsLxVD+dsZDDSAkNUQDd2kzq7PxNXlvHOHbO+hy0Qz28o4wzif6jEbjKJFd2MmTbVjw==
+"@shopify/hydrogen@~2024.4.1":
+  version "2024.4.1"
+  resolved "https://registry.yarnpkg.com/@shopify/hydrogen/-/hydrogen-2024.4.1.tgz#fc127a5a4ec31362877a6f03975adc0fe49724a9"
+  integrity sha512-11ES4UBEU4v1frpXZL1rpWWEUlo/yKrXireBwG8RmxHGJjOXCP7LhvxJ1svkAoMAPcNZnnDB0v+HHNe6NR6VCQ==
   dependencies:
-    "@shopify/hydrogen-react" "2024.1.1"
+    "@shopify/hydrogen-react" "2024.4.1"
     content-security-policy-builder "^2.1.1"
+    source-map-support "^0.5.21"
     type-fest "^4.5.0"
+    use-resize-observer "^9.1.0"
 
 "@shopify/mini-oxygen@^2.2.5":
   version "2.2.5"
@@ -3369,6 +3383,11 @@
     get-port "^7.0.0"
     mime "^3.0.0"
     source-map-support "^0.5.21"
+
+"@shopify/network@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@shopify/network/-/network-3.2.1.tgz#c51590bb9ccd177bb7a35c2bad482233198d215b"
+  integrity sha512-Ih/6Oe80dynlUsRfEqptWBfsySCqI0rjQvPAjS8HuWeK9nZ+TvmYScfxjucKXZ2deXwAClnU6SMdh3/B1lMMog==
 
 "@shopify/oxygen-cli@^4.3.0":
   version "4.4.2"
@@ -3399,10 +3418,50 @@
   resolved "https://registry.yarnpkg.com/@shopify/prettier-config/-/prettier-config-1.1.2.tgz#612f87c0cd1196e8b43c85425e587d0fa7f1172d"
   integrity sha512-5ugCL9sPGzmOaZjeRGaWUWhHgAbemrS6z+R7v6gwiD+BiqSeoFhIY+imLpfdFCVpuOGalpHeCv6o3gv++EHs0A==
 
-"@shopify/remix-oxygen@^2.0.3":
+"@shopify/remix-oxygen@^2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@shopify/remix-oxygen/-/remix-oxygen-2.0.4.tgz#7910ba0b2ac1a2614e09756b80bfc7045337c279"
   integrity sha512-B5an8tvbr02ncNdaZQaAOyfJZL0FguJ46umC20Vk+JPbTmoJ5bMsnYU5Y+9sLMlNZY32TtRmpl5R3LPWrEFcDg==
+
+"@shopify/shopify-api@^10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@shopify/shopify-api/-/shopify-api-10.0.0.tgz#c5b3a4bfadee5907c5598cb47b3c8e3a3d141c80"
+  integrity sha512-MZVkLjS8IW3w5INohAi+QstfSl+kpLEkKBgF1bZnC/b2IQVDnG24Ew7QAdxjgP/xMsbiQ9aMXUeB1HyRjW7NXA==
+  dependencies:
+    "@shopify/admin-api-client" "^0.2.9"
+    "@shopify/network" "^3.2.1"
+    "@shopify/storefront-api-client" "^0.3.4"
+    compare-versions "^6.1.0"
+    isbot "^5.1.4"
+    jose "^5.2.3"
+    node-fetch "^2.6.1"
+    tslib "^2.0.3"
+    uuid "^9.0.0"
+
+"@shopify/shopify-app-remix@^2.8.2":
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/@shopify/shopify-app-remix/-/shopify-app-remix-2.8.2.tgz#c4512c411f961406512c187dff5ec16680499a5d"
+  integrity sha512-gkiF9n4vExuwyrg0pkfMubZzpqdfy3lfs3mFNTluHaKauFLpxTWLeIAT0MiVL/x3r+PmyWJyzxaXf3i1PUyglQ==
+  dependencies:
+    "@remix-run/server-runtime" "^2.5.1"
+    "@shopify/admin-api-client" "^0.2.9"
+    "@shopify/shopify-api" "^10.0.0"
+    "@shopify/shopify-app-session-storage" "^2.1.5"
+    "@shopify/storefront-api-client" "^0.3.4"
+    isbot "^5.1.4"
+    semver "^7.6.0"
+
+"@shopify/shopify-app-session-storage@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@shopify/shopify-app-session-storage/-/shopify-app-session-storage-2.1.5.tgz#09bc42df0eb57ac92ca1d683c783aef83f03b8be"
+  integrity sha512-4fvdjR/b1c0SH8GbBnHTl+ETV69siozI9Z2lbG1xWVJ6mFoBG71nQ3Uf89QfJImnqRR2olPXtS4YFl2Purqp3Q==
+
+"@shopify/storefront-api-client@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@shopify/storefront-api-client/-/storefront-api-client-0.3.4.tgz#5aa84df7274d257498f41872497f4104017604c1"
+  integrity sha512-tI9l+qj1VbqdqMX6EfChnX5OVqLKADJDSRmCUHWlmkSCrNVuJtP+ylzJE70bTekeAA0DOJ+tCUZotbvngp4j+Q==
+  dependencies:
+    "@shopify/graphql-client" "^0.10.4"
 
 "@sigstore/bundle@^1.1.0":
   version "1.1.0"
@@ -5479,6 +5538,11 @@ commondir@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   integrity sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg==
+
+compare-versions@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/compare-versions/-/compare-versions-6.1.0.tgz#3f2131e3ae93577df111dba133e6db876ffe127a"
+  integrity sha512-LNZQXhqUvqUTotpZ00qLSaify3b4VFD588aRr8MKFw4CMUr98ytzCW5wDH5qx/DEY5kCDXcbcRuCqL0szEf2tg==
 
 compress-commons@^4.1.2:
   version "4.1.2"
@@ -8860,6 +8924,11 @@ isbot@^3.6.6:
   resolved "https://registry.yarnpkg.com/isbot/-/isbot-3.8.0.tgz#b1f8e3d19aca0961b5ed27b62bb8bb0a275781e4"
   integrity sha512-vne1mzQUTR+qsMLeCBL9+/tgnDXRyc2pygLGl/WsgA+EZKIiB5Ehu0CiVTHIIk30zhJ24uGz4M5Ppse37aR0Hg==
 
+isbot@^5.1.4:
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/isbot/-/isbot-5.1.5.tgz#4cbe0d2223cc2ff30c920057ff1837192cb818a3"
+  integrity sha512-l7o5pR7MAkbQl+JGgmeIFtni1F3RLsXDjDybR3t7VIVnsmYuz+Bd6PSgeXBswC7haWzGGNlw2wRdmh9Q0a2RWQ==
+
 iserror@0.0.2, iserror@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/iserror/-/iserror-0.0.2.tgz#bd53451fe2f668b9f2402c1966787aaa2c7c0bf5"
@@ -8922,7 +8991,7 @@ jiti@^1.17.1, jiti@^1.18.2, jiti@^1.21.0:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.21.0.tgz#7c97f8fe045724e136a397f7340475244156105d"
   integrity sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==
 
-jose@^5.0.0:
+jose@^5.0.0, jose@^5.2.3:
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.2.4.tgz#c0d296caeeed0b8444a8b8c3b68403d61aa4ed72"
   integrity sha512-6ScbIk2WWCeXkmzF6bRPmEuaqy1m8SbsRFMa/FLrSCkGIhj8OLVG/IH+XHVmNMx/KUo8cVWEE6oKR4dJ+S0Rkg==
@@ -14170,6 +14239,11 @@ utrie@^1.0.2:
   integrity sha512-1MLa5ouZiOmQzUbjbu9VmjLzn1QLXBhwpUa7kdLUQK+KQ5KA9I1vk5U4YHe/X2Ch7PYnJfWuWT+VbuxbGwljhw==
   dependencies:
     base64-arraybuffer "^1.0.2"
+
+uuid@^9.0.0:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.1.tgz#e188d4c8853cc722220392c424cd637f32293f30"
+  integrity sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==
 
 uvu@^0.5.0:
   version "0.5.6"
