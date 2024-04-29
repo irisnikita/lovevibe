@@ -1,21 +1,21 @@
 export const YOUR_BOOK_CREATE_MUTATION = `#graphql
-  mutation metaobjectCreate ($metaobject: MetaobjectInput!) {
+  mutation CreateMetaobject ($metaobject: MetaobjectCreateInput!) {
     metaobjectCreate(metaobject: $metaobject) {
-    metaobject {
-      # Metaobject fields
-      id
-      handle
-      fields {
-        key
-        value
+      metaobject {
+        # Metaobject fields
+        id
+        handle
+        fields {
+          key
+          value
+        }
+        displayName
       }
-      displayName
-    }
-    userErrors {
-      message
-      code
-      field
-    }
-  }
+      userErrors {
+        message
+        code
+        field
+      }
+   }
 }
 ` as const;

@@ -603,3 +603,27 @@ input::placeholder {
 .ant-card {
   box-shadow: 0px 12px 24px 0px rgba(15, 15, 15, 0.03);
 }
+
+.pages {
+  height: 256px;
+  width: 256px;
+}
+
+.page {
+  height: 100%;
+  width: 100%;
+  user-select: none;
+  touch-action: none;
+}
+
+.page1 {
+  background-color: pink;
+}
+
+.page2 {
+  background-color: yellow;
+}
+
+.page3 {
+  background-color: aqua;
+}

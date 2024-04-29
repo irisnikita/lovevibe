@@ -20,6 +20,7 @@
     "@emotion/styled": "^11.11.0",
     "@remix-run/react": "^2.5.1",
     "@remix-run/server-runtime": "^2.5.1",
+    "@shopify/admin-api-client": "^0.2.9",
     "@shopify/cli": "3.52.0",
     "@shopify/cli-hydrogen": "^7.0.1",
     "@shopify/hydrogen": "~2024.4.1",
@@ -33,6 +34,7 @@
     "d3-celestial": "^0.7.35",
     "d3-geo-projection": "^4.0.0",
     "dayjs": "^1.11.10",
+    "flipping-pages": "^3.1.0",
     "global-agent": "^3.0.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
@@ -48,6 +50,7 @@
     "react-google-autocomplete": "^2.7.3",
     "react-konva": "^18.2.10",
     "react-konva-utils": "^1.0.6",
+    "react-pageflip": "^2.0.3",
     "remix-utils": "^7.5.0",
     "use-dehydrated-state": "^0.1.0",
     "use-image": "^1.1.1"

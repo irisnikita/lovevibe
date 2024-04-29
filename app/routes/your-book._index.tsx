@@ -1,5 +1,12 @@
 // Libraries
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
+import {
+  Form,
+  json,
+  useActionData,
+  useLoaderData,
+  useLocation,
+} from '@remix-run/react';
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
 import styled from '@emotion/styled';
 import {clone, set} from 'lodash';
@@ -17,13 +24,16 @@ import {
 import {Checkbox, EmailSubmitCard} from '~/components/lovevibe';
 
 // Utils
-import {numberTwoDigits} from '~/utils';
+import {copyValueToClipboard, numberTwoDigits} from '~/utils';
 
-// Images
-import WhiteBook from 'public/images/books/book-white.png';
-import BlueBook from 'public/images/books/book-blue.png';
-import {Form, json, useLoaderData} from '@remix-run/react';
+// Constants
+import {BOOK_COLORS, TUTORIALS} from '~/constants';
+
+// Graphql queries
 import {YOUR_BOOK_CREATE_MUTATION} from '~/graphql/your-book';
+
+// Icons
+import {Success} from '~/icons';
 
 export const meta: MetaFunction = () => {
   return [
@@ -42,42 +52,26 @@ export async function loader({params, context}: LoaderFunctionArgs) {
 }
 
 export async function action({request, context}: LoaderFunctionArgs) {
-  const {storefront} = context;
+  const {storefront, adminClient} = context;
   const formData = await request.formData();
-  const data = Object.fromEntries(formData);
+  const {properties} = Object.fromEntries(formData) || {};
 
-  const response = await storefront.mutate(YOUR_BOOK_CREATE_MUTATION, {
+  const response = await adminClient.request(YOUR_BOOK_CREATE_MUTATION, {
     variables: {
       metaobject: {
         type: 'your_book',
-        fields: {key: 'properties', value: '{"bookColor": 2}'},
+        fields: [
+          {
+            key: 'properties',
+            value: properties,
+          },
+        ],
       },
     },
   });
 
-  console.log('response::', JSON.stringify(response));
-
-  return json({});
+  return json({response});
 }
-
-const TUTORIALS = [
-  'Choose your book color (blue, pink)',
-  'Type your messages on 20 pages',
-  'Send messages to your partner’s email',
-];
-
-const BOOK_COLORS = [
-  {
-    key: 'blue',
-    label: 'Blue book',
-    image: BlueBook,
-  },
-  {
-    key: 'white',
-    label: 'White book',
-    image: WhiteBook,
-  },
-];
 
 const INITIAL_STATE = {
   bookColor: BOOK_COLORS[0].key,
@@ -91,14 +85,52 @@ const INITIAL_STATE = {
     ],
   })),
   currentPage: 0,
+
+  // Share link
+  isLoadingShareLink: false,
+  isCopyLink: false,
 };
 const LIMIT = 8;
 
 export default function YourBooks() {
+  // Hooks
+  const actionData = useActionData<typeof action>();
   const [state, setState] = useState(INITIAL_STATE);
-  const {bookColor, bookPages, currentPage} = state;
+  const {bookColor, bookPages, currentPage, isLoadingShareLink, isCopyLink} =
+    state;
 
-  const {storefront} = useLoaderData<typeof loader>();
+  // Effects
+  useEffect(() => {
+    if (actionData && actionData.response) {
+      const {data} = actionData.response || {};
+      const {handle} = data?.metaobjectCreate?.metaobject || {};
+
+      /**
+       * Set button share link loading is false
+       * Set button share link status is copy link
+       */
+      setState((prev) => ({
+        ...prev,
+        isLoadingShareLink: false,
+        isCopyLink: true,
+      }));
+
+      /**
+       * Save handle to clipboard
+       */
+      copyValueToClipboard(`${window.location.host}/your-book/${handle}`);
+
+      /**
+       * Reset isCopyLink to false
+       */
+      setTimeout(() => {
+        setState((prev) => ({
+          ...prev,
+          isCopyLink: false,
+        }));
+      }, 10000);
+    }
+  }, [actionData]);
 
   // Memos
   const pageTotal = useMemo(() => {
@@ -136,14 +168,7 @@ export default function YourBooks() {
   };
 
   const onClickShareLink = () => {
-    (storefront as any).mutate(YOUR_BOOK_CREATE_MUTATION, {
-      variables: {
-        metaobject: {
-          type: 'your_book',
-          fields: {key: 'properties', value: '{"bookColor": 2}'},
-        },
-      },
-    });
+    setState((prev) => ({...prev, isLoadingShareLink: true}));
   };
 
   const renderFooter = () => {
@@ -172,8 +197,25 @@ export default function YourBooks() {
                     bookPages,
                   })}
                 />
-                <Button htmlType="submit" block>
-                  Share book via link
+                <Button
+                  className={`${
+                    isCopyLink
+                      ? '!pointer-events-none !border-success !bg-success !text-white'
+                      : ''
+                  }`}
+                  loading={isLoadingShareLink}
+                  htmlType="submit"
+                  block
+                  onClick={() => onClickShareLink()}
+                >
+                  {isCopyLink ? (
+                    <Flex align="center" justify="center" gap={8}>
+                      Copied Link
+                      <Success />
+                    </Flex>
+                  ) : (
+                    'Share book via link'
+                  )}
                 </Button>
               </Form>
             </div>
@@ -309,14 +351,6 @@ export default function YourBooks() {
 }
 
 /* Styled Components */
-const Container = styled.div`
-  border-radius: 20px;
-  border: 1px solid var(--neutrals-7-color, #f4f5f6);
-  background: var(--neutrals-8-color, #fcfcfd);
-  box-shadow: 0px 12px 24px -20px rgba(15, 15, 15, 0.06);
-  padding: 0px 24px;
-`;
-
 const CusDivider = styled(Divider)`
   margin: 0 !important;
 `;

@@ -16,6 +16,9 @@ import {
 import {AppSession} from '~/lib/session';
 import {CART_QUERY_FRAGMENT} from '~/lib/fragments';
 import {createGoogleClient} from '~/lib/google';
+
+import {createAdminApiClient} from '@shopify/admin-api-client';
+
 /**
  * Export a fetch handler in module format.
  */
@@ -72,6 +75,15 @@ export default {
         customerAccountUrl: env.PUBLIC_CUSTOMER_ACCOUNT_API_URL,
       });
 
+      /**
+       * Create a admin client for api requests
+       */
+      const adminClient = createAdminApiClient({
+        storeDomain: env.PUBLIC_STORE_DOMAIN,
+        apiVersion: '2024-04',
+        accessToken: env.PUBLIC_ADMIN_ACCESS_TOKEN,
+      });
+
       /*
        * Create a cart handler that will be used to
        * create and update the cart in the session.
@@ -95,6 +107,7 @@ export default {
           storefront,
           customerAccount,
           cart,
+          adminClient,
           googleClient,
           env,
           waitUntil,
