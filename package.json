@@ -30,6 +30,7 @@
     "@tanstack/react-query-devtools": "^5.28.10",
     "antd": "^5.15.4",
     "axios": "^1.6.8",
+    "copy-to-clipboard": "^3.3.3",
     "d3": "^7.9.0",
     "d3-celestial": "^0.7.35",
     "d3-geo-projection": "^4.0.0",

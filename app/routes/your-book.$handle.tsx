@@ -1,21 +1,16 @@
 // Libraries
-import {useMemo, useState} from 'react';
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
-import {clone, set} from 'lodash';
 
 // Components
-import {Flex, Typography, Button, Card, Empty} from '~/components/ui';
-import {Checkbox, EmailSubmitCard} from '~/components/lovevibe';
+import {Empty} from '~/components/ui';
 
 // Utils
-import {numberTwoDigits, safeParseJson} from '~/utils';
+import {safeParseJson} from '~/utils';
 
 // Images
 import WhiteBook from 'public/images/books/book-white.png';
 import BlueBook from 'public/images/books/book-blue.png';
-import {Form, json, useActionData, useLoaderData} from '@remix-run/react';
-import {YOUR_BOOK_CREATE_MUTATION} from '~/graphql/your-book';
-import {Success} from '~/icons';
+import {json, useLoaderData} from '@remix-run/react';
 import type {YourBook} from '~/schema';
 import {FlipBook} from '~/components/your-book/FlipBook.client';
 import {ClientOnly} from 'remix-utils/client-only';
@@ -89,7 +84,7 @@ export default function YourBooks() {
   const {properties} = yourBook || {};
 
   return (
-    <div className="animate__animated animate__fadeIn animate__delay-2_5s container mt-8 flex flex-col items-center overflow-hidden pb-[60px] md:mt-10 md:pb-[100px]">
+    <div className="animate__animated animate__fadeIn animate__delay-2_5s container flex flex-col items-center overflow-hidden pt-[17px] lg:pt-[93px]">
       {properties ? (
         <ClientOnly fallback={null}>
           {() => <FlipBook yourBook={yourBook} />}

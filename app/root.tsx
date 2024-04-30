@@ -23,6 +23,7 @@ import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import tailwindStyles from './styles/tailwind.css';
 import animateStyles from './styles/animate.css';
+import flipPageStyles from 'flipping-pages/dist/style.css';
 import pokemonCardStyles from './styles/pokemon-card.css';
 import fonts from './styles/fonts.css';
 import {Layout} from '~/components/lovevibe/Layout';
@@ -67,7 +68,7 @@ export function links() {
     },
     {
       rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap',
+      href: 'https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&family=Dancing+Script:wght@400..700&display=swap',
     },
     {
       rel: 'stylesheet',
@@ -76,6 +77,10 @@ export function links() {
     {
       rel: 'stylesheet',
       href: animateStyles,
+    },
+    {
+      rel: 'stylesheet',
+      href: flipPageStyles,
     },
     {
       rel: 'preconnect',

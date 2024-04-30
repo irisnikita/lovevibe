@@ -10,6 +10,7 @@ import {
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
 import styled from '@emotion/styled';
 import {clone, set} from 'lodash';
+import copy from 'copy-to-clipboard';
 
 // Components
 import {
@@ -118,7 +119,7 @@ export default function YourBooks() {
       /**
        * Save handle to clipboard
        */
-      copyValueToClipboard(`${window.location.host}/your-book/${handle}`);
+      copy(`${window.location.host}/your-book/${handle}`);
 
       /**
        * Reset isCopyLink to false
@@ -314,7 +315,7 @@ export default function YourBooks() {
         })}
       </Pagination>
 
-      <div className="sm: mb-10 grid grid-cols-1 gap-y-5 md:grid-cols-2 md:gap-x-5 md:gap-y-10 xl:gap-x-12 xl:gap-y-10">
+      <div className="mb-10 grid grid-cols-1 gap-y-5 md:grid-cols-2 md:gap-x-5 md:gap-y-10 xl:gap-x-12 xl:gap-y-10">
         {currentPageData.map((page, index) => {
           const {key, label, quotes, contents} = page;
 
@@ -332,6 +333,7 @@ export default function YourBooks() {
                 <Typography.Text>{contents[0]}</Typography.Text>
                 <Input
                   value={quotes}
+                  max={24}
                   size="small"
                   placeholder="Enter your quotes..."
                   onChange={({target}) =>
