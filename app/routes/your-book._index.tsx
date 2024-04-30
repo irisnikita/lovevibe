@@ -119,8 +119,8 @@ export default function YourBooks() {
       /**
        * Save handle to clipboard
        */
-      // copy()
-      copyValueToClipboard(`${window.location.host}/your-book/${handle}`);
+      copy(`${window.location.host}/your-book/${handle}`);
+      // copyValueToClipboard(`${window.location.host}/your-book/${handle}`);
 
       /**
        * Reset isCopyLink to false
