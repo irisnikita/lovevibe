@@ -187,7 +187,7 @@ const BookPage = styled.div<{$image?: string}>`
 
 const DragDropHere = styled.div`
   position: relative;
-  width: 113px;
+  width: 114px;
   padding-bottom: 20px;
   display: flex;
   flex-direction: column;

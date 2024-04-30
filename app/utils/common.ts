@@ -49,8 +49,10 @@ export function copyValueToClipboard(value: string) {
   input.select();
   input.setSelectionRange(0, 99999);
 
+  document.execCommand('copy');
+
   // Copy the selected content to the clipboard
-  navigator.clipboard.writeText(value);
+  // navigator.clipboard.writeText(value);
 
   // Remove the input element from the DOM
   document.body.removeChild(input);
