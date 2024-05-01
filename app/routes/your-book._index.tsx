@@ -33,6 +33,9 @@ import {BOOK_COLORS, TUTORIALS} from '~/constants';
 // Graphql queries
 import {YOUR_BOOK_CREATE_MUTATION} from '~/graphql/your-book';
 
+// Images
+import BlueBook from 'public/images/books/book-blue.png';
+
 // Icons
 import {Success} from '~/icons';
 
@@ -42,6 +45,22 @@ export const meta: MetaFunction = () => {
       title: 'Your book | LoveVibe',
       content:
         "Explore the universe through the lens of 'Books'. Dive into a celestial journey filled with books, authors, and genres. Discover the wonder of the world and unravel the mysteries of the reading.",
+    },
+    {
+      property: 'og:image',
+      content: BlueBook,
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:title',
+      content: 'Your book - Custom your book | LoveVibe',
+    },
+    {
+      property: 'og:description',
+      content: `Explore the universe through the lens of 'Books'. Dive into a celestial journey filled with books, authors, and genres.`,
     },
   ];
 };

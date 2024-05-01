@@ -1,26 +1,42 @@
 // Libraries
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
+import {json, useLoaderData} from '@remix-run/react';
+import {ClientOnly} from 'remix-utils/client-only';
 
 // Components
 import {Empty} from '~/components/ui';
+import {FlipBook} from '~/components/your-book/FlipBook.client';
 
 // Utils
 import {safeParseJson} from '~/utils';
 
 // Images
-import WhiteBook from 'public/images/books/book-white.png';
 import BlueBook from 'public/images/books/book-blue.png';
-import {json, useLoaderData} from '@remix-run/react';
+
 import type {YourBook} from '~/schema';
-import {FlipBook} from '~/components/your-book/FlipBook.client';
-import {ClientOnly} from 'remix-utils/client-only';
 
 export const meta: MetaFunction = () => {
   return [
     {
-      title: 'Your book | LoveVibe',
+      title: 'Your book - Custom your book | LoveVibe',
       content:
         "Explore the universe through the lens of 'Books'. Dive into a celestial journey filled with books, authors, and genres. Discover the wonder of the world and unravel the mysteries of the reading.",
+    },
+    {
+      property: 'og:image',
+      content: BlueBook,
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:title',
+      content: 'Your book - Custom your book | LoveVibe',
+    },
+    {
+      property: 'og:description',
+      content: `Explore the universe through the lens of 'Books'. Dive into a celestial journey filled with books, authors, and genres.`,
     },
   ];
 };
@@ -47,37 +63,6 @@ export async function loader({params, context}: LoaderFunctionArgs) {
   return json({yourBook});
 }
 
-const BOOK_COLORS = [
-  {
-    key: 'blue',
-    label: 'Blue book',
-    image: BlueBook,
-  },
-  {
-    key: 'white',
-    label: 'White book',
-    image: WhiteBook,
-  },
-];
-
-const INITIAL_STATE = {
-  bookColor: BOOK_COLORS[0].key,
-  bookPages: Array.from({length: 20}, (_, index) => ({
-    key: index + 1,
-    label: `Page ${index + 1}`,
-    quotes: '',
-    contents: [
-      index % 2 !== 0 ? 'You are my favorite' : 'I love your',
-      index % 2 !== 0 ? 'in the word' : '',
-    ],
-  })),
-  currentPage: 0,
-
-  // Share link
-  isLoadingShareLink: false,
-  isCopyLink: false,
-};
-
 export default function YourBooks() {
   // Hooks
   const {yourBook} = useLoaderData<typeof loader>();
@@ -98,8 +83,6 @@ export default function YourBooks() {
     </div>
   );
 }
-
-/* Styled Components */
 
 /* GraphQL */
 const YOUR_BOOK_QUERY = `#graphql
