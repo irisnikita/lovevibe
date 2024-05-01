@@ -36,6 +36,7 @@ declare global {
     PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID: string;
     PUBLIC_CUSTOMER_ACCOUNT_API_URL: string;
     PUBLIC_ADMIN_ACCESS_TOKEN: string;
+    PUBLIC_EMAIL_API_KEY: string;
   }
 
   /**
