@@ -25,7 +25,7 @@ import {
 import {Checkbox, EmailSubmitCard} from '~/components/lovevibe';
 
 // Utils
-import {copyValueToClipboard, numberTwoDigits} from '~/utils';
+import {numberTwoDigits} from '~/utils';
 
 // Constants
 import {BOOK_COLORS, TUTORIALS} from '~/constants';
@@ -178,8 +178,11 @@ export default function YourBooks() {
       return (
         <Flex vertical gap={24} align="center" className="w-full md:w-fit">
           <EmailSubmitCard
-            buttonProps={{children: 'Send book via email'}}
-            inputProps={{placeholder: 'Enter Your Partner’s Email'}}
+            buttonProps={{children: 'Send book via email', disabled: true}}
+            inputProps={{
+              placeholder: 'Enter Your Partner’s Email',
+              disabled: true,
+            }}
           />
           <Typography.Text className="!text-lg !font-semibold">
             OR
@@ -187,7 +190,7 @@ export default function YourBooks() {
 
           <Card classNames={{body: 'md:!py-10 md:!px-6'}} className="w-full">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <Button>Download printable version</Button>
+              <Button disabled={true}>Download printable version</Button>
 
               <Form method="post">
                 <input
@@ -274,7 +277,7 @@ export default function YourBooks() {
           items={BOOK_COLORS}
           itemProps={{
             className:
-              'xl:!w-[256px] xl:!h-[188px] md:!w-[178px] md:!h-[132px] !w-[167.5px] !h-[120px]',
+              'xl:!w-[256px] xl:!h-[188px] md:!w-[178px] md:!h-[132px] !w-[167.5px] !h-[120px] !bg-cover',
           }}
           justify="center"
           className="w-full gap-5 xl:!gap-8"

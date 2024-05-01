@@ -1,10 +1,10 @@
 // Libraries
+import {chunk} from 'lodash';
 import {FlippingPages} from 'flipping-pages';
-import 'flipping-pages/dist/style.css';
-import React, {useMemo, useState} from 'react';
-import HTMLFlipBook from 'react-pageflip';
+import React, {useMemo, useRef, useState} from 'react';
 import styled from '@emotion/styled';
 import {Image} from '@shopify/hydrogen';
+import 'flipping-pages/dist/style.css';
 
 // Images
 import DragDropHereImg from 'public/images/books/drag-drop-book.png';
@@ -15,7 +15,6 @@ import {BOOK_COLORS} from '~/constants';
 
 // Components
 import {Flex, Typography} from '~/components/ui';
-import {chunk} from 'lodash';
 
 interface FlipBookProps {
   yourBook: YourBook;
@@ -35,7 +34,9 @@ export const FlipBook: React.FC<FlipBookProps> = (props) => {
   const {yourBook} = props;
   const {bookColor, bookPages} = yourBook.properties || {};
   const [selected, setSelected] = useState(0);
-  const [isFlipping, setIsFlipping] = useState(false);
+
+  // Ref
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Memo
   const bookColorInfo = useMemo(() => {
@@ -66,46 +67,35 @@ export const FlipBook: React.FC<FlipBookProps> = (props) => {
       </DragDropHere>
       <BookWrapper>
         <FlippingPages
+          containerRef={(ref) => (containerRef.current = ref)}
           direction="bottom-to-top"
-          onSwipeStart={() => {
-            setTimeout(() => {
-              setIsFlipping(true);
-            }, 200);
-            return true;
-          }}
-          // onAnimationStart={() => {
-          //   setIsFlipping(true);
-          // }}
-          // onAnimationEnd={() => {
-          //   setTimeout(() => {
-          //     setIsFlipping(false);
-          //   }, 1000);
-          // }}
-          onSwipeEnd={(selected) => {
-            setSelected(selected);
-            // setIsFlipping(false);
-          }}
+          onSwipeEnd={setSelected}
           selected={selected}
           shadowBackground="transparent"
-          willChange={true}
-          containerProps={
-            {
-              // onClick: (e) => {
-              //   console.log('e');
-              //   const {top} = e.currentTarget.getBoundingClientRect();
-              //   const mouseY = e.clientY - top;
-              //   if (isFlipping) return;
-              //   /**
-              //    * Check if mouseY > pageHeight/2 then go to next page else go back
-              //    */
-              //   if (mouseY > BOOK_DIMENSIONS.height / 2) {
-              //     next();
-              //   } else {
-              //     back();
-              //   }
-              // },
-            }
-          }
+          containerProps={{
+            onClick: (e) => {
+              const {top} = e.currentTarget.getBoundingClientRect();
+              const mouseY = e.clientY - top;
+
+              const childPageEl = containerRef.current.querySelector('div');
+
+              /**
+               * Check if drag page then stopping next or back page
+               */
+              if (!childPageEl.className.includes('fullPage')) {
+                return;
+              }
+
+              /**
+               * Check if mouseY > pageHeight/2 then go to next page else go back
+               */
+              if (mouseY > BOOK_DIMENSIONS.height / 2) {
+                next();
+              } else {
+                back();
+              }
+            },
+          }}
         >
           <div className="page">
             <BookPage $image={bookColorInfo.image} />
@@ -187,7 +177,7 @@ const BookPage = styled.div<{$image?: string}>`
 
 const DragDropHere = styled.div`
   position: relative;
-  width: 114px;
+  width: 120px;
   padding-bottom: 20px;
   display: flex;
   flex-direction: column;
@@ -215,48 +205,3 @@ const DragDropHere = styled.div`
     }
   }
 `;
-
-// <HTMLFlipBook
-//         width={328}
-//         height={448}
-//         size="fixed"
-//         showCover={true}
-//         mobileScrollSupport={true}
-//         drawShadow={false}
-//         usePortrait={false}
-//         className="demo-book mt-[93px] !bg-contain !bg-left"
-//         style={{
-//           background: `url(${bookColorInfo.image}) no-repeat`,
-//         }}
-//       >
-//         <BookPage
-//           className="back-page !border-none"
-//           $image={bookColorInfo.backImage}
-//         ></BookPage>
-//         {bookPages?.map((page, index) => {
-//           const {contents = [], quotes} = page || {};
-
-//           return (
-//             <BookPage key={index} className="demoPage">
-//               <Flex
-//                 vertical
-//                 align="center"
-//                 justify="center"
-//                 className="h-full"
-//                 gap={10}
-//               >
-//                 <Typography.Text>{contents[0]}</Typography.Text>
-//                 <Typography.Text className="card__quotes">
-//                   {quotes}
-//                 </Typography.Text>
-//                 <Typography.Text>{contents[1]}</Typography.Text>
-//               </Flex>
-//             </BookPage>
-//           );
-//         })}
-
-//         <BookPage
-//           className="back-page !border-none"
-//           $image={bookColorInfo.backImage}
-//         ></BookPage>
-//       </HTMLFlipBook>
