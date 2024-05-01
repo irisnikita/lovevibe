@@ -1,12 +1,6 @@
 // Libraries
 import React, {useEffect, useMemo, useState} from 'react';
-import {
-  Form,
-  json,
-  useActionData,
-  useLoaderData,
-  useLocation,
-} from '@remix-run/react';
+import {Form, json, useActionData} from '@remix-run/react';
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
 import styled from '@emotion/styled';
 import {clone, set} from 'lodash';
@@ -23,12 +17,13 @@ import {
   Card,
 } from '~/components/ui';
 import {Checkbox, EmailSubmitCard} from '~/components/lovevibe';
+import {DownloadPrintableVersionBtn} from '~/components/your-book/DownloadPrintableVersionBtn';
 
 // Utils
 import {numberTwoDigits} from '~/utils';
 
 // Constants
-import {BOOK_COLORS, TUTORIALS} from '~/constants';
+import {BOOK_COLORS, BOOK_DIMENSIONS, TUTORIALS} from '~/constants';
 
 // Graphql queries
 import {YOUR_BOOK_CREATE_MUTATION} from '~/graphql/your-book';
@@ -209,7 +204,9 @@ export default function YourBooks() {
 
           <Card classNames={{body: 'md:!py-10 md:!px-6'}} className="w-full">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <Button disabled={true}>Download printable version</Button>
+              <DownloadPrintableVersionBtn
+                yourBook={{properties: {bookColor, bookPages}}}
+              />
 
               <Form method="post">
                 <input

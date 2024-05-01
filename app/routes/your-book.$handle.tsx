@@ -4,7 +4,7 @@ import {json, useLoaderData} from '@remix-run/react';
 import {ClientOnly} from 'remix-utils/client-only';
 
 // Components
-import {Empty} from '~/components/ui';
+import {Empty, Flex} from '~/components/ui';
 import {FlipBook} from '~/components/your-book/FlipBook.client';
 
 // Utils
@@ -14,6 +14,7 @@ import {safeParseJson} from '~/utils';
 import BlueBook from 'public/images/books/book-blue.png';
 
 import type {YourBook} from '~/schema';
+import {DownloadPrintableVersionBtn} from '~/components/your-book/DownloadPrintableVersionBtn';
 
 export const meta: MetaFunction = () => {
   return [
@@ -72,7 +73,17 @@ export default function YourBooks() {
     <div className="animate__animated animate__fadeIn animate__delay-2_5s container flex flex-col items-center overflow-hidden pt-[17px] lg:pt-[93px]">
       {properties ? (
         <ClientOnly fallback={null}>
-          {() => <FlipBook yourBook={yourBook} />}
+          {() => (
+            <>
+              <FlipBook yourBook={yourBook} />
+              <DownloadPrintableVersionBtn
+                type="primary"
+                block
+                yourBook={yourBook}
+                className="mt-6 max-w-[327px] md:max-w-[247px]"
+              />
+            </>
+          )}
         </ClientOnly>
       ) : (
         <Empty

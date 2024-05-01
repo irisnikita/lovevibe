@@ -24,4 +24,9 @@ const BOOK_COLORS = [
   },
 ];
 
-export {TUTORIALS, BOOK_COLORS};
+const BOOK_DIMENSIONS = {
+  width: 448,
+  height: 328,
+};
+
+export {TUTORIALS, BOOK_COLORS, BOOK_DIMENSIONS};
