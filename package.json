@@ -53,6 +53,7 @@
     "react-konva-utils": "^1.0.6",
     "react-pageflip": "^2.0.3",
     "remix-utils": "^7.5.0",
+    "resend": "^3.2.0",
     "use-dehydrated-state": "^0.1.0",
     "use-image": "^1.1.1"
   },

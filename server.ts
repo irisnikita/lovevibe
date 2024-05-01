@@ -18,6 +18,7 @@ import {CART_QUERY_FRAGMENT} from '~/lib/fragments';
 import {createGoogleClient} from '~/lib/google';
 
 import {createAdminApiClient} from '@shopify/admin-api-client';
+import {Resend} from 'resend';
 
 /**
  * Export a fetch handler in module format.
@@ -96,6 +97,11 @@ export default {
       });
 
       /**
+       * Create Email client
+       */
+      const resend = new Resend('re_Z6iBfwpY_JT9ZgWszTPAMvmCTptmBj9Yr');
+
+      /**
        * Create a Remix request handler and pass
        * Hydrogen's Storefront client to the loader context.
        */
@@ -109,6 +115,7 @@ export default {
           cart,
           adminClient,
           googleClient,
+          resend,
           env,
           waitUntil,
         }),

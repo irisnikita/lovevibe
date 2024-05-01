@@ -16,6 +16,7 @@ import type {
 } from '@shopify/hydrogen/storefront-api-types';
 import type {AppSession} from '~/lib/session';
 import {AdminApiClient} from '@shopify/admin-api-client';
+import {Resend} from 'resend';
 
 declare global {
   /**
@@ -52,6 +53,7 @@ declare module '@shopify/remix-oxygen' {
     cart: HydrogenCart;
     storefront: Storefront<I18nLocale>;
     adminClient: AdminApiClient;
+    resend: Resend;
     customerAccount: CustomerAccount;
     session: AppSession;
     waitUntil: ExecutionContext['waitUntil'];

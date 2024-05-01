@@ -1,10 +1,11 @@
 // Libraries
 import React, {useEffect, useMemo, useState} from 'react';
-import {Form, json, useActionData} from '@remix-run/react';
+import {Form, json, useActionData, useSubmit} from '@remix-run/react';
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
 import styled from '@emotion/styled';
 import {clone, set} from 'lodash';
 import copy from 'copy-to-clipboard';
+import {resend} from '~/resend-client';
 
 // Components
 import {
@@ -67,25 +68,48 @@ export async function loader({params, context}: LoaderFunctionArgs) {
 }
 
 export async function action({request, context}: LoaderFunctionArgs) {
-  const {storefront, adminClient} = context;
+  const {adminClient, resend} = context;
   const formData = await request.formData();
-  const {properties} = Object.fromEntries(formData) || {};
+  const {properties, email} = Object.fromEntries(formData) || {};
 
-  const response = await adminClient.request(YOUR_BOOK_CREATE_MUTATION, {
-    variables: {
-      metaobject: {
-        type: 'your_book',
-        fields: [
-          {
-            key: 'properties',
-            value: properties,
+  const actionData = {
+    createBookResponse: null,
+    sendMailResponse: null,
+  };
+
+  // Create your book with properties
+  if (properties) {
+    actionData.createBookResponse = await adminClient.request(
+      YOUR_BOOK_CREATE_MUTATION,
+      {
+        variables: {
+          metaobject: {
+            type: 'your_book',
+            fields: [
+              {
+                key: 'properties',
+                value: properties,
+              },
+            ],
           },
-        ],
+        },
       },
-    },
-  });
+    );
+  }
 
-  return json({response});
+  // Send email
+  if (email) {
+    const sendMailResponse = await resend.emails.send({
+      from: 'LoveVibe <support@lovevibe.co>',
+      to: email as string,
+      subject: 'Hello World',
+      html: '<p>Congrats on sending your <strong>first email</strong>!</p>',
+    });
+
+    console.log(JSON.stringify(sendMailResponse));
+  }
+
+  return json(actionData);
 }
 
 const INITIAL_STATE = {
@@ -113,11 +137,12 @@ export default function YourBooks() {
   const [state, setState] = useState(INITIAL_STATE);
   const {bookColor, bookPages, currentPage, isLoadingShareLink, isCopyLink} =
     state;
+  const submit = useSubmit();
 
   // Effects
   useEffect(() => {
-    if (actionData && actionData.response) {
-      const {data} = actionData.response || {};
+    if (actionData && actionData.createBookResponse) {
+      const {data} = actionData.createBookResponse || {};
       const {handle} = data?.metaobjectCreate?.metaobject || {};
 
       /**
@@ -187,16 +212,26 @@ export default function YourBooks() {
     setState((prev) => ({...prev, isLoadingShareLink: true}));
   };
 
+  const onSubmitEmail = (values: any) => {
+    const formData = new FormData();
+
+    formData.append('email', values.email);
+
+    submit(formData, {
+      method: 'POST',
+    });
+  };
+
   const renderFooter = () => {
     if (currentPage === pageTotal - 1) {
       return (
         <Flex vertical gap={24} align="center" className="w-full md:w-fit">
           <EmailSubmitCard
-            buttonProps={{children: 'Send book via email', disabled: true}}
+            buttonProps={{children: 'Send book via email'}}
             inputProps={{
               placeholder: 'Enter Your Partner’s Email',
-              disabled: true,
             }}
+            onSubmit={onSubmitEmail}
           />
           <Typography.Text className="!text-lg !font-semibold">
             OR
