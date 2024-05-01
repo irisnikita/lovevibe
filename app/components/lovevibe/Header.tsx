@@ -14,7 +14,7 @@ interface HeaderProps {
 }
 
 export function Header(props: HeaderProps) {
-  const {logo} = props;
+  const {logo} = props || {};
 
   // const {shop, menu} = header;
   return (

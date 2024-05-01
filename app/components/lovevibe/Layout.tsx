@@ -27,13 +27,9 @@ export type LayoutProps = {
   theme?: ThemeConfig;
 };
 
-export function Layout({
-  cart,
-  children = null,
-  footer,
-  header,
-  isLoggedIn,
-}: LayoutProps) {
+export function Layout(props: LayoutProps) {
+  const {cart, children = null, footer, header, isLoggedIn} = props || {};
+
   const location = useLocation();
   const routeInfo = getRouteFromPath(location.pathname);
 
