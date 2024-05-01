@@ -106,7 +106,7 @@ export async function action({request, context}: LoaderFunctionArgs) {
       html: '<p>Congrats on sending your <strong>first email</strong>!</p>',
     });
 
-    console.log(JSON.stringify(sendMailResponse));
+    actionData.sendMailResponse = sendMailResponse;
   }
 
   return json(actionData);

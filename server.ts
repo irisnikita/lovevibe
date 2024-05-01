@@ -99,7 +99,7 @@ export default {
       /**
        * Create Email client
        */
-      const resend = new Resend(env.PUBLIC_ADMIN_ACCESS_TOKEN);
+      const resend = new Resend(env.PUBLIC_EMAIL_API_KEY);
 
       /**
        * Create a Remix request handler and pass
