@@ -6,8 +6,6 @@ import styled from '@emotion/styled';
 import {clone, set} from 'lodash';
 import copy from 'copy-to-clipboard';
 
-import YourBook from 'public/images/books/book-blue-back.png';
-
 // Components
 import {
   Alert,
