@@ -15,6 +15,7 @@ import {BOOK_COLORS} from '~/constants';
 
 // Components
 import {Flex, Typography} from '~/components/ui';
+import {mapBookPageBgColor} from '~/utils';
 
 interface FlipBookProps {
   yourBook: YourBook;
@@ -32,13 +33,17 @@ const MOBILE_BOOK_DIMENSIONS = {
 
 export const FlipBook: React.FC<FlipBookProps> = (props) => {
   const {yourBook} = props;
-  const {bookColor, bookPages} = yourBook.properties || {};
+  const {bookColor} = yourBook.properties || {};
   const [selected, setSelected] = useState(0);
 
   // Ref
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Memo
+  const bookPages = useMemo(() => {
+    return mapBookPageBgColor(yourBook);
+  }, [yourBook]);
+
   const bookColorInfo = useMemo(() => {
     return BOOK_COLORS.find(({key}) => key === bookColor) || BOOK_COLORS[0];
   }, [bookColor]);
@@ -98,14 +103,14 @@ export const FlipBook: React.FC<FlipBookProps> = (props) => {
           }}
         >
           <div className="page">
-            <BookPage $image={bookColorInfo.image} />
-            <BookPage $image={bookColorInfo.backImage} />
+            <BookPage $image={bookColorInfo.frontCover} />
+            <BookPage $image={bookColorInfo.backCover} />
           </div>
           {groupPages?.map((pages, index) => {
             return (
               <div key={index} className="page">
-                {pages.map(({contents, quotes}, pageIdx) => (
-                  <BookPage className="book-page" key={pageIdx}>
+                {pages.map(({contents, quotes, image}, pageIdx) => (
+                  <BookPage className="book-page" key={pageIdx} $image={image}>
                     <Flex
                       vertical
                       align="center"

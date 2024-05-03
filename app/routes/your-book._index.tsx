@@ -5,7 +5,8 @@ import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
 import styled from '@emotion/styled';
 import {clone, set} from 'lodash';
 import copy from 'copy-to-clipboard';
-import {resend} from '~/resend-client';
+
+import YourBook from 'public/images/books/book-blue-back.png';
 
 // Components
 import {
@@ -18,10 +19,14 @@ import {
   Card,
 } from '~/components/ui';
 import {Checkbox, EmailSubmitCard} from '~/components/lovevibe';
-import {DownloadPrintableVersionBtn} from '~/components/your-book/DownloadPrintableVersionBtn';
+import {DownloadPrintableBtn} from '~/components/your-book/DownloadPrintableBtn';
 
 // Utils
-import {numberTwoDigits} from '~/utils';
+import {
+  handleExportYourBookPdf,
+  mapBookPageBgColor,
+  numberTwoDigits,
+} from '~/utils';
 
 // Constants
 import {BOOK_COLORS, BOOK_DIMENSIONS, TUTORIALS} from '~/constants';
@@ -70,7 +75,7 @@ export async function loader({params, context}: LoaderFunctionArgs) {
 export async function action({request, context}: LoaderFunctionArgs) {
   const {adminClient, resend} = context;
   const formData = await request.formData();
-  const {properties, email} = Object.fromEntries(formData) || {};
+  const {properties, email, blob} = Object.fromEntries(formData) || {};
 
   const actionData = {
     createBookResponse: null,
@@ -100,10 +105,16 @@ export async function action({request, context}: LoaderFunctionArgs) {
   // Send email
   if (email) {
     const sendMailResponse = await resend.emails.send({
-      from: 'LoveVibe <support@lovevibe.co>',
+      from: 'LoveVibe <no-reply@lovevibe.co>',
       to: email as string,
-      subject: 'Hello World',
-      html: '<p>Congrats on sending your <strong>first email</strong>!</p>',
+      subject: 'Share your book via Email',
+      html: 'Thanks for sharing your book!',
+      attachments: [
+        {
+          filename: 'your-book.pdf',
+          path: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        },
+      ],
     });
 
     actionData.sendMailResponse = sendMailResponse;
@@ -179,8 +190,11 @@ export default function YourBooks() {
   }, [bookPages]);
 
   const currentPageData = useMemo(() => {
-    return bookPages.slice(currentPage * LIMIT, (currentPage + 1) * LIMIT);
-  }, [bookPages, currentPage]);
+    return mapBookPageBgColor({properties: {bookColor, bookPages}}).slice(
+      currentPage * LIMIT,
+      (currentPage + 1) * LIMIT,
+    );
+  }, [bookColor, bookPages, currentPage]);
 
   const bookColorInfo = useMemo(() => {
     return BOOK_COLORS.find((color) => color.key === bookColor);
@@ -212,10 +226,14 @@ export default function YourBooks() {
     setState((prev) => ({...prev, isLoadingShareLink: true}));
   };
 
-  const onSubmitEmail = (values: any) => {
+  const onSubmitEmail = async (values: any) => {
+    // const pdf = await handleExportYourBookPdf();
     const formData = new FormData();
 
+    // const blob = pdf.output();
+
     formData.append('email', values.email);
+    // formData.append('blob', blob);
 
     submit(formData, {
       method: 'POST',
@@ -239,7 +257,7 @@ export default function YourBooks() {
 
           <Card classNames={{body: 'md:!py-10 md:!px-6'}} className="w-full">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <DownloadPrintableVersionBtn
+              <DownloadPrintableBtn
                 yourBook={{properties: {bookColor, bookPages}}}
               />
 
@@ -325,7 +343,11 @@ export default function YourBooks() {
 
         <Checkbox
           value={bookColor}
-          items={BOOK_COLORS}
+          items={BOOK_COLORS.map(({label, key, frontCover}) => ({
+            label,
+            key,
+            image: frontCover,
+          }))}
           itemProps={{
             className:
               'xl:!w-[256px] xl:!h-[188px] md:!w-[178px] md:!h-[132px] !w-[167.5px] !h-[120px] !bg-cover',
@@ -371,17 +393,17 @@ export default function YourBooks() {
       </Pagination>
 
       <div className="mb-10 grid grid-cols-1 gap-y-5 md:grid-cols-2 md:gap-x-5 md:gap-y-10 xl:gap-x-12 xl:gap-y-10">
-        {currentPageData.map((page, index) => {
-          const {key, label, quotes, contents} = page;
+        {currentPageData.map((page) => {
+          const {key, quotes, contents, image} = page;
 
           return (
             <BookCard key={key} gap={8}>
               <div
                 className="card__left"
-                style={{backgroundImage: `url(${bookColorInfo?.image})`}}
+                style={{backgroundImage: `url(${image})`}}
               >
                 <Typography.Text className="z-20 !text-5xl !font-bold !italic">
-                  {numberTwoDigits(key)}
+                  {numberTwoDigits(+key)}
                 </Typography.Text>
               </div>
               <Flex vertical gap={10} className="card__right">
@@ -392,7 +414,7 @@ export default function YourBooks() {
                   size="small"
                   placeholder="Enter your quotes..."
                   onChange={({target}) =>
-                    onChangeBookPage({key, quotes: target.value})
+                    onChangeBookPage({key: +key, quotes: target.value})
                   }
                 />
                 <Typography.Text>{contents[1]}</Typography.Text>
@@ -494,7 +516,7 @@ const BookCard = styled(Flex)`
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-
+    /* 
     &::after {
       content: '';
       position: absolute;
@@ -504,7 +526,7 @@ const BookCard = styled(Flex)`
       height: 100%;
       background-color: #ffffff;
       opacity: 0.9;
-    }
+    } */
   }
 
   .card__right {

@@ -14,7 +14,7 @@ import {safeParseJson} from '~/utils';
 import BlueBook from 'public/images/books/book-blue.png';
 
 import type {YourBook} from '~/schema';
-import {DownloadPrintableVersionBtn} from '~/components/your-book/DownloadPrintableVersionBtn';
+import {DownloadPrintableBtn} from '~/components/your-book/DownloadPrintableBtn';
 
 export const meta: MetaFunction = () => {
   return [
@@ -76,7 +76,7 @@ export default function YourBooks() {
           {() => (
             <>
               <FlipBook yourBook={yourBook} />
-              <DownloadPrintableVersionBtn
+              <DownloadPrintableBtn
                 type="primary"
                 block
                 yourBook={yourBook}
