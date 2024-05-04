@@ -33,7 +33,7 @@ export const ShareYourBookEmail: React.FC<ShareYourBookProps> = (props) => {
       <Head />
       <Preview>{preview}</Preview>
       <TailWindProvider>
-        <Body className="bg-slate-50 font-sans text-base">
+        <Body className="bg-slate-50 py-5 font-sans text-base">
           <Img
             src={LovevibeLogo}
             width={75}
