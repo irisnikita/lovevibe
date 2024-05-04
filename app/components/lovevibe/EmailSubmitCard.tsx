@@ -1,5 +1,5 @@
 // Libraries
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 
 // Icons
 import {Success} from '~/icons';
@@ -9,15 +9,20 @@ import {Button, Card, Flex, Input, Form} from '~/components/ui';
 
 // Types
 import type {ButtonProps, CardProps, InputProps} from '~/components/ui';
+import {useUpdateEffect} from '~/hooks';
 
 type FieldType = {
   email: string;
 };
 
+interface EmailButtonProps extends ButtonProps {
+  loading?: boolean;
+}
+
 interface EmailSubmitCardProps {
   cardProps?: CardProps;
   inputProps?: InputProps;
-  buttonProps?: ButtonProps;
+  buttonProps?: EmailButtonProps;
   onSubmit?: (values: FieldType) => void;
 }
 
@@ -25,31 +30,24 @@ export const EmailSubmitCard: React.FC<EmailSubmitCardProps> = (props) => {
   const {cardProps, inputProps, buttonProps, onSubmit} = props;
   const {placeholder = 'Enter Your Email', ...restInputProps} =
     inputProps || {};
-  const {children = 'Submit', ...restButtonProps} = buttonProps || {};
-
+  const {
+    children = 'Submit',
+    loading: buttonLoading,
+    ...restButtonProps
+  } = buttonProps || {};
   const [form] = Form.useForm<FieldType>();
 
-  const [buttonState, setButtonState] = useState({
-    isLoading: false,
-    isSuccess: false,
-  });
+  const [isSuccess, setSuccess] = useState(false);
+
+  useUpdateEffect(() => {
+    if (!buttonLoading) {
+      setSuccess(true);
+    }
+  }, [buttonLoading]);
 
   // Handlers
   const onFinish = (values: FieldType) => {
-    setButtonState({
-      ...buttonState,
-      isLoading: true,
-    });
-
     onSubmit && onSubmit(values);
-
-    setTimeout(() => {
-      setButtonState({
-        ...buttonState,
-        isLoading: false,
-        isSuccess: true,
-      });
-    }, 2000);
   };
 
   return (
@@ -86,7 +84,7 @@ export const EmailSubmitCard: React.FC<EmailSubmitCardProps> = (props) => {
           >
             <Input
               {...restInputProps}
-              readOnly={buttonState.isSuccess}
+              readOnly={isSuccess}
               allowClear
               placeholder={placeholder}
               className="md:!w-[285px]"
@@ -98,12 +96,12 @@ export const EmailSubmitCard: React.FC<EmailSubmitCardProps> = (props) => {
           {...restButtonProps}
           type="primary"
           className={`${
-            buttonState.isSuccess ? 'pointer-events-none !bg-success' : ''
+            isSuccess ? 'pointer-events-none !bg-success' : ''
           } !flex min-w-[195px] items-center justify-center`}
-          loading={buttonState.isLoading}
+          loading={buttonLoading}
           onClick={() => form.submit()}
         >
-          {buttonState.isSuccess ? (
+          {isSuccess ? (
             <Flex gap={8} align="center">
               Sent <Success />
             </Flex>

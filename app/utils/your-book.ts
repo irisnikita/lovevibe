@@ -8,15 +8,19 @@ import type {BookPage, YourBook} from '~/schema';
 // Constants
 import {BOOK_COLORS, BOOK_DIMENSIONS, PREVIEW_BOOK_PAGE_CN} from '~/constants';
 
-export const handleExportYourBookPdf = async () => {
+export const handleExportYourBookPdf = async ({
+  width = BOOK_DIMENSIONS.width,
+  height = BOOK_DIMENSIONS.height,
+}: {width?: number; height?: number} = {}) => {
   const previewBookPageEls = document.querySelectorAll(
     `.${PREVIEW_BOOK_PAGE_CN}`,
   );
   const pdf = new jsPDF({
     orientation: 'landscape',
     unit: 'px',
-    format: [BOOK_DIMENSIONS.width, BOOK_DIMENSIONS.height],
+    format: [width, height],
     putOnlyUsedFonts: true,
+    compress: true,
   });
 
   for (let index = 0; index < previewBookPageEls.length; index++) {

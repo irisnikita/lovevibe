@@ -47,6 +47,8 @@ export const DownloadPrintableBtn: React.FC<DownloadPrintableBtnProps> = (
   const handleDownloadPrintable = async () => {
     setLoading(true);
 
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     const pdf = await handleExportYourBookPdf();
 
     pdf.save('your-book.pdf');
@@ -68,6 +70,10 @@ export const DownloadPrintableBtn: React.FC<DownloadPrintableBtnProps> = (
         <PreviewBookPage
           className={PREVIEW_BOOK_PAGE_CN}
           $image={bookColorInfo?.frontCover}
+          style={{
+            width: BOOK_DIMENSIONS.width * 2,
+            height: BOOK_DIMENSIONS.height * 2,
+          }}
         />
 
         {bookPages.map((page) => {
@@ -97,8 +103,8 @@ export const DownloadPrintableBtn: React.FC<DownloadPrintableBtnProps> = (
 
 /** Styled */
 const PreviewBookPage = styled.div<{$image?: string}>`
-  width: ${BOOK_DIMENSIONS.width}px;
-  height: ${BOOK_DIMENSIONS.height}px;
+  width: ${BOOK_DIMENSIONS.width * 1.5}px;
+  height: ${BOOK_DIMENSIONS.height * 1.5}px;
   border-radius: 8px;
   border: 1px solid var(--neutrals-6-color);
   display: flex;
@@ -112,9 +118,9 @@ const PreviewBookPage = styled.div<{$image?: string}>`
 
   ${({$image}) => $image && `background-image: url(${$image})`};
 
-  /* * {
-    font-size: 24px !important;
-  } */
+  * {
+    font-size: 21px !important;
+  }
 
   .quotes {
     font-family: 'Dancing Script', cursive !important;

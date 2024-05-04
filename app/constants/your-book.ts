@@ -1,6 +1,6 @@
 // Images
 /* Blue */
-import BlueFrontCover from 'public/images/books/blue-background/front-cover.jpg';
+import BlueFrontCover from 'public/images/books/blue-background/front-cover.png';
 import BlueBackCover from 'public/images/books/blue-background/back-cover.jpg';
 import BlueBackground1 from 'public/images/books/blue-background/1-3-12-16.jpg';
 import BlueBackground2 from 'public/images/books/blue-background/2-9-18.jpg';

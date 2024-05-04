@@ -73,7 +73,7 @@ export async function loader({params, context}: LoaderFunctionArgs) {
 export async function action({request, context}: LoaderFunctionArgs) {
   const {adminClient, resend} = context;
   const formData = await request.formData();
-  const {properties, email, blob} = Object.fromEntries(formData) || {};
+  const {properties, email, pdfFile} = Object.fromEntries(formData) || {};
 
   const actionData = {
     createBookResponse: null,
@@ -110,7 +110,7 @@ export async function action({request, context}: LoaderFunctionArgs) {
       attachments: [
         {
           filename: 'your-book.pdf',
-          path: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+          content: (pdfFile as string).split(';base64,').pop(),
         },
       ],
     });
@@ -137,6 +137,9 @@ const INITIAL_STATE = {
   // Share link
   isLoadingShareLink: false,
   isCopyLink: false,
+
+  // Send mail
+  isLoadingSendMail: false,
 };
 const LIMIT = 8;
 
@@ -194,10 +197,6 @@ export default function YourBooks() {
     );
   }, [bookColor, bookPages, currentPage]);
 
-  const bookColorInfo = useMemo(() => {
-    return BOOK_COLORS.find((color) => color.key === bookColor);
-  }, [bookColor]);
-
   // Handlers
   const onChangeBookPage = ({key, quotes}: {key: number; quotes: string}) => {
     const cloneBookPages = clone(bookPages);
@@ -225,17 +224,23 @@ export default function YourBooks() {
   };
 
   const onSubmitEmail = async (values: any) => {
-    // const pdf = await handleExportYourBookPdf();
+    setState((prev) => ({...prev, isLoadingSendMail: true}));
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const pdf = await handleExportYourBookPdf();
     const formData = new FormData();
 
-    // const blob = pdf.output();
+    const pdfFile = pdf.output('datauristring');
 
     formData.append('email', values.email);
-    // formData.append('blob', blob);
+    formData.append('pdfFile', pdfFile);
 
     submit(formData, {
       method: 'POST',
     });
+
+    setState((prev) => ({...prev, isLoadingSendMail: false}));
   };
 
   const renderFooter = () => {
@@ -243,7 +248,10 @@ export default function YourBooks() {
       return (
         <Flex vertical gap={24} align="center" className="w-full md:w-fit">
           <EmailSubmitCard
-            buttonProps={{children: 'Send book via email'}}
+            buttonProps={{
+              children: 'Send book via email',
+              loading: state.isLoadingSendMail,
+            }}
             inputProps={{
               placeholder: 'Enter Your Partner’s Email',
             }}

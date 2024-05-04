@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import {useEffect, useRef} from 'react';
 import isEqual from 'react-fast-compare';
 
 function deepCompareEquals(a, b) {
@@ -29,4 +29,6 @@ export function useDeepCompareEffect(
   useEffect(callback, dependencies?.map(useDeepCompareMemoize));
 }
 
-export { useDeepCompareMemo } from './useDeepCompareMemo';
+export {useDeepCompareMemo} from './useDeepCompareMemo';
+export * from './useUpdateEffect';
+export * from './useIsFirstRender';
