@@ -119,7 +119,7 @@ const PreviewBookPage = styled.div<{$image?: string}>`
   ${({$image}) => $image && `background-image: url(${$image})`};
 
   * {
-    font-size: 21px !important;
+    font-size: 28px !important;
   }
 
   .quotes {
