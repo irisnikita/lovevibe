@@ -37,6 +37,7 @@ import BlueBook from 'public/images/books/book-blue.png';
 
 // Icons
 import {Success} from '~/icons';
+import {ShareYourBookEmail} from '~/emails/templates/ShareYourBookEmail';
 
 export const meta: MetaFunction = () => {
   return [
@@ -105,8 +106,8 @@ export async function action({request, context}: LoaderFunctionArgs) {
     const sendMailResponse = await resend.emails.send({
       from: 'LoveVibe <no-reply@lovevibe.co>',
       to: email as string,
-      subject: 'Share your book via Email',
-      html: 'Thanks for sharing your book!',
+      subject: 'YOU HAVE RECEIVED A GIFT FROM A RELATIVE',
+      react: <ShareYourBookEmail />,
       attachments: [
         {
           filename: 'your-book.pdf',
@@ -321,7 +322,6 @@ export default function YourBooks() {
         <Typography.Title className="!mb-0 !text-2xl !font-semibold !text-primary md:!text-[32px] xl:!text-[40px]">
           What I love about U book 💖
         </Typography.Title>
-
         <Alert
           type="info"
           message={
@@ -338,7 +338,6 @@ export default function YourBooks() {
           }
           className="w-full"
         />
-
         <CusDivider className="!hidden md:!block" />
         <Typography.Title
           level={2}
@@ -346,7 +345,6 @@ export default function YourBooks() {
         >
           🎨 Book Color
         </Typography.Title>
-
         <Checkbox
           value={bookColor}
           items={BOOK_COLORS.map(({label, key, frontCover}) => ({
@@ -365,8 +363,8 @@ export default function YourBooks() {
           }
         />
         <CusDivider />
-
         <Typography.Text className="!text-lg !font-semibold md:!text-[32px]">{`📖 ${bookPages.length} Pages`}</Typography.Text>
+        ShareYourBookEmail
       </div>
 
       <Pagination
