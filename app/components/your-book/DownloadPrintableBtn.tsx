@@ -71,8 +71,8 @@ export const DownloadPrintableBtn: React.FC<DownloadPrintableBtnProps> = (
           className={PREVIEW_BOOK_PAGE_CN}
           $image={bookColorInfo?.frontCover}
           style={{
-            width: BOOK_DIMENSIONS.width * 2,
-            height: BOOK_DIMENSIONS.height * 2,
+            width: BOOK_DIMENSIONS.width * 3,
+            height: BOOK_DIMENSIONS.height * 3,
           }}
         />
 
@@ -95,6 +95,10 @@ export const DownloadPrintableBtn: React.FC<DownloadPrintableBtnProps> = (
         <PreviewBookPage
           $image={bookColorInfo?.backCover}
           className={PREVIEW_BOOK_PAGE_CN}
+          style={{
+            width: BOOK_DIMENSIONS.width * 3,
+            height: BOOK_DIMENSIONS.height * 3,
+          }}
         />
       </div>
     </>
@@ -103,8 +107,8 @@ export const DownloadPrintableBtn: React.FC<DownloadPrintableBtnProps> = (
 
 /** Styled */
 const PreviewBookPage = styled.div<{$image?: string}>`
-  width: ${BOOK_DIMENSIONS.width * 1.5}px;
-  height: ${BOOK_DIMENSIONS.height * 1.5}px;
+  width: ${BOOK_DIMENSIONS.width * 2}px;
+  height: ${BOOK_DIMENSIONS.height * 2}px;
   border-radius: 8px;
   border: 1px solid var(--neutrals-6-color);
   display: flex;

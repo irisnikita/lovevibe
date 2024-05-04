@@ -31,7 +31,7 @@ export const handleExportYourBookPdf = async ({
       useCORS: true,
       scrollX: 0,
       scrollY: 0,
-      scale: 1.2,
+      scale: 1,
     });
 
     const dataUrl = canvas?.toDataURL('png', 1);

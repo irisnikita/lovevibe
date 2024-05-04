@@ -36,8 +36,8 @@ export const ShareYourBookEmail: React.FC<ShareYourBookProps> = (props) => {
         <Body className="bg-slate-50 font-sans text-base">
           <Img
             src={LovevibeLogo}
-            width="184"
-            height="75"
+            width={75}
+            height={48}
             alt="Lovevibe"
             className="mx-auto my-5"
           />
@@ -53,16 +53,19 @@ export const ShareYourBookEmail: React.FC<ShareYourBookProps> = (props) => {
 `}
                 </Text>
 
-                <Text className="text-center text-base">{`Your book is ready`}</Text>
+                <Text className="text-center text-base font-bold">{`Your book is ready !`}</Text>
               </Row>
             </Section>
 
             {/* <ul>{steps?.map(({Description}) => Description)}</ul> */}
 
             <Section className="text-center">
-              <Button className="bg-brand rounded-lg px-[18px] py-3 text-white">
-                Go to your dashboard
-              </Button>
+              <Link
+                href="https://app.lovevibe.co/your-book"
+                className="rounded-lg bg-primary px-[18px] py-3 text-white"
+              >
+                Go to custom your book
+              </Link>
             </Section>
 
             {/* <Section className="mt-45">
