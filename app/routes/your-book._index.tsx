@@ -364,7 +364,6 @@ export default function YourBooks() {
         />
         <CusDivider />
         <Typography.Text className="!text-lg !font-semibold md:!text-[32px]">{`📖 ${bookPages.length} Pages`}</Typography.Text>
-        ShareYourBookEmail
       </div>
 
       <Pagination
