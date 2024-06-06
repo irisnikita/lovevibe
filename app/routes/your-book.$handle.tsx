@@ -1,7 +1,10 @@
+/* eslint-disable react/no-unknown-property */
 // Libraries
 import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
 import {json, useLoaderData} from '@remix-run/react';
 import {ClientOnly} from 'remix-utils/client-only';
+import {Canvas, useFrame} from '@react-three/fiber';
+import {OrbitControls, ScrollControls} from '@react-three/drei';
 
 // Components
 import {Empty, Flex} from '~/components/ui';
@@ -15,6 +18,8 @@ import BlueBook from 'public/images/books/book-blue.png';
 
 import type {YourBook} from '~/schema';
 import {DownloadPrintableBtn} from '~/components/your-book/DownloadPrintableBtn';
+import {Box} from '~/components/your-book/Box';
+import Book from '~/components/your-book/Book';
 
 export const meta: MetaFunction = () => {
   return [
@@ -70,8 +75,23 @@ export default function YourBooks() {
   const {properties} = yourBook || {};
 
   return (
-    <div className="animate__animated animate__fadeIn animate__delay-2_5s container flex flex-col items-center overflow-hidden pt-[17px] lg:pt-[93px]">
-      {properties ? (
+    <>
+      <div id="3d-container" className="fixed top-0 h-screen w-screen">
+        <Canvas dpr={[1, 1.5]}>
+          <ambientLight intensity={5} />
+          {/* <pointLight intensity={1} position={[0, 0, 0]} /> */}
+          {/* <ambientLight intensity={0.1} /> */}
+          {/* <directionalLight color={'#ffffff'} position={[0, 0, 6]} /> */}
+          {/* <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+      <pointLight position={[-10, -10, -10]} /> */}
+          <ScrollControls pages={20}>
+            <Book yourBook={yourBook} />
+          </ScrollControls>
+          <OrbitControls enableZoom={false} />
+        </Canvas>
+      </div>
+      {/* <div className="animate__animated animate__fadeIn animate__delay-2_5s container flex flex-col items-center overflow-hidden pt-[17px] lg:pt-[93px]"> */}
+      {/* {properties ? (
         <ClientOnly fallback={null}>
           {() => (
             <>
@@ -90,8 +110,9 @@ export default function YourBooks() {
           className="!flex h-[60vh] !flex-col items-center justify-center"
           description="Your book is not found"
         />
-      )}
-    </div>
+      )} */}
+      {/* </div> */}
+    </>
   );
 }
 
