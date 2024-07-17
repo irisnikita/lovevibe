@@ -10,11 +10,14 @@ import dayjs from 'dayjs';
 
 // Constants
 import {THEME} from '~/constants';
-import {StyleProvider} from '@ant-design/cssinjs';
+import {createCache, extractStyle, StyleProvider} from '@ant-design/cssinjs';
 
 // Queries
 import {QueryClientProvider} from '@tanstack/react-query';
 import {queryClient} from '~/queries/config';
+
+// Types
+import type Entity from '@ant-design/cssinjs/lib/Cache';
 
 dayjs.extend(advancedFormat);
 dayjs().format('Q Do k kk X x');
@@ -26,10 +29,14 @@ export const ConfigProvider: React.FC<
 > = (props) => {
   const {children, ...restOfProps} = props;
 
+  const cache = React.useMemo<Entity>(() => createCache(), []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <AntdConfigProvider theme={THEME} {...restOfProps}>
-        <StyleProvider hashPriority="high">{children}</StyleProvider>
+        <StyleProvider hashPriority="high" cache={cache}>
+          {children}
+        </StyleProvider>
       </AntdConfigProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>

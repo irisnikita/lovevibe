@@ -28,6 +28,7 @@ import pokemonCardStyles from './styles/pokemon-card.css';
 import fonts from './styles/fonts.css';
 import {Layout} from '~/components/lovevibe/Layout';
 import {gaTrackingId} from './constants';
+import {ClientOnly} from 'remix-utils/client-only';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -222,9 +223,13 @@ export default function App() {
         )}
       </head>
       <body>
-        <Layout {...data}>
-          <Outlet />
-        </Layout>
+        <ClientOnly fallback={null}>
+          {() => (
+            <Layout {...data}>
+              <Outlet />
+            </Layout>
+          )}
+        </ClientOnly>
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />
