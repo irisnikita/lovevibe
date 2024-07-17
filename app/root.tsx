@@ -223,13 +223,9 @@ export default function App() {
         )}
       </head>
       <body>
-        <ClientOnly fallback={null}>
-          {() => (
-            <Layout {...data}>
-              <Outlet />
-            </Layout>
-          )}
-        </ClientOnly>
+        <Layout {...data}>
+          <Outlet />
+        </Layout>
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />
