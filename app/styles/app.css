@@ -47,6 +47,12 @@ html[data-theme='blue'] {
 html[data-theme='orange'] {
   --primary-color: #ee774a;
 }
+html[data-theme='yellow'] {
+  --primary-color: #eba64b;
+}
+html[data-theme='pink'] {
+  --primary-color: #f46aad;
+}
 
 img {
   border-radius: 4px;

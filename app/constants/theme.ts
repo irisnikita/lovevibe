@@ -117,6 +117,8 @@ THEME.components = {
 export const VIOLET_THEME: TTheme = cloneDeep(THEME);
 export const BLUE_THEME: TTheme = cloneDeep(THEME);
 export const ORANGE_THEME: TTheme = cloneDeep(THEME);
+export const YELLOW_THEME: TTheme = cloneDeep(THEME);
+export const PINK_THEME: TTheme = cloneDeep(THEME);
 
 VIOLET_THEME.token = {
   ...VIOLET_THEME.token,
@@ -137,6 +139,20 @@ ORANGE_THEME.token = {
   colorPrimary: '#EE774A',
   colorLink: '#EE774A',
   colorLinkHover: '#EE774A',
+} as any;
+
+YELLOW_THEME.token = {
+  ...YELLOW_THEME.token,
+  colorPrimary: '#EBA64B',
+  colorLink: '#EBA64B',
+  colorLinkHover: '#EBA64B',
+} as any;
+
+PINK_THEME.token = {
+  ...PINK_THEME.token,
+  colorPrimary: '#F46AAD',
+  colorLink: '#F46AAD',
+  colorLinkHover: '#F46AAD',
 } as any;
 
 export const GLOBAL_TOKEN = getDesignToken(THEME);

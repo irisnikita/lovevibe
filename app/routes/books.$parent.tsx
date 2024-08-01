@@ -16,7 +16,7 @@ import {ArrowDown, ArrowRight} from '~/icons';
 import {ITEM_ORDER_COLORS, PARENT_KEYS, PARENT_OPTIONS} from '~/constants';
 
 // Utils
-import {safeParseJson} from '~/utils';
+import {safeParseJson, serializeLabelToUrl} from '~/utils';
 
 export const meta: MetaFunction = () => {
   return [
@@ -63,7 +63,7 @@ export default function Books() {
           const colorIdx = index % ITEM_ORDER_COLORS.length;
 
           // Check if parent type is equal parent params then return value
-          if (parent_type === parent) {
+          if (serializeLabelToUrl(parent_type) === parent) {
             return {
               key: id,
               label: (

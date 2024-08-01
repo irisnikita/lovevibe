@@ -1,8 +1,11 @@
 export const PARENT_KEYS = {
   DAD: 'dad',
   MOM: 'mom',
+  GRANDMA: 'grandma',
+  COUPLE_YOU: 'couple_you',
+  BESTIE: 'bestie',
 };
-const {DAD, MOM} = PARENT_KEYS;
+const {DAD, MOM, GRANDMA, BESTIE, COUPLE_YOU} = PARENT_KEYS;
 
 export const PARENT_OPTIONS = {
   [DAD]: {
@@ -14,6 +17,21 @@ export const PARENT_OPTIONS = {
     value: MOM,
     label: 'Mom',
     title: 'What I love about Mom book 🧡',
+  },
+  [GRANDMA]: {
+    value: GRANDMA,
+    label: 'Grandma',
+    title: 'What I love about Grandma book 🧡',
+  },
+  [COUPLE_YOU]: {
+    value: MOM,
+    label: 'You',
+    title: 'What I love about You book 🧡',
+  },
+  [BESTIE]: {
+    value: BESTIE,
+    label: 'Bestie',
+    title: 'What I love about Bestie book 💖',
   },
 };
 

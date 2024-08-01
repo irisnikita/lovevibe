@@ -57,3 +57,11 @@ export function copyValueToClipboard(value: string) {
   // Remove the input element from the DOM
   document.body.removeChild(input);
 }
+
+export function serializeLabelToUrl(name: string) {
+  return name
+    .toLocaleLowerCase()
+    .replace(/ /g, '_')
+    .replace(/[^\w]/g, '')
+    .replace(/^(\d|aud|sgmt|_)+/g, '');
+}
