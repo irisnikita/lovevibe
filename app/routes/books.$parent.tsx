@@ -193,7 +193,7 @@ const StyledCollapse = styled(Collapse)`
 /* GraphQL */
 const BOOK_QUERY = `#graphql
   query Books {
-    metaobjects(type: "parent_book", first: 200, sortKey: "order") {
+    metaobjects(type: "parent_book", first: 250, sortKey: "order") {
       edges {
         node {
           id
