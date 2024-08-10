@@ -17,3 +17,4 @@ export * from './Empty';
 export * from './Flex';
 export * from './Card';
 export * from './Form';
+export * from './Switch';

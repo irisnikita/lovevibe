@@ -1,1 +1,1 @@
-export {DatePicker} from 'antd';
+export {default as DatePicker} from 'antd/es/date-picker';

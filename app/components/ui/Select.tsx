@@ -1,4 +1,5 @@
-import {Select as AntdSelect, type SelectProps as AntdSelectProps} from 'antd';
+import {type SelectProps as AntdSelectProps} from 'antd';
+import {default as AntdSelect} from 'antd/es/select';
 import {ArrowDown} from '~/icons';
 
 export interface SelectProps extends AntdSelectProps {}

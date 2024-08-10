@@ -1,1 +1,1 @@
-export {InputNumber} from 'antd';
+export {default as InputNumber} from 'antd/es/input-number';

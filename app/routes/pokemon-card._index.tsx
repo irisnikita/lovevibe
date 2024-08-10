@@ -1,7 +1,6 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable no-template-curly-in-string */
 // Libraries
-import {Flex, Form} from 'antd';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import styled from '@emotion/styled';
 import {jsPDF} from 'jspdf';
@@ -21,6 +20,8 @@ import {
   InputNumber,
   Button,
   Modal,
+  Flex,
+  Form,
 } from '~/components/ui';
 import {Tabs} from '~/components/lovevibe/Tabs';
 
@@ -49,7 +50,6 @@ import PreviewCard from 'public/images/pokemon/preview.png';
 // Hooks
 import {useDeepCompareEffect} from '~/hooks';
 import useImage from 'use-image';
-import {getImageRatio} from '~/utils';
 import {Checkbox} from '~/components/lovevibe/Checkbox';
 
 const {FEMALE, MALE} = CHARACTER_GENDER_KEYS;

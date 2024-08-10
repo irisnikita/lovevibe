@@ -1,1 +1,1 @@
-export {Flex} from 'antd';
+export {default as Flex} from 'antd/es/flex';

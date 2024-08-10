@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {Tabs as AntdTabs} from 'antd';
+import AntdTabs from 'antd/es/tabs';
 
 const Tabs = styled(AntdTabs)`
   .ant-tabs-nav {

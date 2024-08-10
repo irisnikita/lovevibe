@@ -1,1 +1,1 @@
-export {Modal} from 'antd';
+export {default as Modal} from 'antd/es/modal';
