@@ -254,6 +254,10 @@ export function ErrorBoundary() {
     errorMessage = error.message;
   }
 
+  if (window) {
+    console.log('window', window);
+  }
+
   return (
     <html lang="en">
       <head>
@@ -263,17 +267,17 @@ export function ErrorBoundary() {
         <Links />
       </head>
       <body>
-        <Layout {...rootData}>
-          <div className="route-error">
-            <h1>Oops</h1>
-            <h2>{errorStatus}</h2>
-            {errorMessage && (
-              <fieldset>
-                <pre>{errorMessage}</pre>
-              </fieldset>
-            )}
-          </div>
-        </Layout>
+        {/* <Layout {...rootData}> */}
+        <div className="route-error">
+          <h1>Oops</h1>
+          <h2>{errorStatus}</h2>
+          {errorMessage && (
+            <fieldset>
+              <pre>{errorMessage}</pre>
+            </fieldset>
+          )}
+        </div>
+        {/* </Layout> */}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} crossOrigin="anonymous" />
         <LiveReload nonce={nonce} />
