@@ -40,22 +40,25 @@ export function Layout(props: LayoutProps) {
         ?.setAttribute('data-theme', routeInfo?.themeKey);
     }
   }, [routeInfo?.themeKey]);
-
-  return (
-    <ConfigProvider theme={routeInfo?.theme || THEME}>
-      {/* <CartAside cart={cart} />
+  try {
+    return (
+      <ConfigProvider theme={routeInfo?.theme || THEME}>
+        {/* <CartAside cart={cart} />
       <SearchAside />
       <MobileMenuAside menu={header?.menu} shop={header?.shop} /> */}
-      <PageLoading logoUrl={routeInfo?.logo} />
-      {header && <Header logo={routeInfo?.logo} />}
-      <main>{children}</main>
-      {/* <Suspense>
+        <PageLoading logoUrl={routeInfo?.logo} />
+        {header && <Header logo={routeInfo?.logo} />}
+        <main>{children}</main>
+        {/* <Suspense>
         <Await resolve={footer}>
           {(footer) => <Footer menu={footer?.menu} shop={header?.shop} />}
         </Await>
       </Suspense> */}
-    </ConfigProvider>
-  );
+      </ConfigProvider>
+    );
+  } catch (error) {
+    return 'error';
+  }
 }
 
 function CartAside({cart}: {cart: LayoutProps['cart']}) {
