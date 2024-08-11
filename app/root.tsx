@@ -256,6 +256,7 @@ export function ErrorBoundary() {
 
   if (window) {
     console.log('window', window);
+    window.location.reload();
   }
 
   return (
