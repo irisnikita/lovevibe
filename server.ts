@@ -125,9 +125,6 @@ export default {
 
       const response = await handleRequest(request);
 
-      response.headers.set('Cache-Control', 'no-store, max-age=0');
-      response.headers.set('Oxygen-Cache-Control', 'public, max-age=0');
-
       if (response.status === 404) {
         /**
          * Check for redirects only when there's a 404 from the app.
