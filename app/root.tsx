@@ -254,6 +254,7 @@ export function ErrorBoundary() {
   }
 
   const clearCache = () => {
+    console.log('navigator', navigator);
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then((registrations) => {
         for (const registration of registrations) {
