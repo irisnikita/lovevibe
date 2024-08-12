@@ -43,7 +43,7 @@ export default {
         AppSession.init(request, [env.SESSION_SECRET]),
       ]);
 
-      console.log('cache:: ', cache);
+      console.log('cache:: ', JSON.stringify(cache));
 
       /**
        * Create a Google Maps API client.
