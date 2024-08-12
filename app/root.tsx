@@ -253,27 +253,21 @@ export function ErrorBoundary() {
     errorMessage = error.message;
   }
 
-  if (window) {
-    // window.location.reload();
+  const clearCache = () => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (const registration of registrations) {
+          console.log(
+            '🚀 ~ navigator.serviceWorker.getRegistrations ~ registration:',
+            registration,
+          );
+          registration.unregister();
+        }
+      });
+    }
+  };
 
-    // Get all link tags with rel="modulepreload"
-    const linkTags = document.querySelectorAll('link[rel="modulepreload"]');
-
-    // Iterate through each link tag
-    linkTags.forEach((link) => {
-      // Get the current href
-      const currentHref = link.getAttribute('href');
-
-      // Generate a random date-time string (can use current time or random)
-      const randomTime = new Date().getTime();
-
-      // Append the random time as a query parameter to the href
-      const newHref = `${currentHref}?v=${randomTime}`;
-
-      // Update the link's href attribute
-      link.setAttribute('href', newHref);
-    });
-  }
+  clearCache();
 
   return (
     <html lang="en">
