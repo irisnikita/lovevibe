@@ -1,6 +1,6 @@
 import type {ThemeConfig} from 'antd';
 import {Await, useLocation} from '@remix-run/react';
-import {Suspense, useEffect} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import type {
   CartApiQueryFragment,
   FooterQuery,
@@ -32,6 +32,7 @@ export function Layout(props: LayoutProps) {
 
   const location = useLocation();
   const routeInfo = getRouteFromPath(location.pathname);
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
     if (routeInfo?.themeKey) {
@@ -40,6 +41,14 @@ export function Layout(props: LayoutProps) {
         ?.setAttribute('data-theme', routeInfo?.themeKey);
     }
   }, [routeInfo?.themeKey]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowContent(true);
+    }, 500);
+  }, []);
+
+  if (!showContent) return <PageLoading logoUrl={routeInfo?.logo} />;
 
   return (
     <ConfigProvider theme={routeInfo?.theme || THEME}>

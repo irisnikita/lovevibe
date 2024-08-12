@@ -28,6 +28,10 @@ import pokemonCardStyles from './styles/pokemon-card.css';
 import fonts from './styles/fonts.css';
 import {Layout} from '~/components/lovevibe/Layout';
 import {gaTrackingId} from './constants';
+import {withEmotionCache} from '@emotion/react';
+import {useContext, useEffect, useRef} from 'react';
+import ServerStyleContext from './styles/server.context';
+import ClientStyleContext from './styles/client.context';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -152,7 +156,34 @@ export async function loader({context}: LoaderFunctionArgs) {
   );
 }
 
-export default function App() {
+const Document = withEmotionCache(({children, title}: any, emotionCache) => {
+  const serverStyleData = useContext(ServerStyleContext);
+  const clientStyleData = useContext(ClientStyleContext);
+  const reinjectStylesRef = useRef(true);
+
+  // Only executed on client
+  // When a top level ErrorBoundary or CatchBoundary are rendered,
+  // the document head gets removed, so we have to create the style tags
+  useEffect(() => {
+    if (!reinjectStylesRef.current) {
+      return;
+    }
+    // re-link sheet container
+    emotionCache.sheet.container = document.head;
+
+    // re-inject tags
+    const tags = emotionCache.sheet.tags;
+    emotionCache.sheet.flush();
+    tags.forEach((tag) => {
+      (emotionCache.sheet as any)._insertTag(tag);
+    });
+
+    // reset cache to re-apply global styles
+    clientStyleData.reset();
+    // ensure we only do this once per mount
+    reinjectStylesRef.current = false;
+  }, [clientStyleData, emotionCache.sheet]);
+
   const nonce = useNonce();
   const data = useLoaderData<typeof loader>();
 
@@ -170,6 +201,13 @@ export default function App() {
         <Seo />
         <Meta />
         <Links />
+        {serverStyleData?.map(({key, ids, css}) => (
+          <style
+            key={key}
+            data-emotion={`${key} ${ids.join(' ')}`}
+            dangerouslySetInnerHTML={{__html: css}}
+          />
+        ))}
 
         {/* Old D3 Scripts */}
         <script
@@ -228,14 +266,20 @@ export default function App() {
         )}
       </head>
       <body>
-        <Layout {...data}>
-          <Outlet />
-        </Layout>
+        <Layout {...data}>{children}</Layout>
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />
       </body>
     </html>
+  );
+});
+
+export default function App() {
+  return (
+    <Document>
+      <Outlet />
+    </Document>
   );
 }
 

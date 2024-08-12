@@ -1,8 +1,12 @@
 import type {EntryContext} from '@shopify/remix-oxygen';
+import createEmotionServer from '@emotion/server/create-instance';
 import {RemixServer} from '@remix-run/react';
 import isbot from 'isbot';
-import {renderToReadableStream} from 'react-dom/server';
+import {renderToReadableStream, renderToString} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
+import createEmotionCache from './styles/createEmotionCache';
+import ServerStyleContext from './styles/server.context';
+import {CacheProvider} from '@emotion/react';
 
 export default async function handleRequest(
   request: Request,
@@ -34,9 +38,9 @@ export default async function handleRequest(
     },
   );
 
-  if (isbot(request.headers.get('user-agent'))) {
-    await body.allReady;
-  }
+  // if (isbot(request.headers.get('user-agent'))) {
+  //   await body.allReady;
+  // }
 
   responseHeaders.set('Content-Type', 'text/html');
   responseHeaders.set(

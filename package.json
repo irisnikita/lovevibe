@@ -15,9 +15,11 @@
   },
   "prettier": "@shopify/prettier-config",
   "dependencies": {
+    "@emotion/cache": "^11.7.1",
+    "@emotion/react": "^11.8.1",
+    "@emotion/server": "^11.4.0",
     "@ant-design/cssinjs": "^1.18.5",
     "@emotion/css": "^11.11.2",
-    "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@react-email/components": "0.0.17",
     "@react-spring/three": "^9.7.3",
