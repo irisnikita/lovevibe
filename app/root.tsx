@@ -254,23 +254,26 @@ export function ErrorBoundary() {
   }
 
   const clearCache = () => {
-    console.log('navigator', navigator);
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        for (const registration of registrations) {
-          console.log(
-            '🚀 ~ navigator.serviceWorker.getRegistrations ~ registration:',
-            registration,
-          );
-          registration.unregister();
-        }
-      });
-    }
+    // console.log('navigator', navigator);
+    // if ('serviceWorker' in navigator) {
+    //   navigator.serviceWorker.getRegistrations().then((registrations) => {
+    //     for (const registration of registrations) {
+    //       console.log(
+    //         '🚀 ~ navigator.serviceWorker.getRegistrations ~ registration:',
+    //         registration,
+    //       );
+    //       registration.unregister();
+    //     }
+    //   });
+    // }
 
-    localStorage.clear();
-    sessionStorage.clear();
+    // localStorage.clear();
+    // sessionStorage.clear();
 
-    window.location.reload();
+    // window.location.reload();
+
+    window.location.href =
+      window.location.href.split('?')[0] + '?no-cache=' + new Date().getTime();
   };
 
   clearCache();
