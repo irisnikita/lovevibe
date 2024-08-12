@@ -28,7 +28,6 @@ import pokemonCardStyles from './styles/pokemon-card.css';
 import fonts from './styles/fonts.css';
 import {Layout} from '~/components/lovevibe/Layout';
 import {gaTrackingId} from './constants';
-import {ClientOnly} from 'remix-utils/client-only';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -255,10 +254,8 @@ export function ErrorBoundary() {
   }
 
   if (window) {
-    sessionStorage.clear();
-    localStorage.clear();
-
     window.location.reload();
+    console.log('window.caches', window.caches);
   }
 
   return (
