@@ -254,8 +254,11 @@ export function ErrorBoundary() {
   }
 
   if (window) {
-    window.location.reload();
-    console.log('window.caches', window.caches);
+    sessionStorage.clear();
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   }
 
   return (
