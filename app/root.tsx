@@ -239,78 +239,78 @@ export default function App() {
   );
 }
 
-export function ErrorBoundary() {
-  const error = useRouteError();
-  const rootData = useRootLoaderData();
-  const nonce = useNonce();
-  let errorMessage = 'Unknown error';
-  let errorStatus = 500;
+// export function ErrorBoundary() {
+//   const error = useRouteError();
+//   const rootData = useRootLoaderData();
+//   const nonce = useNonce();
+//   let errorMessage = 'Unknown error';
+//   let errorStatus = 500;
 
-  if (isRouteErrorResponse(error)) {
-    errorMessage = error?.data?.message ?? error.data;
-    errorStatus = error.status;
-  } else if (error instanceof Error) {
-    errorMessage = error.message;
-  }
+//   if (isRouteErrorResponse(error)) {
+//     errorMessage = error?.data?.message ?? error.data;
+//     errorStatus = error.status;
+//   } else if (error instanceof Error) {
+//     errorMessage = error.message;
+//   }
 
-  const clearCache = () => {
-    // console.log('navigator', navigator);
-    // if ('serviceWorker' in navigator) {
-    //   navigator.serviceWorker.getRegistrations().then((registrations) => {
-    //     for (const registration of registrations) {
-    //       console.log(
-    //         '🚀 ~ navigator.serviceWorker.getRegistrations ~ registration:',
-    //         registration,
-    //       );
-    //       registration.unregister();
-    //     }
-    //   });
-    // }
+//   const clearCache = () => {
+//     // console.log('navigator', navigator);
+//     // if ('serviceWorker' in navigator) {
+//     //   navigator.serviceWorker.getRegistrations().then((registrations) => {
+//     //     for (const registration of registrations) {
+//     //       console.log(
+//     //         '🚀 ~ navigator.serviceWorker.getRegistrations ~ registration:',
+//     //         registration,
+//     //       );
+//     //       registration.unregister();
+//     //     }
+//     //   });
+//     // }
 
-    // localStorage.clear();
-    // sessionStorage.clear();
+//     // localStorage.clear();
+//     // sessionStorage.clear();
 
-    // window.location.reload();
+//     // window.location.reload();
 
-    window.location.href =
-      window.location.href.split('?')[0] + '?no-cache=' + new Date().getTime();
-  };
+//     window.location.href =
+//       window.location.href.split('?')[0] + '?no-cache=' + new Date().getTime();
+//   };
 
-  clearCache();
+//   clearCache();
 
-  return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <meta
-          httpEquiv="Cache-Control"
-          content="no-cache, no-store, must-revalidate"
-        />
-        <meta httpEquiv="Pragma" content="no-cache" />
-        <meta httpEquiv="Expires" content="0" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        {/* <Layout {...rootData}> */}
-        <div className="route-error">
-          <h1>Oops</h1>
-          <h2>{errorStatus}</h2>
-          {errorMessage && (
-            <fieldset>
-              <pre>{errorMessage}</pre>
-            </fieldset>
-          )}
-        </div>
-        {/* </Layout> */}
-        <ScrollRestoration nonce={nonce} />
-        <Scripts nonce={nonce} crossOrigin="anonymous" />
-        <LiveReload nonce={nonce} />
-      </body>
-    </html>
-  );
-}
+//   return (
+//     <html lang="en">
+//       <head>
+//         <meta charSet="utf-8" />
+//         <meta name="viewport" content="width=device-width,initial-scale=1" />
+//         <meta
+//           httpEquiv="Cache-Control"
+//           content="no-cache, no-store, must-revalidate"
+//         />
+//         <meta httpEquiv="Pragma" content="no-cache" />
+//         <meta httpEquiv="Expires" content="0" />
+//         <Meta />
+//         <Links />
+//       </head>
+//       <body>
+//         {/* <Layout {...rootData}> */}
+//         <div className="route-error">
+//           <h1>Oops</h1>
+//           <h2>{errorStatus}</h2>
+//           {errorMessage && (
+//             <fieldset>
+//               <pre>{errorMessage}</pre>
+//             </fieldset>
+//           )}
+//         </div>
+//         {/* </Layout> */}
+//         <ScrollRestoration nonce={nonce} />
+//         <Scripts nonce={nonce} crossOrigin="anonymous" />
+//         <LiveReload nonce={nonce} />
+//       </body>
+//     </html>
+//   );
+// }
 
 const MENU_FRAGMENT = `#graphql
   fragment MenuItem on MenuItem {
