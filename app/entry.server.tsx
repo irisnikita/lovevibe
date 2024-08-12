@@ -39,6 +39,10 @@ export default async function handleRequest(
   }
 
   responseHeaders.set('Content-Type', 'text/html');
+  responseHeaders.set(
+    'Cache-Control',
+    'no-store, no-cache, must-revalidate, max-age=0, s-maxage=0',
+  );
   // responseHeaders.set('Content-Security-Policy', header);
 
   return new Response(body, {
