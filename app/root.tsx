@@ -266,6 +266,11 @@ export function ErrorBoundary() {
         }
       });
     }
+
+    localStorage.clear();
+    sessionStorage.clear();
+
+    window.location.reload();
   };
 
   clearCache();
