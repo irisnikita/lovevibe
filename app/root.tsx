@@ -255,7 +255,9 @@ export function ErrorBoundary() {
   }
 
   if (window) {
-    console.log('window', window);
+    sessionStorage.clear();
+    localStorage.clear();
+
     window.location.reload();
   }
 
