@@ -255,6 +255,7 @@ export function ErrorBoundary() {
 
   if (window) {
     sessionStorage.clear();
+    localStorage.clear();
 
     setTimeout(() => {
       window.location.reload();
