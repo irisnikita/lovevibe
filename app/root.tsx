@@ -254,6 +254,8 @@ export function ErrorBoundary() {
   }
 
   if (window) {
+    window.location.reload();
+
     // Get all link tags with rel="modulepreload"
     const linkTags = document.querySelectorAll('link[rel="modulepreload"]');
 
